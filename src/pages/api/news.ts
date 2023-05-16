@@ -2,7 +2,7 @@ import axios from 'axios';
 import { NextRequest, NextResponse } from 'next/server';
 import delay from 'utils/delay';
 
-export default async function handler(request, response) {
+export default async function handler(request: any, response: any) {
   try {
     //console.log('api/news:start');
     const { url} = request.query;

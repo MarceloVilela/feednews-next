@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { ISource, sources } from './sources';
 import Tcsv from "./sources/Tcsv";
 
-export default async function handler(request, response) {
+export default async function handler(request: any, response: any) {
   const { url } = request.query;
   const alias = url.split('/')[2].replace('www.', '');
 

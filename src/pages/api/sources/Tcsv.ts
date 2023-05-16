@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { IShowDetailMagnetDTO, Answer } from '.';
 //import { JSDOM } from 'jsdom';
 
 import { ISearchParams, ISource, Result } from './index';
@@ -10,6 +11,10 @@ class Tcsv implements ISource {
 
   async parseResults(document: Document) {
     return [];
+  }
+
+  async detail({ url }: IShowDetailMagnetDTO): Promise<Answer> {
+    return await new Promise(resolve => setTimeout(resolve, 100));
   }
 
   async search({ search_query }: ISearchParams): Promise<Result[]> {
