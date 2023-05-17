@@ -45,7 +45,7 @@ export default function Home() {
   const [orderDirection, setOrderDirection] = useState('desc');
 
   useEffect(() => {
-    //setDocs(data as ResultData[]);
+    ///setDocs(data as ResultData[]);
     //setResult({ 'pirateproxy': data } as Result);
   }, [])
 
