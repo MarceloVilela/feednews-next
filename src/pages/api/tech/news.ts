@@ -4,9 +4,9 @@ import delay from 'utils/delay';
 
 export default async function handler(request: any, response: any) {
   try {
-    //console.log('api/news:start');
     const { url} = request.query;
-    const { data } = await axios.get(`http://localhost:4000/v1/technews/post/origin?page=1&url=${url}`);
+    //console.table(['ServerSide', 'api/tech/news', `${process.env.NEXT_PUBLIC_API_TECH_URL}/technews/post/origin?page=1&url=${url}`]);
+    const { data } = await axios.get(`${process.env.NEXT_PUBLIC_API_TECH_URL}/technews/post/origin?page=1&url=${url}`);
     //console.log(
       //'api/news:ok', 
       //data

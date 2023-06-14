@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 
 export default function Loading() {
   return (
@@ -6,8 +7,8 @@ export default function Loading() {
       className="fixed left-1/2 top-1/2"
       id="loading"
     >
-      <img
-        srcSet={"/images/load.gif"}
+      <Image
+        src={"/images/load.gif"}
         alt="Load indicator"
         className="w-16 h-16 mx-auto"
       />

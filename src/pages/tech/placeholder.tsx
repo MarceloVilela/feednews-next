@@ -5,7 +5,8 @@ import { api } from '../../services/api';
 import jsonbin from '../../services/jsonbin';
 import { NewsContentProps, NewsProps } from '.';
 
-import { origins } from '../../assets/json/tech/origins.json';
+import originsJson from '../../assets/json/tech/origins.json';
+const origins = originsJson.origins;
 
 interface OriginCurrent {
   title: string

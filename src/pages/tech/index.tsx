@@ -7,7 +7,9 @@ import { useQuery } from 'react-query';
 import api from 'services/api';
 import Loading from 'components/Loading';
 
-import origins from '../../assets/json/tech/origins.json';
+import originsJson from '../../assets/json/tech/origins.json';
+import jsonbin from 'services/jsonbin';
+const origins = originsJson.origins;
 
 export interface NewsContentProps {
   data: Content[]
@@ -64,16 +66,17 @@ export default function News(props: NewsProps) {
           className="hover:bg-yellow-500 bg-yellow-400 text-black text-sm px-4 py-1 rounded-md cursor-pointer"
           onClick={() => setUrl('')}
         >Recentes</button>
-        {origins.origins.length > 0 && origins.origins.map((origin) => (
+        {origins.length > 0 && origins.map(({url, title}) => (
           <button
+            key={url}
             className="hover:bg-yellow-500 bg-yellow-400 text-black text-sm px-4 py-1 rounded-md cursor-pointer"
-            onClick={() => setUrl(origin.url)}
-          >{origin.title}</button>
+            onClick={() => setUrl(url)}
+          >{title}</button>
         ))}
       </section>
 
       <section className="flex flex-col gap-8 mb-16">
-        {articles.data.length > 0 && articles.data.map((detail) => (
+        {articles.data && articles.data.length > 0 && articles.data.map((detail) => (
           <article id={detail.id} key={`item-${detail.id}`}>
             <a href={detail.link}>
               <h2 className="text-md">{detail.title}</h2>
@@ -85,7 +88,7 @@ export default function News(props: NewsProps) {
 
       {/* grid max-w-sm lg:max-w-none- */}
       <section className="sm:grid-cols-2 lg:grid-cols-3 gap-4 hidden">
-        {articles.data.length > 0 && articles.data.map((detail) => (
+        {articles.data && articles.data.length > 0 && articles.data.map((detail) => (
           <article className="grid grid-rows-2 gap-2 overflow-hidden-" id={detail.id} key={`card-${detail.id}`}>
             <img src={detail.thumb} alt={'Thumb'}
               className="w-max-[320px] w-auto- max-h-44- static- opacity-20 aspect-video flex-1"
@@ -108,7 +111,9 @@ export const getStaticProps: GetStaticProps = async () => {
   try {
     const url = '';
     //console.table(['tech:index', 'getStaticProps:start', api.defaults.baseURL+`/api/tech/news?url=${url}`]);
-    const { data } = await api.get(`/api/tech/news?url=${url}`);
+    //const { data } = await api.get(`/api/tech/news?url=${url}`);
+    const { data: jsonbinData } = await jsonbin.get('6092cee092cb9267d0ce0e00');
+    const { record: data } = jsonbinData;
     //console.log(data)
 
     return {

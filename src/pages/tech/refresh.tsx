@@ -4,7 +4,8 @@ import Head from 'next/head';
 
 import { api } from '../../services/api';
 
-import { origins } from '../../assets/json/tech/origins.json';
+import originsJson from '../../assets/json/tech/origins.json';
+const origins = originsJson.origins;
 
 interface Content {
   type: 'text' | 'video' | 'image' | 'text_highlighted';
