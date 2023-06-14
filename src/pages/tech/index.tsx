@@ -31,7 +31,7 @@ export interface Content {
   posted_at: string
 }
 
-const fetcher = (url: string) => fetch(`/api/tech/news?url=${url}`).then((res) => res.json())
+const fetcher = (url: string) => fetch(`/api/tech/source?url=${url}`).then((res) => res.json())
 
 export default function News(props: NewsProps) {
   const location = useRouter();
@@ -110,10 +110,8 @@ export default function News(props: NewsProps) {
 export const getStaticProps: GetStaticProps = async () => {
   try {
     const url = '';
-    //console.table(['tech:index', 'getStaticProps:start', api.defaults.baseURL+`/api/tech/news?url=${url}`]);
-    //const { data } = await api.get(`/api/tech/news?url=${url}`);
-    const { data: jsonbinData } = await jsonbin.get('6092cee092cb9267d0ce0e00');
-    const { record: data } = jsonbinData;
+    //console.table(['tech:index', 'getStaticProps:start', api.defaults.baseURL+`/api/tech/stored?url=${url}`]);
+    const { data } = await api.get(`/api/tech/source?url=${url}`);
     //console.log(data)
 
     return {
