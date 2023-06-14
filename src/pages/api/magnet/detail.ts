@@ -11,7 +11,7 @@ export default async function handler(request: any, response: any) {
   //sources.forEach((item) => console.log(item));
   //return response.status(200).json({ name: 'John Doe' })
 
-  if (!engine) {
+  if (!engine || !engine.detail) {
     const available = Object.values(sources).map((item) => item.getOriginUrl()).join(', ');
     throw new Error(`Alias not found: ${alias}. Available: ${available}`);
   }
