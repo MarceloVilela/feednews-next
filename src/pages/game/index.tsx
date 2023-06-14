@@ -8,7 +8,7 @@ import { useQuery } from 'react-query';
 import api from 'services/api';
 import Loading from 'components/Loading';
 
-import originsJson from '../../assets/json/tech/origins.json';
+import originsJson from '../../assets/json/game/origins.json';
 const origins = originsJson.origins;
 
 export interface NewsContentProps {
