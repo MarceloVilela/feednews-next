@@ -4,10 +4,11 @@ import Head from 'next/head';
 import { FaMagnet, FaLink } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 
-import api from '../services/api';
-import Loading from '../components/Loading';
-import placeholder from '../assets/detail.json';
+import api from 'services/api';
 import delay from 'utils/delay';
+import Loading from 'components/Loading';
+
+import placeholder from '../../assets/json/magnet/detail.json';
 
 interface LinkData {
   url: string;
@@ -25,6 +26,7 @@ export interface DetailData {
 
 export default function Post() {
   const location = useRouter();
+  const { url } = location.query;
   const [loading, setLoading] = useState(true);
   const [detail, setDetail] = useState<DetailData>({} as DetailData);
 
@@ -39,13 +41,14 @@ export default function Post() {
   useEffect(() => {
     setLoading(false);
 
-    const { url } = location.query;
     const requestConfig = { params: { url } };
 
     const requestDetail = async () => {
-      //return;
+      if(!url){
+        return;
+      }
       try {
-        const { data } = await api.get('api/detail', requestConfig);
+        const { data } = await api.get('/api/magnet/detail', requestConfig);
         setDetail(data);
       } catch (error) {
         toast.error(`Erro ao buscar dados da postagem: ${url}`);
@@ -55,11 +58,11 @@ export default function Post() {
     };
 
     requestDetail();
-  }, [location.query]);
+  }, [url]);
 
   return (
     <>
-      <Head><title>Post { /*detail.desc_link ? `| ${detail.name}` : ''*/}</title></Head>
+      <Head><title>Post { detail.desc_link ? `| ${detail.name}` : ''}</title></Head>
 
       {(!loading && detail.links) ? (
         <article className="flex flex-row flex-wrap gap-4 overflow-hidden- pt-4-">

@@ -17,7 +17,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <div className="flex flex-row- flex-col-reverse">
         <Aside />
         <main className="h-screen- flex items-center">
-          <div className="max-w-[1124px] border-1 mx-auto pl-2 h-full- my-16-">
+          <div className="w-full max-w-[1124px] border-1 mx-auto pl-2 h-full- my-16- border-">
             <SWRConfig
               value={{
                 //refreshInterval: 3000,

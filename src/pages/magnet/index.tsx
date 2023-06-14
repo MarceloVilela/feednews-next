@@ -2,10 +2,11 @@ import React, { useEffect, useMemo, useState, FormEvent, useCallback } from 'rea
 import Head from 'next/head';
 import { FaMagnet, FaLink } from 'react-icons/fa';
 
-import api from '../services/api';
-import { useStyleSwitcher } from '../hooks/styleSwitcher';
-import data from '../assets/results.json';
-import alias from '../assets/engineMovie.json';
+import api from 'services/api';
+import { useStyleSwitcher } from 'hooks/styleSwitcher';
+
+import data from '../../assets/json/magnet/results.json';
+import alias from '../../assets/json/magnet/engineAlias.json';
 
 export interface ResultData {
   link: string;
@@ -45,7 +46,7 @@ export default function Home() {
   const [orderDirection, setOrderDirection] = useState('desc');
 
   useEffect(() => {
-    //setDocs(data as ResultData[]);
+    ///setDocs(data as ResultData[]);
     //setResult({ 'pirateproxy': data } as Result);
   }, [])
 
@@ -60,7 +61,7 @@ export default function Home() {
       const searchQueryEncoded = encoded === 'true' ? btoa(search_query) : search_query;
       const requestConfig = { params: { url: aliasEncoded, search_query: searchQueryEncoded, encoded } };
 
-      api.get('api/search', requestConfig)
+      api.get('api/magnet/search', requestConfig)
         .then(({ data }) => {
           console.log({ [alias]: data });
           setResult(Object.assign(result, { [alias]: data }));
@@ -97,7 +98,7 @@ export default function Home() {
 
   return (
     <>
-      <Head><title>Search Movie</title></Head>
+      <Head><title>Home</title></Head>
 
       <form onSubmit={handleSubmit} className="flex flex-wrap pt-4- mb-8 gap-4">
         <input
@@ -107,7 +108,7 @@ export default function Home() {
           placeholder="Digite a busca"
           className="pl-2 rounded-md text-black"
         />
-        <input type="submit" value="Buscar filme/série" 
+        <input type="submit" value="Buscar" 
           className="hover:bg-yellow-500 bg-yellow-400 text-black px-8 py-1 rounded-md cursor-pointer" 
         />
       </form>
@@ -118,7 +119,7 @@ export default function Home() {
           value={filter}
           onChange={e => setFilter(e.target.value.toLocaleLowerCase())}
           placeholder="Filtrar resultados da busca"
-          className="pl-2 py-1 rounded-md text-black"
+          className="pl-2 py-1 rounded-md"
         />
         <p className="text-lg">Resultados (exibindo {filteredItens.length} de {docs.length})</p>
       </form>
@@ -131,6 +132,9 @@ export default function Home() {
         <thead className="">
           <tr className='hidden lg:table-row'>
             <td onClick={() => handleOrder('name')}>Nome</td>
+            <td onClick={() => handleOrder('size')}>Tamanho</td>
+            <td onClick={() => handleOrder('seeds')}>Seeds</td>
+            <td onClick={() => handleOrder('leech')}>Leech</td>
             <td onClick={() => handleOrder('engine_url')}>Mecanismo de busca</td>
           </tr>
         </thead>
@@ -144,17 +148,20 @@ export default function Home() {
                       <span>{item.name}</span>
                       <FaMagnet />
                     </a>
-                    <a href={`/post?url=${item.desc_link}`} target="_blank" rel="noopener noreferrer" className="flex">
+                    <a href={`/magnet/post?url=${item.desc_link}`} target="_blank" rel="noopener noreferrer" className="flex">
                       <FaLink />
                     </a>
                   </span>
                 ) : (
-                  <a href={`/post?url=${item.desc_link}`} target="_blank" rel="noopener noreferrer" className="flex gap-2">
+                  <a href={`/magnet/post?url=${item.desc_link}`} target="_blank" rel="noopener noreferrer" className="flex gap-2">
                     <span>{item.name}</span>
                     <FaLink />
                   </a>
                 )}
               </td>
+              <td className="w-full lg:w-auto">{item.size || '---'}</td>
+              <td className="w-full lg:w-auto">{item.seeds || '---'}</td>
+              <td className="w-full lg:w-auto">{item.leech || '---'}</td>
               <td className="w-full lg:w-auto">{item.engine_url || '---'}</td>
             </tr>
           ))}

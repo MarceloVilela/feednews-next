@@ -23,7 +23,7 @@ export default function Aside() {
       <div
         className="aside-item hover:bg-gray-200  text-gray-400 flex w-9 h-9 rounded-full cursor-pointer"
       >
-        <Link href="/movie">
+        <Link href="/magnet/movie">
           <FaFilm className="mx-auto self-center" />
         </Link>
       </div>

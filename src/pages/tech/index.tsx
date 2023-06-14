@@ -1,17 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
+import { GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
-import useSWR from 'swr';
-import { FaMagnet, FaLink } from 'react-icons/fa';
-import { toast } from 'react-toastify';
-
-import api from '../services/api';
-import Loading from '../components/Loading';
-import origins from '../assets/newsOrigins.json';
-import placeholder from '../assets/detail.json';
-import delay from 'utils/delay';
-import { GetServerSidePropsResult, GetStaticProps } from 'next';
 import { useQuery } from 'react-query';
+
+import api from 'services/api';
+import Loading from 'components/Loading';
+
+import origins from '../../assets/json/tech/origins.json';
 
 export interface NewsContentProps {
   data: Content[]
@@ -33,14 +29,14 @@ export interface Content {
   posted_at: string
 }
 
-const fetcher = (url: string) => fetch(`http://localhost:3000/api/news?url=${url}`).then((res) => res.json())
+const fetcher = (url: string) => fetch(`/api/tech/news?url=${url}`).then((res) => res.json())
 
 export default function News(props: NewsProps) {
   const location = useRouter();
   const [loading, setLoading] = useState(true);
   const [detail, setDetail] = useState<Content>({} as Content);
   const [url, setUrl] = useState('');
-  const { data: articles, error, isLoading } = useQuery<NewsContentProps>(
+  const { data: articles, isLoading } = useQuery<NewsContentProps>(
     [url],
     () => fetcher(url),
     {
@@ -64,6 +60,10 @@ export default function News(props: NewsProps) {
       {/*<pre>{JSON.stringify(articles, null, 2)}</pre>*/}
 
       <section className="flex flex-row flex-wrap gap-2 mb-16">
+        <button
+          className="hover:bg-yellow-500 bg-yellow-400 text-black text-sm px-4 py-1 rounded-md cursor-pointer"
+          onClick={() => setUrl('')}
+        >Recentes</button>
         {origins.origins.length > 0 && origins.origins.map((origin) => (
           <button
             className="hover:bg-yellow-500 bg-yellow-400 text-black text-sm px-4 py-1 rounded-md cursor-pointer"
@@ -83,7 +83,8 @@ export default function News(props: NewsProps) {
         ))}
       </section>
 
-      <section className="grid lg:grid-cols-3 gap-2 max-w-sm lg:max-w-none">
+      {/* grid max-w-sm lg:max-w-none- */}
+      <section className="sm:grid-cols-2 lg:grid-cols-3 gap-4 hidden">
         {articles.data.length > 0 && articles.data.map((detail) => (
           <article className="grid grid-rows-2 gap-2 overflow-hidden-" id={detail.id} key={`card-${detail.id}`}>
             <img src={detail.thumb} alt={'Thumb'}
@@ -105,16 +106,18 @@ export default function News(props: NewsProps) {
 
 export const getStaticProps: GetStaticProps = async () => {
   try {
-    //console.log('getStaticProps:start');
     const url = '';
-    const { data } = await api.get(`http://localhost:3000/api/news?url=${url}`);
+    //console.table(['tech:index', 'getStaticProps:start', api.defaults.baseURL+`/api/tech/news?url=${url}`]);
+    const { data } = await api.get(`/api/tech/news?url=${url}`);
+    //console.log(data)
 
     return {
       props: { data },
       revalidate: 60 * 60 * 2 //2 hours
     }
-  } catch (error) {
-    //console.log('getStaticProps:error');
+  } catch (error: any) {
+    //console.table(['page:tech', 'getStaticProps:error'])
+    //console.log(error.message);
     return { props: { data: [] } }
   }
 }

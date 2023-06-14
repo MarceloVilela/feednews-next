@@ -1,17 +1,6 @@
-//import BaixarFilmeTorrent from './Bf';
-import ComandoTorrents from './Ct';
-import Lapumia from './Lap';
-import MegaTorrentsHD from './Mt';
-import OndeBaixa from './Ob';
-import TorrentFilmes from './Tf';
-//import TorrentTool from './Tt';
-
-import LimeTorrent from './Lime';
-//import RarBg from './Rb';
-import Tcsv from './Tcsv';
-import TorLock from './Tl';
-import ThePirateBay from './Tpb';
-//import Zooqle from './Zq';
+import Arkade from './Arkade';
+import TheEnemy from './TheEnemy';
+import Voxel from './Voxel';
 
 export interface ISearchParams {
   search_query: string;
@@ -33,9 +22,25 @@ export interface Result {
 export interface ISource {
   getOriginUrl(): string;
 
-  search(data: ISearchParams): Promise<any[]>;
+  getHome(): Promise<IResponseHomeDTO>;
 
-  detail(data: IShowDetailMagnetDTO): Promise<Answer>;
+  //search(data: ISearchParams): Promise<any[]>;
+
+  //detail(data: IShowDetailMagnetDTO): Promise<Answer>;
+}
+
+/*
+ * Listas
+ */
+interface Post {
+  link: string | null | undefined;
+  title: string | null | undefined;
+  thumb: string | null | undefined;
+  created_at: string | null | undefined;
+}
+
+export interface IResponseHomeDTO {
+  posts: Post[];
 }
 
 /*
@@ -70,25 +75,9 @@ export interface IShowDetailMagnetDTO {
 
 let sources: Array<ISource>;
 sources = [
-  //RarBg,
-  //Zooqle,
-  //
-  LimeTorrent,
-  Tcsv,
-  TorLock,
-  ThePirateBay,
-
-
-
-  //BaixarFilmeTorrent,
-  //TorrentTool,
-  //
-  ComandoTorrents,
-  Lapumia,
-  //MegaTorrentsHD,
-  //OndeBaixa,
-  //TorrentFilmes,
-
+  TheEnemy,
+  Arkade,
+  Voxel
 ];
 
 export { sources };

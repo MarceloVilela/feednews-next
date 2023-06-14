@@ -7,12 +7,12 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import 'swiper/swiper-bundle.min.css';
 import 'swiper/swiper.min.css';
 
-import api from '../services/api';
+import api from 'services/api';
 import delay from 'utils/delay';
-import blogs from '../assets/engineBlogs.json';
-import { comandotorrent, megatorrentshd, ondebaixa } from '../assets/trend';
 import Loading from 'components/Loading';
 
+import blogs from '../../assets/json/magnet/engineMovie.json';
+import { comandotorrent, megatorrentshd, ondebaixa } from '../../assets/json/magnet/trend';
 
 export interface ResultData {
   link?: string;
@@ -88,8 +88,8 @@ export default function Trend() {
         }
 
         console.log(`fetch ${alias}`);
-        return;
-        const { data } = await api.get<Result>(`api/trend`, { params: { url: alias } });
+        //return;
+        const { data } = await api.get<Result>(`/api/magnet/trend`, { params: { url: alias } });
 
         localStorage.setItem(`@trend/${alias}`, JSON.stringify(data));
         localStorage.setItem(`@trend_date/${alias}`, new Date().toJSON());
