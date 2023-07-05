@@ -15,20 +15,14 @@ class MaisTecnologia {
       return {
         link: elPost.querySelector('h3 a')?.getAttribute('href'),
         title: elPost.querySelector('h3 a')?.textContent,
-        thumb: elPost.querySelector('img.entry-thumb')
-          ? elPost
-              .querySelector('img.entry-thumb')
-              ?.getAttribute('data-img-url')
-          : elPost
-              .querySelector('[data-img-url]')
-              ?.getAttribute('data-img-url'),
+        thumb: elPost.querySelector('img.entry-thumb')?.getAttribute('src'),
         created_at: '',
       };
     };
 
-    const postsData = [...document.querySelectorAll('.td_block_inner > *')].map(
-      (elPost) => getContent(elPost),
-    );
+    const postsData = [...document.querySelectorAll('.td_block_inner > *')]
+      .map((elPost) => getContent(elPost))
+      .filter((elPost) => (elPost.thumb && elPost.title && elPost.title != "undefined"));
 
     return { posts: postsData };
   }

@@ -15,9 +15,7 @@ class CocaTech {
       return {
         link: elPost.querySelector('a')?.getAttribute('href'),
         title: elPost.querySelector('h2')?.textContent,
-        thumb:
-          'https:' +
-          elPost
+        thumb: elPost
             .querySelector('div[class="slide"]')
             ?.getAttribute('style')
             ?.split('(')[1]

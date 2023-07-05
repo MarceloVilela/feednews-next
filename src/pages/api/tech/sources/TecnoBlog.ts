@@ -21,17 +21,19 @@ class TecnoBlog {
       return {
         link: elPost.querySelector('a')?.getAttribute('href'),
         title: elPost.querySelector('h2')?.textContent,
-        thumb: elPost
-          .querySelector('img[data-lazy-src]')
-          ?.getAttribute('data-lazy-src'),
+        /*thumb: elPost.querySelector('[style*="background-image"]')?.getAttribute('style') && String(elPost.querySelector('[style*="background-image"]')?.getAttribute('style')).split('(')[1]
+          ? String(elPost.querySelector('[style*="background-image"]')?.getAttribute('style')).split('(')[1].split(')')[0]
+          : '',*/
+        //thumb: elPost.querySelector('img')?.getAttribute('src'),
+        thumb: elPost.querySelector('img')?.getAttribute('data-src'),
         // preview: '',
         created_at,
       };
     };
 
-    const postsData = [...document.querySelectorAll('article.bloco')].map(
-      (elPost) => getContent(elPost),
-    );
+    const postsData = [...document.querySelectorAll('article.bloco')]
+      .map((elPost) => getContent(elPost),)
+      .filter((elPost) => (elPost.thumb && elPost.title && elPost.title != "undefined"));
 
     return { posts: postsData };
   }

@@ -5,7 +5,7 @@ import { ISource, sources } from './sources';
 export default async function handler(request: any, response: any) {
   const { url: alias, search_query = '', encoded } = request.query;
 
-  const [engine] = sources.filter((item) => item.getOriginUrl().includes(alias));
+  const [engine] = sources.filter((item) => item.getOriginUrl().includes(alias.toLowerCase()));
 
   //sources.forEach((item) => console.log(item));
   //return response.status(200).json({ name: 'John Doe' })
@@ -19,5 +19,7 @@ export default async function handler(request: any, response: any) {
 
   const results = await engine.getHome();
 
-  return response.json(results);
+  const postsWithId = results.posts.map((item) => ({...item, id: item.link}));
+
+  return response.json({...results, posts: postsWithId});
 }

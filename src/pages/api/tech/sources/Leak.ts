@@ -16,15 +16,15 @@ class Leak {
         link: elPost.querySelector('.td-module-title a')?.getAttribute('href'),
         title: elPost.querySelector('.td-module-title')?.textContent,
         thumb: elPost
-          .querySelector('[data-img-url]')
-          ?.getAttribute('data-img-url'),
+          .querySelector('[data-bg]')
+          ?.getAttribute('data-bg'),
         created_at: '',
       };
     };
 
-    const postsData = [
-      ...document.querySelectorAll('.td-mc1-wrap .td_module_flex'),
-    ].map((elPost) => getContent(elPost));
+    const postsData = [...document.querySelectorAll('.td-mc1-wrap .td_module_flex'),]
+      .map((elPost) => getContent(elPost))
+      .filter((elPost) => (elPost.thumb && elPost.title && elPost.title != "undefined"));
 
     return { posts: postsData };
   }

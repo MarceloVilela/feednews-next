@@ -18,8 +18,7 @@ class GizModo {
       title: elPost.querySelector('h3')?.textContent?.replace(/\n|\r|\t/g, ''),
       thumb: elPost
         .querySelector('.postFeaturedImg img')
-        ?.getAttribute('data-srcset')
-        ?.split(' ')[0],
+        ?.getAttribute('src'),
       created_at: elPost.querySelector('.published.updated')?.textContent,
     });
 
