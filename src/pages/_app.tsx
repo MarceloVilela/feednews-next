@@ -2,11 +2,12 @@ import type { AppProps } from 'next/app';
 import { SWRConfig } from 'swr'
 import { QueryClient, QueryClientProvider, useQuery } from 'react-query'
 
-import Aside from '../components/Aside';
-import AppProvider from '../hooks';
+import "tw-elements/dist/css/tw-elements.min.css";
 //import "tailwindcss/tailwind.css";
-
 import "../styles/globals.css";
+
+import AppProvider from '../hooks';
+import NavigationTabs from 'components/Navigation/NavigationTabs';
 
 //if (typeof window !== "undefined") document.documentElement.classList.remove('dark');
 const queryClient = new QueryClient()
@@ -14,10 +15,21 @@ const queryClient = new QueryClient()
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <AppProvider>
-      <div className="flex flex-row- flex-col-reverse">
-        <Aside />
-        <main className="h-screen- flex items-center">
-          <div className="w-full max-w-[1124px] border-1 mx-auto pl-2 h-full- my-16- border-">
+      <div className="flex flex-col min-h-screen">
+        
+        <div className="flex flex-col w-full items-center px-8 min-h-screen">
+          <main className="w-full max-w-[1124px] mx-auto  border border-1">
+            <NavigationTabs 
+              linksData={[
+                {label: 'Magnet', address: '/magnet'},
+                {label: 'Tech', address: '/tech'},
+                {label: 'Game', address: '/game'}
+              ]}
+            />
+          </main>
+
+          <main className="w-full max-w-[1124px] mx-auto border border-1 flex-col flex-1 items-center">
+            
             <SWRConfig
               value={{
                 //refreshInterval: 3000,
@@ -28,8 +40,8 @@ function MyApp({ Component, pageProps }: AppProps) {
                 <Component {...pageProps} />
               </QueryClientProvider>
             </SWRConfig>
-          </div>
-        </main>
+          </main>
+        </div>
       </div>
     </AppProvider>
   );
