@@ -20,7 +20,7 @@ class TheEnemy implements ISource {
 
     const addHttp = (text: string) => {
       return !text.includes('http') && !text.includes('https') 
-        ? 'https' + text
+        ? 'https:' + text
         : text
     }
 

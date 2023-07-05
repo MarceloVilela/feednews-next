@@ -1,6 +1,14 @@
+import AdrenaRetro from './AdrenaRetro'
+import ArenaXbox from './ArenaXbox';
 import Arkade from './Arkade';
+import ComboInfinito from './ComboInfinito';
+import CriticalHits from './CriticalHits';
+import IgnBr from './IgnBr';
+import NintendoBlast from './NintendoBlast';
+import PsxBrasil from './PsxBrasil';
 import TheEnemy from './TheEnemy';
 import Voxel from './Voxel';
+import WindowsClub from './WindowsClub';
 
 export interface ISearchParams {
   search_query: string;
@@ -77,7 +85,16 @@ let sources: Array<ISource>;
 sources = [
   TheEnemy,
   Arkade,
-  Voxel
+  Voxel,
+
+  //AdrenaRetro,
+  ArenaXbox,
+  ComboInfinito,
+  CriticalHits,
+  IgnBr,
+  NintendoBlast,
+  PsxBrasil,
+  WindowsClub
 ];
 
 export { sources };
