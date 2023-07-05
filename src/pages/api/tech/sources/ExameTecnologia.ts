@@ -22,9 +22,9 @@ class ExameTecnologia {
       };
     };
 
-    const postsData = [...document.querySelectorAll('.row>div>div')].map(
-      (elPost) => getContent(elPost),
-    );
+    const postsData = [...document.querySelectorAll('.row>div>div')]
+      .map((elPost) => getContent(elPost),)
+      .filter((elPost) => (elPost.thumb && elPost.title && elPost.title != "undefined"));
 
     return { posts: postsData };
   }

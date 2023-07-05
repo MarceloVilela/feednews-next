@@ -1,5 +1,6 @@
 import { JSDOM } from 'jsdom';
 import ITrendDTO, { ISource, ISearchParams, IShowDetailMagnetDTO, Answer } from '.';
+import fs from 'fs';
 
 class Ct implements ISource {
   getOriginUrl(): string {
@@ -94,11 +95,22 @@ class Ct implements ISource {
   }
 
   async search({ search_query }: ISearchParams): Promise<Answer[]> {
-    const url = `${this.getOriginUrl()}/?s=${search_query}`
-    const response = await JSDOM.fromURL(url);
-    //const response = await JSDOM.fromFile('./src/modules/magnetSource/infra/crosscutting/repositories/ct.html');
+    const url = `${this.getOriginUrl()}/?s=${search_query}`;
 
+    //const response = await JSDOM.fromURL(`${url}`);
+    const response = await JSDOM.fromFile('./comando.html');
     const { document } = response.window;
+    //fs.writeFileSync("./comando.html", String(document.querySelector('html')?.innerHTML));
+
+    /*const regexp = /1080/g;
+    console.clear();
+    console.table([
+      'AQUI', 
+      document.querySelector('html')?.innerHTML.includes('1080p'),
+      document.querySelector('html')?.innerHTML.match(regexp)
+    ]);
+
+    return [];*/
 
     const results = await this.parseResults(document, '#content article');
 

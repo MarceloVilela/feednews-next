@@ -13,21 +13,20 @@ class CanalTech {
 
     const getContent = (elPost: Element) => {
       return {
-        link: `${url}${elPost.querySelector('a')?.getAttribute('href')}`,
+        link: elPost.querySelector('a')?.getAttribute('href'),
         title: elPost.querySelector('h3')?.textContent,
-        thumb:
-          elPost.querySelector('img')?.getAttribute('src') ??
-          this.getOriginUrl() +
-            document
-              .querySelector('link[rel="apple-touch-icon"]')
-              ?.getAttribute('href'),
+        thumb: elPost
+          .querySelector('figure img')
+          ?.getAttribute('src'),
+        // preview: '',
         created_at: '',
       };
     };
 
-    const postsData = [
-      ...document.querySelectorAll('.swiper-wrapper .swiper-slide'),
-    ].map((elPost) => getContent(elPost));
+    console.table(['total', [...document.querySelectorAll('article')].length])
+
+    const postsData = [...document.querySelectorAll('article')]
+      .map((elPost) => getContent(elPost));
 
     return { posts: postsData };
   }

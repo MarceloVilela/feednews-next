@@ -39,7 +39,8 @@ class SapoTek {
             ?.getAttribute('href')
             ?.includes('https://desporto.sapo.pt'),
       )
-      .map((elPost) => getContent(elPost));
+      .map((elPost) => getContent(elPost))
+      .filter((elPost) => (elPost.thumb && elPost.title && elPost.title != "undefined"));
 
     return { posts: postsData };
   }

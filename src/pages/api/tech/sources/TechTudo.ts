@@ -22,9 +22,7 @@ class TechTudo {
       };
     };
 
-    const postsData = [
-      ...document.querySelectorAll('.grid-x .cell'),
-    ]
+    const postsData = [...document.querySelectorAll('.grid-x .cell'),]
       .map((elPost) => getContent(elPost))
       .filter(({ link }) => link?.includes(this.getOriginUrl()));
 
