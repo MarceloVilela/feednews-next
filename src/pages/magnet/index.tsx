@@ -1,49 +1,20 @@
-import React, { useEffect, useMemo, useState, FormEvent, useCallback } from 'react'
+import React, { useEffect, useState, FormEvent, useCallback } from 'react'
 import Head from 'next/head';
-import { FaMagnet, FaLink } from 'react-icons/fa';
 
 import api from 'services/api';
-import { useStyleSwitcher } from 'hooks/styleSwitcher';
 
+import InitialPage, { Result } from './_initialPage';
 import data from '../../assets/json/magnet/results.json';
 import alias from '../../assets/json/magnet/engineAlias.json';
-
-export interface ResultData {
-  link: string;
-  name: string;
-  size: string;
-  seeds: number;
-  leech: number;
-  engine_url: string;
-  desc_link: string;
-}
-
-export interface DetailData {
-  links: string[];
-  name: string;
-  thumb: string;
-  engine_url: string;
-  desc_link: string;
-}
-
-interface Result {
-  [key: string]: ResultData[];
-}
 
 export default function Home() {
   //const enginesAlias = ['pirateproxy', 'torlock', 'limetor'];
   const enginesAlias = alias;
   const [enginesPending, setEnginesPending] = useState<string[]>([]);
-  const { switchAlias, alias: styleAlias } = useStyleSwitcher();
-
+  
   // request
   const [search_query, setSearchQuery] = useState('');
   const [result, setResult] = useState<Result>({} as Result);
-
-  // local filtering
-  const [filter, setFilter] = useState('');
-  const [order, setOrder] = useState('seeds');
-  const [orderDirection, setOrderDirection] = useState('desc');
 
   useEffect(() => {
     ///setDocs(data as ResultData[]);
@@ -52,6 +23,9 @@ export default function Home() {
 
   const handleSubmit = useCallback((event: FormEvent) => {
     event.preventDefault();
+    setResult({ 'pirateproxy': data } as Result);
+    return;
+
     setResult({} as Result);
     setEnginesPending(enginesAlias);
 
@@ -71,103 +45,16 @@ export default function Home() {
     })
   }, [enginesAlias, enginesPending, search_query, result]);
 
-  const [docs] = useMemo(() => {
-    const arr = [] as ResultData[];
-    Object.keys(result).forEach(key => arr.push(...result[key]));
-    return [arr, enginesPending.length > 0];
-  }, [result, enginesPending])
-
-  const filteredItens = useMemo(() => {
-    return docs.filter(item => item.name.toLocaleLowerCase().includes(filter));
-  }, [docs, filter]);
-
-  const orderedItens = useMemo(() => {
-    const itens = filteredItens.sort(function (a, b) {
-      return a.seeds - b.seeds;
-    });
-    return orderDirection === 'desc' ? itens.reverse() : itens;
-  }, [filteredItens, orderDirection]);
-
-  const handleOrder = (prop: string) => {
-    if (order === prop) {
-      setOrderDirection(orderDirection === 'desc' ? 'asc' : 'desc');
-      return;
-    }
-    setOrder(prop);
-  }
-
   return (
     <>
-      <Head><title>Home</title></Head>
+      <Head><title>Magnet</title></Head>
 
-      <form onSubmit={handleSubmit} className="flex flex-wrap pt-4- mb-8 gap-4">
-        <input
-          type="text"
-          value={search_query}
-          onChange={e => setSearchQuery(e.target.value.toLocaleLowerCase())}
-          placeholder="Digite a busca"
-          className="pl-2 rounded-md text-black"
-        />
-        <input type="submit" value="Buscar" 
-          className="hover:bg-yellow-500 bg-yellow-400 text-black px-8 py-1 rounded-md cursor-pointer" 
-        />
-      </form>
-
-      <form id="filter-results" className="flex flex-wrap mb-8 gap-4">
-        <input
-          type="text"
-          value={filter}
-          onChange={e => setFilter(e.target.value.toLocaleLowerCase())}
-          placeholder="Filtrar resultados da busca"
-          className="pl-2 py-1 rounded-md"
-        />
-        <p className="text-lg">Resultados (exibindo {filteredItens.length} de {docs.length})</p>
-      </form>
-
-      {enginesPending.length > 0 && (
-        <p className="mb-8">{enginesPending.join(', ')}</p>
-      )}
-
-      <table className="w-full">
-        <thead className="">
-          <tr className='hidden lg:table-row'>
-            <td onClick={() => handleOrder('name')}>Nome</td>
-            <td onClick={() => handleOrder('size')}>Tamanho</td>
-            <td onClick={() => handleOrder('seeds')}>Seeds</td>
-            <td onClick={() => handleOrder('leech')}>Leech</td>
-            <td onClick={() => handleOrder('engine_url')}>Mecanismo de busca</td>
-          </tr>
-        </thead>
-        <tbody>
-          {orderedItens.map((item, key) => (
-            <tr key={key} className="flex flex-wrap lg:table-row">
-              <td className="flex w-full lg:w-auto">
-                {item.link ? (
-                  <span className="flex flex-wrap gap-2">
-                    <a href={item.link} className="flex gap-2">
-                      <span>{item.name}</span>
-                      <FaMagnet />
-                    </a>
-                    <a href={`/magnet/post?url=${item.desc_link}`} target="_blank" rel="noopener noreferrer" className="flex">
-                      <FaLink />
-                    </a>
-                  </span>
-                ) : (
-                  <a href={`/magnet/post?url=${item.desc_link}`} target="_blank" rel="noopener noreferrer" className="flex gap-2">
-                    <span>{item.name}</span>
-                    <FaLink />
-                  </a>
-                )}
-              </td>
-              <td className="w-full lg:w-auto">{item.size || '---'}</td>
-              <td className="w-full lg:w-auto">{item.seeds || '---'}</td>
-              <td className="w-full lg:w-auto">{item.leech || '---'}</td>
-              <td className="w-full lg:w-auto">{item.engine_url || '---'}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-
+      <InitialPage 
+        handleSubmit={handleSubmit} 
+        result={result} 
+        handleChangeSearchQuery={setSearchQuery} 
+        searchQuery={search_query}  
+      />
     </>
   )
 }

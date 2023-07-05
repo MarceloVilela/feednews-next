@@ -11,6 +11,34 @@
     {
       "title": "Voxel",
       "url": "https://www.tecmundo.com.br/voxel"
+    },
+    {
+      "title": "ArenaXbox",
+      "url": "https://arenaxbox.com.br"
+    },
+    {
+      "title": "ComboInfinito",
+      "url": "https://www.comboinfinito.com.br/principal"
+    },
+    {
+      "title": "CriticalHits",
+      "url": "https://criticalhits.com.br"
+    },
+    {
+      "title": "IgnBr",
+      "url": "https://br.ign.com"
+    },
+    {
+      "title": "NintendoBlast",
+      "url": "https://www.nintendoblast.com.br"
+    },
+    {
+      "title": "PsxBrasil",
+      "url": "https://psxbrasil.com.br"
+    },
+    {
+      "title": "WindowsClub",
+      "url": "https://windowsclub.com.br"
     }
   ]
 }

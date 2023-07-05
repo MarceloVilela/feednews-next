@@ -9,6 +9,10 @@
   box-sizing: border-box;
 }
 
+/*html, body, #__next {
+  min-height: 100vh;
+}*/
+
 html.dark body {
   background: theme('colors.gray.800');
   color: theme('colors.gray.200');

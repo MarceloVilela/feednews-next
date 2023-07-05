@@ -88,7 +88,7 @@ export default function Trend() {
         }
 
         console.log(`fetch ${alias}`);
-        //return;
+        return;
         const { data } = await api.get<Result>(`/api/magnet/trend`, { params: { url: alias } });
 
         localStorage.setItem(`@trend/${alias}`, JSON.stringify(data));
