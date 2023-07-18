@@ -22,12 +22,12 @@ class CriticalHits implements ISource {
       return {
         link: elPost.querySelector('.td-module-title a')?.getAttribute('href'),
         title: replaceSpaces(String(elPost.querySelector('.td-module-title a')?.textContent)),
-        thumb: elPost.querySelector('.entry-thumb')?.getAttribute('data-img-url'),
-        created_at: replaceSpaces(String(elPost.querySelector('.entry-date')?.textContent)),
+        thumb: elPost.querySelector('[data-img-url]')?.getAttribute('data-img-url'),
+        created_at: replaceSpaces(String(elPost.querySelector('.td-module-date')?.textContent)),
       };
     };
 
-    const postsData = [...document.querySelectorAll('.td-cpt-post'),]
+    const postsData = [...document.querySelectorAll('.td-category-pos-'),]
       .map((elPost) => getContent(elPost))
       .filter((elPost) => (elPost.thumb && elPost.title != "undefined"));
 
