@@ -25,6 +25,9 @@ export default function ArticleCardWithImage({articles}: ArticleCardWithImagePro
 
   const _articles = useMemo(() => {
     //return [...new Set(articles)];
+    if(typeof articles != "object"){
+      return [];
+    }
     return articles.filter((value, index, self) => 
       self.findIndex(v => v['id'] === value['id']) === index
     );
@@ -45,6 +48,7 @@ export default function ArticleCardWithImage({articles}: ArticleCardWithImagePro
         <a 
           href={link} 
           target="_blank"
+          rel="noreferrer"
           className="grid justify-center"
         >
           <img

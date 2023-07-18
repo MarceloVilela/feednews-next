@@ -28,7 +28,7 @@ export default function MenuDropdown({options}: MenuDropdownProps){
     if(!current && options.length > 0 && options[0].label != ''){
       setCurrent(options[0].label)
     }
-  }, [options]);
+  }, [options, current]);
   
   const _options = useMemo(() => {
     return options.map(({label, id, onClick}) => ({
@@ -67,9 +67,9 @@ export default function MenuDropdown({options}: MenuDropdownProps){
         fill="currentColor"
         className="h-5 w-5">
         <path
-          fill-rule="evenodd"
+          fillRule="evenodd"
           d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-          clip-rule="evenodd" />
+          clipRule="evenodd" />
       </svg>
     </span>
   </button>

@@ -42,8 +42,8 @@ export default function News(props: NewsProps) {
     {
       refetchOnWindowFocus: false,
       staleTime: 86400000,
-      //placeholderData: {} as NewsProps[],
-      placeholderData: props.data as NewsContentProps,
+      placeholderData: [] as unknown as NewsContentProps,
+      //placeholderData: props.data as NewsContentProps,
     },
   );
 
@@ -55,7 +55,7 @@ export default function News(props: NewsProps) {
       {label: 'Recentes', id: '6092cee092cb9267d0ce0e00', onClick: () => setUrl('')},
       ...items,
     ]
-  }, [origins])
+  }, [])
 
   if (isLoading) return <Loading />;
   if (!articles) return null;

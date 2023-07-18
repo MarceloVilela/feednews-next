@@ -20,7 +20,7 @@ export default function NavigationTabs({linksData}: NavigationTabsProps){
       address,
       selected: String(location.route.includes(address))
     }))
-  }, [location.route])
+  }, [location.route, linksData])
 
   return (
     <>
@@ -32,6 +32,7 @@ export default function NavigationTabs({linksData}: NavigationTabsProps){
         <li role="presentation" key={address}>
           <Link
             href={address}
+            passHref
             data-te-toggle="pill"
             data-te-target={address}
             //data-te-nav-active
