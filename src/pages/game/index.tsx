@@ -54,7 +54,7 @@ export default function News(props: NewsProps) {
       label: title, id: url, onClick: () => setUrl(url)
     })) //as unknown as ButtonListProps
     return items;
-  }, [origins])
+  }, [])
 
   //return ( <p>{JSON.stringify(props.data, null, 2)}</p> );
   if (isLoading) return <Loading />;

@@ -17,7 +17,7 @@ export default function MenuButton({options}: MenuButtonProps){
     if(!current && options.length > 0 && options[0].label != ''){
       setCurrent(options[0].label)
     }
-  }, [options]);
+  }, [options, current]);
   
   const _options = useMemo(() => {
     return options.map(({label, id, onClick}) => ({

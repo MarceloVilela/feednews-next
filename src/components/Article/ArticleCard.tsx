@@ -24,6 +24,9 @@ export default function ArticleCard({articles}: ArticleCardProps){
 
   const _articles = useMemo(() => {
     //return articles.map(({title, id, link}) => ({ title, id: `${id}@${new Date().getTime()}`, link, }))
+    if(typeof articles != "object"){
+      return [];
+    }
     return articles.filter((value, index, self) => 
       self.findIndex(v => v['id'] === value['id']) === index
     );

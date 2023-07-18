@@ -43,7 +43,7 @@ export default function Home() {
         })
         .catch(error => console.log(`Erro ao buscar na engine: ${alias}`, error));
     })
-  }, [enginesAlias, enginesPending, result]);
+  }, [search_query, enginesAlias, enginesPending, result]);
 
   return (
     <>
