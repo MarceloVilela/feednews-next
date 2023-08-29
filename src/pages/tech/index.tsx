@@ -42,7 +42,7 @@ export default function News(props: NewsProps) {
     {
       refetchOnWindowFocus: false,
       staleTime: 86400000,
-      placeholderData: [] as unknown as NewsContentProps,
+      //placeholderData: [] as unknown as NewsContentProps,
       //placeholderData: props.data as NewsContentProps,
     },
   );
@@ -52,21 +52,27 @@ export default function News(props: NewsProps) {
       label: title, id: BIN_ID, onClick: () => setUrl(url)
     })) //as unknown as ButtonListProps
     return [
-      {label: 'Recentes', id: '6092cee092cb9267d0ce0e00', onClick: () => setUrl('')},
+      { label: 'Recentes', id: '6092cee092cb9267d0ce0e00', onClick: () => setUrl('') },
       ...items,
     ]
   }, [])
-
-  if (isLoading) return <Loading />;
-  if (!articles) return null;
 
   return (
     <>
       <Head><title>News {url ? `| ${url}` : `| Recentes`}</title></Head>
 
-      <div className="my-4"><MenuButton options={list}/></div>
+      <div className="my-4"><MenuButton options={list} /></div>
 
-      <div className="my-4"><ArticleCardWithImage articles={articles.data} /></div>
+      {isLoading
+        ? <Loading />
+        : (<>
+          {articles
+            ? <div className="my-4"><ArticleCardWithImage articles={articles.data} /></div>
+            : null
+          }
+        </>)
+      }
+
     </>
   )
 }

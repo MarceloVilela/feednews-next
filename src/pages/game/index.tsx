@@ -11,13 +11,13 @@ import ArticleCardWithImage from 'components/Article/ArticleCardWithImage';
 import originsJson from '../../assets/json/game/origins.json';
 
 export interface NewsContentProps {
-  posts: Content[]
+  data: Content[]
 }
 
 export interface NewsProps {
   data: {
-    posts: Content[]
-    //total: number
+    data: Content[]
+    total?: number
   }
 }
 
@@ -45,7 +45,7 @@ export default function News(props: NewsProps) {
       refetchOnWindowFocus: false,
       staleTime: 86400000,
       //placeholderData: {} as NewsProps[],
-      placeholderData: props.data as NewsContentProps,
+      //placeholderData: props.data as NewsContentProps,
     },
   );
 
@@ -57,18 +57,24 @@ export default function News(props: NewsProps) {
   }, [])
 
   //return ( <p>{JSON.stringify(props.data, null, 2)}</p> );
-  if (isLoading) return <Loading />;
-  if (!articles) return null;
-  //console.log(articles);
 
   return (
     <>
       <Head><title>List {url ? `| ${url}` : `| Recentes`}</title></Head>
 
-      <div className="my-4"><MenuButton options={list}/></div>
+      <div className="my-4"><MenuButton options={list} /></div>
       {/*<div className="my-4 hidden"><MenuDropdown options={list}/></div>*/}
 
-      <div className="my-4"><ArticleCardWithImage articles={articles.posts} /></div>
+      {isLoading
+        ? <Loading />
+        : (<>
+          {articles
+            ? <div className="my-4"><ArticleCardWithImage articles={articles.data} /></div>
+            : null
+          }
+        </>)
+      }
+
       {/*<div className="my-4"><ArticleCard articles={articles.posts} /></div>*/}
     </>
   )
