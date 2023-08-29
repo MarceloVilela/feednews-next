@@ -21,5 +21,5 @@ export default async function handler(request: any, response: any) {
 
   const postsWithId = results.posts.map((item) => ({...item, id: item.link}));
 
-  return response.json({...results, posts: postsWithId});
+  return response.json({ data: postsWithId, total: postsWithId.length });
 }
