@@ -18,7 +18,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <div className="flex flex-col min-h-screen">
         
         <div className="flex flex-col w-full items-center px-8 min-h-screen">
-          <main className="w-full max-w-[1124px] mx-auto  border border-1">
+          <main className="w-full max-w-[1124px] mx-auto  border- border-1-">
             <NavigationTabs 
               linksData={[
                 {label: 'Magnet', address: '/magnet'},
@@ -28,7 +28,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             />
           </main>
 
-          <main className="w-full max-w-[1124px] mx-auto border border-1 flex-col flex-1 items-center">
+          <main className="w-full max-w-[1124px] mx-auto border- border-1- flex-col flex-1 items-center">
             
             <SWRConfig
               value={{
