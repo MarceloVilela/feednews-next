@@ -95,10 +95,12 @@ class Ct implements ISource {
   }
 
   async search({ search_query }: ISearchParams): Promise<Answer[]> {
-    const url = `${this.getOriginUrl()}/?s=${search_query}`;
+    //const url = `${this.getOriginUrl()}/?s=${search_query}`;
+    //const url = `${this.getOriginUrl()}`;
+    const url = `${this.getOriginUrl()}/page/5/`;
 
-    //const response = await JSDOM.fromURL(`${url}`);
-    const response = await JSDOM.fromFile('./comando.html');
+    const response = await JSDOM.fromURL(`${url}`);
+    //const response = await JSDOM.fromFile('./comando.html');
     const { document } = response.window;
     //fs.writeFileSync("./comando.html", String(document.querySelector('html')?.innerHTML));
 

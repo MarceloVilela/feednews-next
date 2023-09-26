@@ -1,14 +1,37 @@
+import Adrena from './Adrena';
 import AdrenaRetro from './AdrenaRetro'
 import ArenaXbox from './ArenaXbox';
 import Arkade from './Arkade';
 import ComboInfinito from './ComboInfinito';
 import CriticalHits from './CriticalHits';
+import Draft5 from './Draft5';
+import Dust2 from './Dust2';
+import Espn from './Espn';
+import G1Games from './G1Games';
+import GEEsports from './GEEsports';
+import GameBlast from './GameBlast';
+import GameHall from './GameHall';
+import GameTimes from './GameTimes';
 import IgnBr from './IgnBr';
+import JogaZera from './JogaZera';
+import JovemNerd from './JovemNerd';
+import LanceEsports from './LanceEsports';
+import MaisEsports from './MaisEsports';
+import MeuPS from './MeuPS';
+import Millenium from './Millenium';
 import NintendoBlast from './NintendoBlast';
+import Overloadr from './Overloadr';
+import PlayReplay from './PlayReplay';
 import PsxBrasil from './PsxBrasil';
+import StartUol from './StartUol';
+import TechTudoESports from './TechTudoESports';
+import TechTudoJogos from './TechTudoJogos';
+import TheClutch from './TheClutch';
 import TheEnemy from './TheEnemy';
+import UniversoNintendo from './UniversoNintendo';
 import Voxel from './Voxel';
 import WindowsClub from './WindowsClub';
+import XboxPower from './XboxPower';
 
 export interface ISearchParams {
   search_query: string;
@@ -94,7 +117,31 @@ sources = [
   IgnBr,
   NintendoBlast,
   PsxBrasil,
-  WindowsClub
+  WindowsClub,
+
+  Adrena,
+  Draft5,
+  Dust2,
+  Espn,
+  G1Games,
+  GameBlast,
+  GameHall,
+  GEEsports,
+  JogaZera,
+  JovemNerd,
+  LanceEsports,
+  MaisEsports,
+  MeuPS,
+  Millenium,
+  Overloadr,
+  PlayReplay,
+  StartUol,
+  TechTudoESports,
+  TechTudoJogos,
+  TheClutch,
+  GameTimes,
+  UniversoNintendo,
+  XboxPower,
 ];
 
 export { sources };
