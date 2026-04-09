@@ -13,6 +13,10 @@ import Loading from 'components/Loading';
 
 import blogs from '../../assets/json/magnet/engineMovie.json';
 import { comandotorrent, megatorrentshd, ondebaixa } from '../../assets/json/magnet/trend';
+import { Card, CardDescription } from '@/components/ui/card';
+import { Preview } from 'components/Artwork/Preview';
+import { AlbumArtwork } from 'components/Artwork/AlbumArtwork';
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 
 export interface ResultData {
   link?: string;
@@ -43,7 +47,7 @@ export default function Trend() {
   const [enginesPending, setEnginesPending] = useState<string[]>([]);
   const [result, setResult] = useState<Result>({} as Result);
 
-  const [renderMode, setRenderMode] = useState<'grid' | 'horizontal'>('grid');
+  const [renderMode, setRenderMode] = useState<'grid' | 'horizontal'>('horizontal');
 
   useEffect(() => {
     const setPlaceholder = async () => {
@@ -121,26 +125,22 @@ export default function Trend() {
 
       {!hasResult ? <Loading /> : ''}
 
-      <div className="actions pt-4-">
+      <div className="actions pt-4- hidden">
         <FaTh onClick={() => setRenderMode('grid')} />
         <FaAlignJustify onClick={() => setRenderMode('horizontal')} />
       </div>
 
       {Object.keys(result).length && Object.keys(result).map((resultAlias, key) => (
         <div key={key} className="results-wrapper mb-12">
-          <h2 className="text-xl font-semibold uppercase">{resultAlias}</h2>
+          <h2 className="text-xl font-semibold uppercase text-foreground">{resultAlias}</h2>
           {renderMode === "horizontal"
             ? (
-              <Swiper
-                spaceBetween={10}
-                slidesPerView={10}
-                slidesPerGroup={2}
-                scrollbar={{ draggable: true }}
-              >
+              <ScrollArea>
+                <div className="flex space-x-4 pb-4">
                 {result[resultAlias].map((item, key) => (
-                  <SwiperSlide key={key}>
+                  <Card key={key} className="w-[150px] border-none">
                     <a
-                      href={`/post?url=${item.desc_link}`}
+                      href={`post?url=${item.desc_link}`}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
@@ -148,34 +148,28 @@ export default function Trend() {
                         /*src='https://img.ibxk.com.br/2015/07/23/23170425700729.jpg?w=704'*/
                         src={item.thumb}
                         alt={`Cover ${item.name}`}
+                        className="opacity-10 hover:scale-105"
                       />
                     </a>
-                  </SwiperSlide>
+                  </Card>
                 ))}
-              </Swiper>
+                </div>
+                <ScrollBar orientation="horizontal" />
+              </ScrollArea>
             ) : (
               <ul className="flex flex-wrap gap-2">
                 {result[resultAlias].map((item, key) => (
-                  <li key={key} className="w-[150px]">
-                    <a
-                      href={`/post?url=${item.desc_link}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="opacity-30"
-                    >
-                      <img
-                        //src='https://img.ibxk.com.br/2015/07/23/23170425700729.jpg?w=704'
-                        src={item.thumb}
-                        /*fallbackSrc="https://i.ebayimg.com/images/g/~zsAAOSwej1fxobX/s-l300.jpg"*/
-                        /*fallbackSrc="https://th.bing.com/th/id/R.734ccc769a3de197fe8f8c322289a826?rik=ES5ZovP8S%2bKCwg&riu=http%3a%2f%2fwww.freeiconspng.com%2fuploads%2fblu-ray-icon-21.jpg&ehk=h%2baik6ZM4jRlTp9Z5KiN1YT34LSn6PrxQ5jSFKhRxGk%3d&risl=&pid=ImgRaw&r=0"*/
-                        /*layout="fill"*/
-                        alt={`Cover ${item.name}`}
-                        //className="h-[200px] object-cover opacity-5-"
-                        className="w-full"
-                      />
-                      <p className="text-sm">{item.name}</p>
-                    </a>
-                  </li>
+                  <AlbumArtwork key={key} data={{
+                    title: item.name,
+                    description: item.engine_url,
+                    cover: item.thumb,
+                    link: item.desc_link
+                  }} 
+                  className="w-[150px]"
+                  aspectRatio="portrait"
+                  width={150}
+                  //height={150}
+                  />
                 ))}
               </ul>
             )
@@ -183,6 +177,16 @@ export default function Trend() {
 
         </div>
       ))}
+
+      {/*
+        <Preview key={key} data={{
+          title: item.name,
+          description: item.engine_url,
+          cover: item.thumb,
+          link: item.desc_link
+        }} 
+        />
+      */}
 
       {/*<pre>{JSON.stringify(result, null, 2)}</pre>*/}
     </>

@@ -17,8 +17,8 @@ export default function Home() {
   const [result, setResult] = useState<Result>({} as Result);
 
   useEffect(() => {
-    ///setDocs(data as ResultData[]);
-    //setResult({ 'pirateproxy': data } as Result);
+    //setDocs(data as ResultData[]);
+    setResult({ 'pirateproxy': data } as Result);
   }, [])
 
   const handleSubmit = useCallback((event: FormEvent) => {

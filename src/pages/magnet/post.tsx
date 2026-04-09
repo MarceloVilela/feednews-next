@@ -9,6 +9,8 @@ import delay from 'utils/delay';
 import Loading from 'components/Loading';
 
 import placeholder from '../../assets/json/magnet/detail.json';
+import { Card, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 
 interface LinkData {
   url: string;
@@ -67,23 +69,24 @@ export default function Post() {
       <Head><title>Post { detail.desc_link ? `| ${detail.name}` : ''}</title></Head>
 
       {(!loading && detail.links) ? (
+        <Card>
         <article className="flex flex-row flex-wrap gap-4 overflow-hidden- pt-4-
-          rounded-3xl bg-white p-5 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700"
+          rounded-xl bg-muted bg-white- dark:bg-neutral-700- p-5 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)]"
         >
           <aside className="flex justify-center">
             <div
               className="relative"
             >
               <img src={detail.thumb} alt={'Thumb'}
-                className="static"
+                className="static hover:scale-105"
               />
             </div>
           </aside>
 
           <section className="flex flex-col flex-1 min-w-[400px]">
-            <h2 className="mb-2 text-xl font-medium leading-tight text-neutral-800 dark:text-neutral-50">{detail.name}</h2>
+            <CardTitle className="mb-2 text-xl font-medium leading-tight text-primary">{detail.name}</CardTitle>
             <a href={detail.desc_link}>
-              <span className="flex flex-wrap mb-8 mb-4- text-sm text-neutral-600 dark:text-neutral-300">{detail.desc_link}</span>
+              <span className="flex flex-wrap mb-8 mb-4- text-sm text-muted-foreground">{detail.desc_link}</span>
             </a>
 
             <div>
@@ -102,6 +105,7 @@ export default function Post() {
             </div>
           </section>
         </article>
+        </Card>
       ) : <Loading />}
 
     </>

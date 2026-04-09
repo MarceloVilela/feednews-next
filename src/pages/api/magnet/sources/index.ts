@@ -11,6 +11,9 @@ import LimeTorrent from './Lime';
 import Tcsv from './Tcsv';
 import TorLock from './Tl';
 import ThePirateBay from './Tpb';
+import Limon from './Limon';
+import Vt from './Vt';
+import Ft from './Ft';
 //import Zooqle from './Zq';
 
 export interface ISearchParams {
@@ -86,7 +89,10 @@ sources = [
   //TorrentTool,
   //
   ComandoTorrents,
+  Ft,
   Lapumia,
+  Limon,
+  Vt,
   //MegaTorrentsHD,
   //OndeBaixa,
   //TorrentFilmes,

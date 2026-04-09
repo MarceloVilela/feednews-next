@@ -2,11 +2,13 @@ import React, { useEffect, useMemo, useState, FormEvent, useCallback } from 'rea
 import Head from 'next/head';
 import { FaMagnet, FaLink } from 'react-icons/fa';
 
+import { Button } from '@/components/ui/button';
 import api from 'services/api';
 import { useStyleSwitcher } from 'hooks/styleSwitcher';
 
 import data from '../../assets/json/magnet/results.json';
 import alias from '../../assets/json/magnet/engineAlias.json';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 
 export interface ResultData {
   link: string;
@@ -97,10 +99,11 @@ export default function InitialPage({handleSubmit, result, handleChangeSearchQue
             aria-label="Digite a busca"
             aria-describedby="button-addon1" 
           />
-          <button
-            className="relative z-[2] flex items-center rounded-r bg-primary px-6 py-2.5 text-xs font-medium uppercase leading-tight text-white shadow-md transition duration-150 ease-in-out hover:bg-primary-700 hover:shadow-lg focus:bg-primary-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-primary-800 active:shadow-lg"
+          <Button
+            variant={"default"}
+            //className="relative z-[2] flex items-center rounded-r bg-primary px-6 py-2.5 text-xs font-medium uppercase leading-tight text-white shadow-md transition duration-150 ease-in-out hover:bg-primary-700 hover:shadow-lg focus:bg-primary-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-primary-800 active:shadow-lg"
             type="submit"
-            id="button-addon1"
+            id="Button-addon1"
             data-te-ripple-init
             data-te-ripple-color="light">
             <svg
@@ -113,7 +116,7 @@ export default function InitialPage({handleSubmit, result, handleChangeSearchQue
                 d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z"
                 clipRule="evenodd" />
             </svg>
-          </button>
+          </Button>
         </div>
       </form>
 
@@ -136,24 +139,23 @@ export default function InitialPage({handleSubmit, result, handleChangeSearchQue
         <p className="mb-8">{enginesPending.join(', ')}</p>
       )}
 
-      <table className="w-full">
-        <thead className="">
-          <tr className='hidden lg:table-row'>
-            <td onClick={() => handleOrder('name')}>Nome</td>
-            <td onClick={() => handleOrder('size')}>Tamanho</td>
-            <td onClick={() => handleOrder('seeds')}>Seeds</td>
-            <td onClick={() => handleOrder('leech')}>Leech</td>
-            <td onClick={() => handleOrder('engine_url')}>Mecanismo de busca</td>
-          </tr>
-        </thead>
-        <tbody>
+      <Table className="w-full">
+        <TableHeader className="">
+          <TableRow className='hidden lg:table-row'>
+            <TableHead className="cursor-pointer" onClick={() => handleOrder('name')}>Nome</TableHead>
+            <TableHead className="cursor-pointer" onClick={() => handleOrder('size')}>Tamanho</TableHead>
+            <TableHead className="cursor-pointer" onClick={() => handleOrder('seeds')}>Seeds</TableHead>
+            <TableHead className="cursor-pointer" onClick={() => handleOrder('leech')}>Leech</TableHead>
+            <TableHead className="cursor-pointer" onClick={() => handleOrder('engine_url')}>Mecanismo de busca</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
           {orderedItens.map((item, key) => (
-            <tr key={key} 
-              className="flex flex-wrap lg:table-row border-b-2- sm:rounded-2xl dark:bg-neutral-700 sm:mb-2 sm:p-2
-              shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)]
-              "
+            <TableRow key={key} 
+              className="flex flex-wrap lg:table-row sm:rounded-2xl sm:mb-2 sm:p-2 
+              dark:bg-neutral-700- shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)]-"
             >
-              <td className="flex w-full lg:w-auto">
+              <TableCell className="flex w-full lg:w-auto">
                 {item.link ? (
                   <span className="flex flex-wrap gap-2">
                     <a href={item.link} className="flex gap-2">
@@ -170,15 +172,15 @@ export default function InitialPage({handleSubmit, result, handleChangeSearchQue
                     <FaLink />
                   </a>
                 )}
-              </td>
-              <td className="w-full lg:w-auto">{item.size || '---'}</td>
-              <td className="w-full lg:w-auto">{item.seeds || '---'}</td>
-              <td className="w-full lg:w-auto">{item.leech || '---'}</td>
-              <td className="w-full lg:w-auto">{item.engine_url || '---'}</td>
-            </tr>
+              </TableCell>
+              <TableCell className="w-full lg:w-auto">{item.size || '---'}</TableCell>
+              <TableCell className="w-full lg:w-auto">{item.seeds || '---'}</TableCell>
+              <TableCell className="w-full lg:w-auto">{item.leech || '---'}</TableCell>
+              <TableCell className="w-full lg:w-auto">{item.engine_url || '---'}</TableCell>
+            </TableRow>
           ))}
-        </tbody>
-      </table>
+        </TableBody>
+      </Table>
 
     </>
   )

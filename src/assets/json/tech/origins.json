@@ -1,8 +1,8 @@
 {
   "origins": [
     {
-      "title": "Giz Modo",
-      "url": "https://gizmodo.uol.com.br",
+      "title": "GizModo",
+      "url": "https://gizmodo.com.br",
       "BIN_ID": "6092cecc92cb9267d0ce0dee"
     },
     {
@@ -11,7 +11,7 @@
       "BIN_ID": "6092cc7c8a409667ca07659e"
     },
     {
-      "title": "Canal Tech",
+      "title": "CanalTech",
       "url": "https://canaltech.com.br",
       "BIN_ID": "6092cedc92cb9267d0ce0dfb"
     },
@@ -21,7 +21,7 @@
       "BIN_ID": "6092ceddd64cd16802ab541f"
     },
     {
-      "title": "Olhar Digital",
+      "title": "OlharDigital",
       "url": "https://olhardigital.com.br",
       "BIN_ID": "6092cedf92cb9267d0ce0dfe"
     },
@@ -59,11 +59,6 @@
       "title": "TudoEmTecnologia",
       "url": "https://tudoemtecnologia.com",
       "BIN_ID": "6092ced492cb9267d0ce0df4"
-    },
-    {
-      "title": "ComputerWorldPT",
-      "url": "https://www.computerworld.com.pt",
-      "BIN_ID": "6092ced1d64cd16802ab5414"
     },
     {
       "title": "SapoTek",
