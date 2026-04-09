@@ -67,7 +67,7 @@ const DefinitionsProvider = ({ children }: DefinitionsProviderParams) => {
   const [loading, _setLoading] = useState(true);
 
   const updateDefinition = useCallback(
-    async ({ name, value, description }) => {
+    async ({ name, value, description }: { name: string; value: string; description: string }) => {
       setData({
         ...data,
         [name]: value

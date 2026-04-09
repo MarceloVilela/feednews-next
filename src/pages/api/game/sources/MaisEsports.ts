@@ -1,3 +1,4 @@
+import axios from "axios";
 import { JSDOM } from "jsdom";
 import ITrendDTO, {
   ISource,
@@ -51,17 +52,6 @@ class MaisEsports implements ISource {
     );
     console.log("data", data.posts);
     return { posts: data.posts };
-
-    const results = data.posts.nodes
-      .map((item: { postTitle: any; postSlug: any; postImage: any }) => ({
-        link: `${this.getOriginUrl()}/${item.slug}`,
-        title: item.title,
-        thumb: item.featuredImage.sourceUrl,
-        created_at: "",
-      }))
-      .filter((elPost: any) => elPost.thumb && elPost.title != "undefined");
-
-    return { posts: [...results] };
   }
 }
 
