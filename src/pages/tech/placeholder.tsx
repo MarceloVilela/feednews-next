@@ -3,7 +3,7 @@ import Head from 'next/head';
 
 import { api } from '../../services/api';
 import jsonbin from '../../services/jsonbin';
-import { NewsContentProps, NewsProps } from '.';
+import { NewsContentProps, NewsProps } from './[slug]';
 
 import originsJson from '../../assets/json/tech/origins.json';
 const origins = originsJson.origins;

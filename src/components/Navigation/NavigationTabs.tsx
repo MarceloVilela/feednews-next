@@ -18,7 +18,7 @@ export default function NavigationTabs({linksData}: NavigationTabsProps){
     return linksData.map(({label, address}) => ({
       label,
       address,
-      selected: String(location.route.includes(address))
+      selected: location.route.includes(address)
     }))
   }, [location.route, linksData])
 
@@ -46,7 +46,7 @@ export default function NavigationTabs({linksData}: NavigationTabsProps){
                 focus:isolate focus:border-transparent data-[te-nav-active]:border-primary data-[te-nav-active]:text-primary 
                 dark:text-neutral-400 dark:hover:bg-transparent dark:data-[te-nav-active]:border-primary-400 
                 dark:data-[te-nav-active]:text-primary-400 cursor-pointer
-                ${selected === 'true' && 'border-primary text-primary dark:border-primary-400 dark:text-primary-400'}
+                ${selected && 'border-primary text-primary dark:border-primary-400 dark:text-primary-400'}
                 `}>
                 {label}
               </span>
