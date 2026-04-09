@@ -22,7 +22,7 @@ class ComboInfinito implements ISource {
       return {
         link: elPost.querySelector('.elementor-post__title a')?.getAttribute('href'),
         title: replaceSpaces(String(elPost.querySelector('.elementor-post__title a')?.textContent)),
-        thumb: elPost.querySelector('img')?.getAttribute('data-lazy-src'),
+        thumb: elPost.querySelector('img')?.getAttribute('data-src'),
         created_at: replaceSpaces(String(elPost.querySelector('.elementor-post-date')?.textContent)),
       };
     };

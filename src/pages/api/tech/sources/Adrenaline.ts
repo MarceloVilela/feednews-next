@@ -1,9 +1,9 @@
-import { JSDOM } from 'jsdom';
-import IResponseHomeDTO from '.';
+import { JSDOM } from "jsdom";
+import IResponseHomeDTO from ".";
 
 class Adrenaline {
   getOriginUrl(): string {
-    return 'https://www.adrenaline.com.br';
+    return "https://www.adrenaline.com.br";
   }
 
   async getHome(): Promise<IResponseHomeDTO> {
@@ -13,19 +13,22 @@ class Adrenaline {
 
     const getContent = (elPost: Element) => {
       return {
-        link: elPost.querySelector('a')?.getAttribute('href'),
-        title: elPost.querySelector('a')?.getAttribute('title'),
+        link: elPost.querySelector("a")?.getAttribute("href"),
+        title: elPost.querySelector("a")?.getAttribute("title"),
         thumb: String(
-          elPost.querySelector('img')?.getAttribute('data-lazy-srcset'),
-        ).split(' ')[0],
-        created_at: elPost.querySelector('.post-h__content-info span')
+          elPost.querySelector("img")?.getAttribute("data-srcset")
+        ).split(" ")[0],
+        created_at: elPost.querySelector(".post-h__content-info span")
           ?.textContent,
       };
     };
 
-    const postsData = [...document.querySelectorAll('article.feed')].map(
-      (elPost) => getContent(elPost),
-    );
+    const postsData = [...document.querySelectorAll("article.feed")]
+      .map((elPost) => getContent(elPost))
+      .filter(
+        (item) =>
+          item.title !== "" && item.thumb !== "" && item.thumb !== "null"
+      );
 
     return { posts: postsData };
   }

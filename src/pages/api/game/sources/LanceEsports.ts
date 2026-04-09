@@ -1,9 +1,15 @@
-import { JSDOM } from 'jsdom';
-import ITrendDTO, { ISource, ISearchParams, IShowDetailMagnetDTO, Answer, IResponseHomeDTO } from '.';
+import { JSDOM } from "jsdom";
+import ITrendDTO, {
+  ISource,
+  ISearchParams,
+  IShowDetailMagnetDTO,
+  Answer,
+  IResponseHomeDTO,
+} from ".";
 
 class LanceEsports implements ISource {
   getOriginUrl(): string {
-    return 'https://www.lance.com.br/esports';
+    return "https://www.lance.com.br/esports";
   }
 
   async getHome(): Promise<IResponseHomeDTO> {
@@ -12,25 +18,31 @@ class LanceEsports implements ISource {
     const { document } = response.window;
 
     const replaceSpaces = (text: string) => {
-      return text.replace(/\n|\r|\t/g, '')
-      .replace(/\n|\s{2,}/g, '')
-      .replace(/\\n|\\r|\\t/g, '')
-      .replace(/\s{2,}/g, '')
-    }
+      return text
+        .replace(/\n|\r|\t/g, "")
+        .replace(/\n|\s{2,}/g, "")
+        .replace(/\\n|\\r|\\t/g, "")
+        .replace(/\s{2,}/g, "");
+    };
 
     const getContent = (elPost: Element) => {
       return {
-        link: `https://www.lance.com.br${elPost.querySelector('a')?.getAttribute('href')}`,
-        title: replaceSpaces(String(elPost.querySelector('a p')?.textContent)),
+        link: elPost.querySelector("a")?.getAttribute("href"),
+        title: replaceSpaces(
+          String(elPost.querySelector("p.title")?.textContent)
+        ),
         //thumb: elPost.querySelector('img')?.getAttribute('srcSet')?.split(',').filter(item => item.includes('jpg'))[0],
-        thumb: elPost.querySelector('img')?.getAttribute('src'),
-        created_at: '',
+        thumb: String(
+          elPost.querySelector("img")?.getAttribute("srcset")
+        ).split(" ")[0],
+        created_at: "",
       };
     };
 
-    const postsData = [...document.querySelectorAll('div[class^="styles_card"]'),]
+    console.log([...document.querySelectorAll("section.flex-col.gap-2")]);
+    const postsData = [...document.querySelectorAll("section.flex-col.gap-2")]
       .map((elPost) => getContent(elPost))
-      .filter((elPost) => (elPost.thumb && elPost.title != "undefined"));
+      .filter((elPost) => elPost.thumb && elPost.title != "undefined");
 
     return { posts: [...postsData] };
   }

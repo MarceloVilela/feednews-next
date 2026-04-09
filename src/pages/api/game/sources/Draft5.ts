@@ -9,7 +9,10 @@ class Draft5 implements ISource {
   async getHome(): Promise<IResponseHomeDTO> {
     const url = this.getOriginUrl();
 
+    console.log('draft-getHome');
     const { data } = await axios.get('https://api.draft5.gg/news/popular/day');
+    console.log('data', data);
+    return {posts: data};
 
     const results = data.data.map((item: { postTitle: any; postSlug: any; postImage: any; }) => ({
       link: `${url}/noticia/${item.postSlug}`,

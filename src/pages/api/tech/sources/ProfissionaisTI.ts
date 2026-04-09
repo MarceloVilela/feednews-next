@@ -1,9 +1,9 @@
-import { JSDOM } from 'jsdom';
-import IResponseHomeDTO from '.';
+import { JSDOM } from "jsdom";
+import IResponseHomeDTO from ".";
 
 class ProfissionaisTI {
   getOriginUrl(): string {
-    return 'https://www.profissionaisti.com.br';
+    return "https://www.profissionaisti.com.br";
   }
 
   async getHome(): Promise<IResponseHomeDTO> {
@@ -13,14 +13,14 @@ class ProfissionaisTI {
 
     const getContent = (elPost: Element) => {
       return {
-        link: elPost.querySelector('a')?.getAttribute('href'),
-        title: elPost.querySelector('h2')?.textContent,
-        thumb: elPost.querySelector('img.post_thumbnail')?.getAttribute('src'),
-        created_at: elPost.querySelector('date')?.textContent,
+        link: elPost.querySelector("a")?.getAttribute("href"),
+        title: elPost.querySelector("h2")?.textContent,
+        thumb: elPost.querySelector("img.post_thumbnail")?.getAttribute("src"),
+        created_at: elPost.querySelector("date")?.textContent,
       };
     };
 
-    const postsData = [...document.querySelectorAll('#content article')]
+    const postsData = [...document.querySelectorAll("#content article")]
       .map((elPost) => getContent(elPost))
       .filter(({ title }) => !!title);
 
