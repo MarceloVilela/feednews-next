@@ -1,9 +1,9 @@
-import { JSDOM } from 'jsdom';
-import IResponseHomeDTO from '.';
+import { JSDOM } from "jsdom";
+import IResponseHomeDTO from ".";
 
 class FourGNews {
   getOriginUrl(): string {
-    return 'https://4gnews.pt';
+    return "https://4gnews.pt";
   }
 
   async getHome(): Promise<IResponseHomeDTO> {
@@ -13,16 +13,16 @@ class FourGNews {
 
     const getContent = (elPost: Element) => {
       return {
-        link: this.getOriginUrl() + elPost.getAttribute('href'),
-        title: elPost?.getAttribute('title'),
-        thumb: elPost.querySelector('img.thumb')?.getAttribute('src'),
-        created_at: elPost.querySelector('time')?.textContent,
+        link: this.getOriginUrl() + elPost.getAttribute("href"),
+        title: elPost.querySelector(".post-title")?.textContent,
+        thumb: elPost.querySelector(".post-img img")?.getAttribute("src"),
+        created_at: elPost.querySelector("time")?.getAttribute("datetime"),
       };
     };
 
-    const postsData = [
-      ...document.querySelectorAll('.ncl-list-miur .post-list'),
-    ].map((elPost) => getContent(elPost));
+    const postsData = [...document.querySelectorAll(".list-articles-item")].map(
+      (elPost) => getContent(elPost)
+    );
 
     return { posts: postsData };
   }

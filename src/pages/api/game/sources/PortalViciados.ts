@@ -7,9 +7,9 @@ import ITrendDTO, {
   IResponseHomeDTO,
 } from ".";
 
-class JogaZera implements ISource {
+class ComboInfinito implements ISource {
   getOriginUrl(): string {
-    return "https://jogazera.com.br";
+    return "https://viciados.net";
   }
 
   async getHome(): Promise<IResponseHomeDTO> {
@@ -27,16 +27,18 @@ class JogaZera implements ISource {
 
     const getContent = (elPost: Element) => {
       return {
-        link: elPost.querySelector("a")?.getAttribute("href"),
+        link: elPost.querySelector("h3.entry-title a")?.getAttribute("href"),
         title: replaceSpaces(
-          String(elPost.querySelector(".title")?.textContent)
+          String(elPost.querySelector("h3.entry-title a")?.textContent)
         ),
-        thumb: elPost.querySelector("img[src]")?.getAttribute("src"),
-        created_at: "",
+        thumb: elPost.querySelector("img")?.getAttribute("src"),
+        created_at: replaceSpaces(
+          String(elPost.querySelector(".elementor-post-date")?.textContent)
+        ),
       };
     };
 
-    const postsData = [...document.querySelectorAll("article")]
+    const postsData = [...document.querySelectorAll(".block-inner .list-box")]
       .map((elPost) => getContent(elPost))
       .filter((elPost) => elPost.thumb && elPost.title != "undefined");
 
@@ -44,4 +46,4 @@ class JogaZera implements ISource {
   }
 }
 
-export default new JogaZera();
+export default new ComboInfinito();

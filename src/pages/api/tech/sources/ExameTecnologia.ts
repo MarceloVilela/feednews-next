@@ -15,8 +15,8 @@ class ExameTecnologia {
       return {
         link:
           this.getOriginUrl() +
-          elPost.querySelector('h2 a')?.getAttribute('href'),
-        title: elPost.querySelector('h2')?.textContent,
+          elPost.querySelector('h3 a')?.getAttribute('href'),
+        title: elPost.querySelector('h3')?.textContent,
         thumb: elPost.querySelector('img[src^="http"]')?.getAttribute('src'),
         created_at: elPost.querySelector('.list-date-description')?.textContent,
       };

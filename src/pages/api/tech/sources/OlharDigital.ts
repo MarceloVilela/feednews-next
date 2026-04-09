@@ -1,9 +1,9 @@
-import { JSDOM } from 'jsdom';
-import IResponseHomeDTO from '.';
+import { JSDOM } from "jsdom";
+import IResponseHomeDTO from ".";
 
 class OlharDigital {
   getOriginUrl() {
-    return 'https://olhardigital.com.br';
+    return "https://olhardigital.com.br";
   }
 
   async getHome(): Promise<IResponseHomeDTO> {
@@ -12,16 +12,16 @@ class OlharDigital {
     const { document } = response.window;
 
     const getContent = (elPost: Element) => ({
-      link: elPost.getAttribute('href'),
-      title: elPost.getAttribute('title'),
-      thumb: elPost.querySelector('img')?.getAttribute('src'),
+      link: elPost.getAttribute("href"),
+      title: elPost.getAttribute("title"),
+      thumb: elPost.querySelector("img")?.getAttribute("src"),
       // preview: '',
-      created_at: '',
+      created_at: "",
     });
 
-    const postsData = [...document.querySelectorAll('a.cardV2')].map(
-      (elPost) => getContent(elPost),
-    );
+    const postsData = [...document.querySelectorAll("a.p-item")]
+      .map((elPost) => getContent(elPost))
+      .filter((elPost: any) => elPost.link.includes(url));
 
     return { posts: postsData };
   }

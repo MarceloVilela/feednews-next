@@ -1,9 +1,15 @@
-import { JSDOM } from 'jsdom';
-import ITrendDTO, { ISource, ISearchParams, IShowDetailMagnetDTO, Answer, IResponseHomeDTO } from '.';
+import { JSDOM } from "jsdom";
+import ITrendDTO, {
+  ISource,
+  ISearchParams,
+  IShowDetailMagnetDTO,
+  Answer,
+  IResponseHomeDTO,
+} from ".";
 
 class Voxel implements ISource {
   getOriginUrl(): string {
-    return 'https://www.tecmundo.com.br/voxel';
+    return "https://www.tecmundo.com.br/voxel";
   }
 
   async getHome(): Promise<IResponseHomeDTO> {
@@ -13,15 +19,17 @@ class Voxel implements ISource {
 
     const getContent = (elPost: Element) => {
       return {
-        link: elPost.querySelector('a.tec--card__title__link')?.getAttribute('href'),
-        title: elPost.querySelector('a.tec--card__title__link')?.textContent,
-        thumb: elPost.querySelector('img')?.getAttribute('data-src'),
-        created_at: elPost.querySelector('.tec--timestamp')?.textContent,
+        link:
+          "https://www.tecmundo.com.br" +
+          elPost.querySelector("a")?.getAttribute("href"),
+        title: elPost.querySelector("h3")?.textContent,
+        thumb: elPost.querySelector("img")?.getAttribute("src"),
+        created_at: elPost.querySelector(".tec--timestamp")?.textContent,
       };
     };
 
     const postsData = [
-      ...document.querySelectorAll('.tec--list__item article'),
+      ...document.querySelectorAll(".grid-cols-1 article"),
     ].map((elPost) => getContent(elPost));
 
     return { posts: [...postsData] };
