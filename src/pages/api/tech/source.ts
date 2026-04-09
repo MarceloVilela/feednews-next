@@ -1,33 +1,36 @@
 // import { NextRequest, NextResponse } from 'next/server'
-import jsonbin from 'services/jsonbin';
-import IResponseHomeDTO, { ISource, Post, sources } from './sources';
+import jsonbin from "services/jsonbin";
+import IResponseHomeDTO, { ISource, Post, sources } from "./sources";
 // import Tcsv from "./sources/Tcsv";
 
 export default async function handler(request: any, response: any) {
-  const { url: alias, search_query = '', encoded } = request.query;
+  const { url: alias, search_query = "", encoded } = request.query;
 
-  const [engine] = sources.filter((item) => item.getOriginUrl().includes(alias));
+  const [engine] = sources.filter((item) =>
+    item.getOriginUrl().includes(alias)
+  );
 
   //sources.forEach((item) => console.log(item));
   //return response.status(200).json({ name: 'John Doe' })
 
-  let posts  = [] as Post[]
+  let posts = [] as Post[];
 
-  if(alias == ''){
-    const { data: jsonbinData } = await jsonbin.get('6092cee092cb9267d0ce0e00');
+  if (alias == "") {
+    const { data: jsonbinData } = await jsonbin.get("6092cee092cb9267d0ce0e00");
     const { record } = jsonbinData;
-    posts = record.data
-  }
-  else if (!engine) {
-    const available = Object.values(sources).map((item) => item.getOriginUrl()).join(', ');
+    posts = record.data;
+  } else if (!engine) {
+    const available = Object.values(sources)
+      .map((item) => item.getOriginUrl())
+      .join(", ");
     throw new Error(`Alias not found: ${alias}. Available: ${available}`);
-  }
-  else {
+  } else {
+    console.log("Tech:api | ", alias);
     const home = await engine.getHome();
     posts = home.posts;
   }
 
-  const postsWithId = posts.map((item) => ({...item, id: item.link}));
+  const postsWithId = posts.map((item) => ({ ...item, id: item.link }));
 
-  return response.json({data: postsWithId, total: postsWithId.length});
+  return response.json({ data: postsWithId, total: postsWithId.length });
 }

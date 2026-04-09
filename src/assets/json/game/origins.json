@@ -1,64 +1,60 @@
 {
   "origins": [
     {
-      "title": "The Enemy",
-      "url": "https://www.theenemy.com.br"
-    },
-    {
-      "title": "Arkade",
-      "url": "https://www.arkade.com.br"
-    },
-    {
-      "title": "Voxel",
-      "url": "https://www.tecmundo.com.br/voxel"
-    },
-    {
-      "title": "ArenaXbox",
-      "url": "https://arenaxbox.com.br"
+      "title": "GameVicio",
+      "url": "https://www.gamevicio.com"
     },
     {
       "title": "ComboInfinito",
       "url": "https://www.comboinfinito.com.br/principal"
     },
     {
-      "title": "CriticalHits",
-      "url": "https://criticalhits.com.br"
+      "title": "FlowGames",
+      "url": "https://www.flowgames.gg"
     },
     {
       "title": "IgnBr",
       "url": "https://br.ign.com"
     },
     {
-      "title": "NintendoBlast",
-      "url": "https://www.nintendoblast.com.br"
-    },
-    {
-      "title": "PsxBrasil",
-      "url": "https://psxbrasil.com.br"
-    },
-    {
-      "title": "WindowsClub",
-      "url": "https://windowsclub.com.br"
-    },
-    {
-      "title": "Adrenaline (games)",
+      "title": "Adrenaline-games",
       "url": "https://www.adrenaline.com.br/games"
     },
     {
-      "title": "Draft5",
-      "url": "https://draft5.gg"
+      "title": "StartUOL",
+      "url": "https://www.uol.com.br/start"
     },
     {
-      "title": "Dust2 BR",
-      "url": "https://www.dust2.com.br"
+      "title": "TechTudo-esports",
+      "url": "https://www.techtudo.com.br/e-sports"
     },
     {
-      "title": "ESPN Brasil (esports)",
-      "url": "https://www.espn.com.br/esports"
+      "title": "TechTudo-jogos",
+      "url": "https://www.techtudo.com.br/jogos"
     },
     {
-      "title": "G1 (games)",
+      "title": "Voxel",
+      "url": "https://www.tecmundo.com.br/voxel"
+    },
+    {
+      "title": "CriticalHits",
+      "url": "https://criticalhits.com.br"
+    },
+    {
+      "title": "GloboEsporte-esports",
+      "url": "https://ge.globo.com/esports"
+    },
+    {
+      "title": "G1-games",
       "url": "https://g1.globo.com/pop-arte/games"
+    },
+    {
+      "title": "JovemNerd",
+      "url": "https://jovemnerd.com.br"
+    },
+    {
+      "title": "Dust2BR",
+      "url": "https://www.dust2.com.br"
     },
     {
       "title": "GameBlast",
@@ -69,19 +65,15 @@
       "url": "https://gamehall.com.br"
     },
     {
-      "title": "Globo Esporte (esports)",
-      "url": "https://ge.globo.com/esports"
+      "title": "TheEnemy",
+      "url": "https://www.theenemy.com.br"
     },
     {
-      "title": "Jogazera",
-      "url": "https://jogazera.com.br"
+      "title": "Arkade",
+      "url": "https://www.arkade.com.br"
     },
     {
-      "title": "Jovem Nerd",
-      "url": "https://jovemnerd.com.br"
-    },
-    {
-      "title": "Lance (esports)",
+      "title": "Lance-esports",
       "url": "https://www.lance.com.br/esports"
     },
     {
@@ -89,11 +81,7 @@
       "url": "https://maisesports.com.br"
     },
     {
-      "title": "Meu Playstation",
-      "url": "https://meups.com.br"
-    },
-    {
-      "title": "MGG (Millenium)",
+      "title": "MGG-Millenium",
       "url": "https://br.millenium.gg"
     },
     {
@@ -101,35 +89,43 @@
       "url": "https://www.overloadr.com.br"
     },
     {
-      "title": "PlayReplay",
-      "url": "https://playreplay.com.br"
-    },
-    {
-      "title": "Start UOL",
-      "url": "https://www.uol.com.br/start"
-    },
-    {
-      "title": "TechTudo (esports)",
-      "url": "https://www.techtudo.com.br/e-sports"
-    },
-    {
-      "title": "TechTudo (jogos)",
-      "url": "https://www.techtudo.com.br/jogos"
-    },
-    {
-      "title": "The Clutch",
+      "title": "TheClutch",
       "url": "https://theclutch.com.br"
     },
     {
-      "title": "The Game Times",
+      "title": "TheGameTimes",
       "url": "https://gametimes.com.br"
     },
     {
-      "title": "Universo Nintendo",
+      "title": "MeuPlaystation",
+      "url": "https://meups.com.br"
+    },
+    {
+      "title": "PSX-Brasil",
+      "url": "https://psxbrasil.com.br/"
+    },
+    {
+      "title": "UniversoNintendo",
       "url": "https://universonintendo.com"
     },
     {
-      "title": "Xbox Power",
+      "title": "NintendoBlast",
+      "url": "https://www.nintendoblast.com.br"
+    },
+    {
+      "title": "PortalViciados",
+      "url": "https://viciados.net"
+    },
+    {
+      "title": "XboxWire",
+      "url": "https://news.xbox.com/pt-br"
+    },
+    {
+      "title": "WindowsClub",
+      "url": "https://windowsclub.com.br"
+    },
+    {
+      "title": "XboxPower",
       "url": "https://www.xboxpower.com.br"
     }
   ]
