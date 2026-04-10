@@ -74,11 +74,15 @@
       "title": "TechTudo",
       "url": "https://www.techtudo.com.br",
       "BIN_ID": "6092cece8a409667ca076723"
-    },
+    }
+  ],
+  "originsRemoved": [
     {
       "title": "ProfissionaisTI",
       "url": "https://www.profissionaisti.com.br",
-      "BIN_ID": "6092cecfd64cd16802ab5412"
+      "BIN_ID": "6092cecfd64cd16802ab5412",
+      "at": "2026-04-10T00:00:00Z",
+      "reason": "site offline" 
     }
   ]
 }

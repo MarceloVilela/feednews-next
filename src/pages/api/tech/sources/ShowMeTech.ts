@@ -1,9 +1,10 @@
-import { JSDOM } from 'jsdom';
-import IResponseHomeDTO from '.';
+import { JSDOM } from "jsdom";
+import IResponseHomeDTO from ".";
+import { title } from "node:process";
 
 class ShowMeTech {
   getOriginUrl(): string {
-    return 'https://www.showmetech.com.br';
+    return "https://www.showmetech.com.br";
   }
 
   async getHome(): Promise<IResponseHomeDTO> {
@@ -13,18 +14,19 @@ class ShowMeTech {
 
     const getContent = (elPost: Element) => {
       return {
-        link: elPost.querySelector('.entry-title a')?.getAttribute('href'),
-        title: elPost.querySelector('.entry-title a')?.textContent,
+        link: elPost.querySelector("h2 a")?.getAttribute("href"),
+        title: elPost.querySelector("h2 a")?.textContent,
         thumb: elPost
-          .querySelector('img[data-lazy-src]')
-          ?.getAttribute('data-lazy-src'),
-        created_at: '',
+          .querySelector("img")
+          ?.getAttribute("data-lazy-srcset")
+          ?.split(" ")[0],
+        created_at: "",
       };
     };
 
-    const postsData = [...document.querySelectorAll('.abr-post-item')]
+    const postsData = [...document.querySelectorAll("article.type-post")]
       .map((elPost) => getContent(elPost))
-      .filter((item) => item.thumb);
+      .filter((item) => item.thumb && item.title);
 
     return { posts: postsData };
   }

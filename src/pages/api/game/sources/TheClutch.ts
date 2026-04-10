@@ -14,7 +14,7 @@ class TheClutch implements ISource {
 
   async getHome(): Promise<IResponseHomeDTO> {
     const url = this.getOriginUrl();
-    const response = await JSDOM.fromURL(`${url}`);
+    const response = await JSDOM.fromURL(`${url}/esports`);
     const { document } = response.window;
 
     const replaceSpaces = (text: string) => {
@@ -27,7 +27,7 @@ class TheClutch implements ISource {
 
     const getContent = (elPost: Element) => {
       return {
-        link: `${url}/${elPost.querySelector("a")?.getAttribute("href")}`,
+        link: `${elPost.querySelector("a")?.getAttribute("href")}`,
         title: replaceSpaces(String(elPost.querySelector("h2")?.textContent)),
         thumb: elPost.querySelector("img[src]")?.getAttribute("data-src"),
         created_at: "",

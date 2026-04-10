@@ -1,9 +1,9 @@
-import { JSDOM } from 'jsdom';
-import IResponseHomeDTO from '.';
+import { JSDOM } from "jsdom";
+import IResponseHomeDTO from ".";
 
 class SapoTek {
   getOriginUrl(): string {
-    return 'https://tek.sapo.pt';
+    return "https://tek.sapo.pt";
   }
 
   async getHome(): Promise<IResponseHomeDTO> {
@@ -12,35 +12,22 @@ class SapoTek {
     const { document } = response.window;
 
     const getContent = (elPost: Element) => {
-      const created_at_timestamp = elPost
-        .querySelector('[data-timestamp]')
-        ?.getAttribute('data-timestamp');
       return {
         link: `${this.getOriginUrl()}${elPost
-          ?.querySelector('.title a')
-          ?.getAttribute('href')}`,
-        title: elPost?.querySelector('.title')?.textContent,
-        thumb: `https:${elPost
-          .querySelector('picture')
-          ?.getAttribute('data-original-src')}`,
-        created_at: new Date(Number(created_at_timestamp) * 1000).toString(),
+          ?.querySelector("a")
+          ?.getAttribute("href")}`,
+        title: elPost?.querySelector("img")?.getAttribute("alt"),
+        thumb: `https:${elPost.querySelector("img")?.getAttribute("src")}`,
+        created_at:
+          elPost.querySelector("datetime")?.getAttribute("datetime") || "",
       };
     };
 
-    const postsData = [
-      ...document.querySelectorAll('.article-list.communist .article'),
-    ]
-      .filter(
-        (elPost) =>
-          elPost?.querySelector('.title a') &&
-          elPost.querySelector('picture') &&
-          !elPost
-            ?.querySelector('.title a')
-            ?.getAttribute('href')
-            ?.includes('https://desporto.sapo.pt'),
-      )
+    const postsData = [...document.querySelectorAll("article")]
       .map((elPost) => getContent(elPost))
-      .filter((elPost) => (elPost.thumb && elPost.title && elPost.title != "undefined"));
+      .filter(
+        (elPost) => elPost.thumb && elPost.title && elPost.title != "undefined",
+      );
 
     return { posts: postsData };
   }

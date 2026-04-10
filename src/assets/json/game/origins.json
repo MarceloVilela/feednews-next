@@ -10,7 +10,7 @@
     },
     {
       "title": "FlowGames",
-      "url": "https://www.flowgames.gg"
+      "url": "https://flowgames.gg"
     },
     {
       "title": "IgnBr",
@@ -65,12 +65,12 @@
       "url": "https://gamehall.com.br"
     },
     {
-      "title": "TheEnemy",
-      "url": "https://www.theenemy.com.br"
-    },
-    {
       "title": "Arkade",
       "url": "https://www.arkade.com.br"
+    },
+    {
+      "title": "Draft5",
+      "url": "https://draft5.gg"
     },
     {
       "title": "Lance-esports",
@@ -127,6 +127,14 @@
     {
       "title": "XboxPower",
       "url": "https://www.xboxpower.com.br"
+    }
+  ],
+  "originsRemoved": [
+    {
+      "title": "TheEnemy",
+      "url": "https://www.theenemy.com.br",
+      "at": "2026-04-10T00:00:00Z",
+      "reason": "site offline" 
     }
   ]
 }

@@ -33,7 +33,12 @@ class ComboInfinito implements ISource {
           this.getOriginUrl() +
           elPost.querySelector("img")?.getAttribute("src"),
         created_at: replaceSpaces(
-          String(elPost.querySelector(".data")?.textContent.replace(/\./g, '/').replace(' às', '')),
+          String(
+            elPost
+              .querySelector(".data")
+              ?.textContent.replace(/\./g, "/")
+              .replace(" às", ""),
+          ),
         ),
       };
     };

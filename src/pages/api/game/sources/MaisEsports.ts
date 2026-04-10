@@ -15,7 +15,7 @@ class MaisEsports implements ISource {
 
   async getHome(): Promise<IResponseHomeDTO> {
     const url = this.getOriginUrl();
-    const response = await JSDOM.fromURL(`${url}`);
+    const response = await JSDOM.fromURL(`${url}/noticias`);
     const { document } = response.window;
 
     const replaceSpaces = (text: string) => {
@@ -27,18 +27,27 @@ class MaisEsports implements ISource {
     };
 
     const getContent = (elPost: Element) => {
+      const urlImg = String(
+        this.getOriginUrl() +
+          elPost
+            .querySelector("[srcSet]")
+            ?.getAttribute("srcSet")
+            ?.split(" ")[0],
+      );
+      const urlParams = new URL(urlImg, this.getOriginUrl());
+      const encodedUrl = urlParams.searchParams.get("url") || "";
+      const finalUrl = decodeURIComponent(encodedUrl);
       return {
         link: `${url}/${elPost.getAttribute("href")}`,
-        title: replaceSpaces(String(elPost.querySelector("h3")?.textContent)),
-        thumb: elPost
-          .querySelector("img[src]")
-          ?.getAttribute("src")
-          ?.split(" ")[0],
+        title: replaceSpaces(
+          String(elPost.querySelector("img")?.getAttribute("alt")),
+        ),
+        thumb: finalUrl,
         created_at: "",
       };
     };
 
-    const postsData = [...document.querySelectorAll("section > a")]
+    const postsData = [...document.querySelectorAll("section + .grid a")]
       .map((elPost) => getContent(elPost))
       .filter((elPost) => elPost.thumb && elPost.title != "undefined");
 
@@ -48,7 +57,7 @@ class MaisEsports implements ISource {
   async getHome_(): Promise<IResponseHomeDTO> {
     console.log("draft-getHome");
     const { data } = await axios.get(
-      "https://noticias.maisesports.com.br/graphql"
+      "https://noticias.maisesports.com.br/graphql",
     );
     console.log("data", data.posts);
     return { posts: data.posts };

@@ -13,13 +13,15 @@ class OlharDigital {
 
     const getContent = (elPost: Element) => ({
       link: elPost.getAttribute("href"),
-      title: elPost.getAttribute("title"),
+      title: elPost.querySelector("h3")?.textContent,
       thumb: elPost.querySelector("img")?.getAttribute("src"),
       // preview: '',
       created_at: "",
     });
 
-    const postsData = [...document.querySelectorAll("a.p-item")]
+    const postsData = [
+      ...document.querySelectorAll(".pbl-noticias-feed .pbl-noticias-item"),
+    ]
       .map((elPost) => getContent(elPost))
       .filter((elPost: any) => elPost.link.includes(url));
 
