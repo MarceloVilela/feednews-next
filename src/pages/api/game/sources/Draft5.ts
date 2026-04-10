@@ -1,19 +1,57 @@
-import axios from 'axios';
-import ITrendDTO, { ISource, ISearchParams, IShowDetailMagnetDTO, Answer, IResponseHomeDTO } from '.';
+//import axios from 'axios';
+import { JSDOM } from "jsdom";
+import ITrendDTO, {
+  ISource,
+  ISearchParams,
+  IShowDetailMagnetDTO,
+  Answer,
+  IResponseHomeDTO,
+} from ".";
 
 class Draft5 implements ISource {
   getOriginUrl(): string {
-    return 'https://draft5.gg';
+    return "https://draft5.gg";
   }
 
   async getHome(): Promise<IResponseHomeDTO> {
     const url = this.getOriginUrl();
+    const response = await JSDOM.fromURL(`${url}`);
+    const { document } = response.window;
+
+    const getContent = (elPost: Element) => {
+      return {
+        link:
+          this.getOriginUrl() + elPost.querySelector("a")?.getAttribute("href"),
+        title: String(elPost.querySelector("h2")?.textContent),
+        thumb:
+          this.getOriginUrl() +
+          elPost
+            .querySelector("[srcSet]")
+            ?.getAttribute("srcSet")
+            ?.split(" ")[0],
+        created_at: "",
+      };
+    };
+
+    console.log(
+      document.querySelector("div[class^='Card__CardContainer']")?.innerHTML,
+    );
+    const postsData = [
+      ...document.querySelectorAll("div[class^='Card__CardContainer']"),
+    ]
+      .map((elPost) => getContent(elPost))
+      .filter((elPost) => elPost.thumb && elPost.title != "undefined");
+
+    return { posts: [...postsData] };
+  }
+
+  /*
+  async getHome_old(): Promise<IResponseHomeDTO> {
+    const url = this.getOriginUrl();
 
     console.log('draft-getHome');
     const { data } = await axios.get('https://api.draft5.gg/news/popular/day');
-    console.log('data', data);
-    return {posts: data};
-
+ 
     const results = data.data.map((item: { postTitle: any; postSlug: any; postImage: any; }) => ({
       link: `${url}/noticia/${item.postSlug}`,
       title: item.postTitle,
@@ -32,6 +70,7 @@ class Draft5 implements ISource {
 
     return { posts: [...results, ...resultsWeek] };
   }
+  */
 }
 
 export default new Draft5();

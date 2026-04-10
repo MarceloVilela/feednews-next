@@ -7,7 +7,7 @@ import ITrendDTO, {
   IResponseHomeDTO,
 } from ".";
 
-class ComboInfinito implements ISource {
+class PortalViciados implements ISource {
   getOriginUrl(): string {
     return "https://viciados.net";
   }
@@ -27,18 +27,18 @@ class ComboInfinito implements ISource {
 
     const getContent = (elPost: Element) => {
       return {
-        link: elPost.querySelector("h3.entry-title a")?.getAttribute("href"),
-        title: replaceSpaces(
-          String(elPost.querySelector("h3.entry-title a")?.textContent)
-        ),
-        thumb: elPost.querySelector("img")?.getAttribute("src"),
+        link: elPost.querySelector("h4 a")?.getAttribute("href"),
+        title: replaceSpaces(String(elPost.querySelector("h4 a")?.textContent)),
+        thumb: elPost.querySelector("[data-src]")?.getAttribute("data-src"),
         created_at: replaceSpaces(
-          String(elPost.querySelector(".elementor-post-date")?.textContent)
+          String(
+            elPost.querySelector(".home-hero-meta")?.textContent.split("•")[1],
+          ),
         ),
       };
     };
 
-    const postsData = [...document.querySelectorAll(".block-inner .list-box")]
+    const postsData = [...document.querySelectorAll("article.vgdb-post-card")]
       .map((elPost) => getContent(elPost))
       .filter((elPost) => elPost.thumb && elPost.title != "undefined");
 
@@ -46,4 +46,4 @@ class ComboInfinito implements ISource {
   }
 }
 
-export default new ComboInfinito();
+export default new PortalViciados();
