@@ -1,8 +1,9 @@
 import { useContext } from "react";
+import Link from "next/link";
 
 import { ListItem } from "@/components/ui/list-item";
 import { navigationMenuTriggerStyle } from "@/components/ui/navigation-menu";
-import { NavigationMenu, NavigationMenuList, NavigationMenuItem, NavigationMenuTrigger, NavigationMenuContent, NavigationMenuLink, Link } from "@radix-ui/react-navigation-menu";
+import { NavigationMenu } from "radix-ui";
 import { SettingsContext } from "hooks/settings";
 
 import { origins as originsTech } from "../../assets/json/tech/origins.json";
@@ -10,14 +11,13 @@ import { origins as originsGame } from "../../assets/json/game/origins.json";
 
 export function NavigationBar() {
   const { originGameChange, originTechChange } = useContext(SettingsContext);
-  
-  return (
-    <NavigationMenu>
-      <NavigationMenuList>
 
-        <NavigationMenuItem>
-          <NavigationMenuTrigger>TECH</NavigationMenuTrigger>
-          <NavigationMenuContent className="bg-slate-700">
+  return (
+    <NavigationMenu.NavigationMenu>
+      <NavigationMenu.List>
+        <NavigationMenu.Item>
+          <NavigationMenu.Trigger>TECH</NavigationMenu.Trigger>
+          <NavigationMenu.Content className="bg-slate-700">
             <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
               {originsTech.map((component) => (
                 <ListItem
@@ -30,12 +30,12 @@ export function NavigationBar() {
                 </ListItem>
               ))}
             </ul>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
+          </NavigationMenu.Content>
+        </NavigationMenu.Item>
 
-        <NavigationMenuItem>
-          <NavigationMenuTrigger>GAME</NavigationMenuTrigger>
-          <NavigationMenuContent className="bg-slate-700">
+        <NavigationMenu.Item>
+          <NavigationMenu.Trigger>GAME</NavigationMenu.Trigger>
+          <NavigationMenu.Content className="bg-slate-700">
             <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
               {originsGame.map((component) => (
                 <ListItem
@@ -48,18 +48,17 @@ export function NavigationBar() {
                 </ListItem>
               ))}
             </ul>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
+          </NavigationMenu.Content>
+        </NavigationMenu.Item>
 
-        <NavigationMenuItem>
+        <NavigationMenu.Item>
           <Link href="/docs">
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+            <NavigationMenu.Link className={navigationMenuTriggerStyle()}>
               DOCUMENTATION
-            </NavigationMenuLink>
+            </NavigationMenu.Link>
           </Link>
-        </NavigationMenuItem>
-
-      </NavigationMenuList>
-    </NavigationMenu>
+        </NavigationMenu.Item>
+      </NavigationMenu.List>
+    </NavigationMenu.NavigationMenu>
   );
 }
