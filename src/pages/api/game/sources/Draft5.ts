@@ -33,9 +33,6 @@ class Draft5 implements ISource {
       };
     };
 
-    console.log(
-      document.querySelector("div[class^='Card__CardContainer']")?.innerHTML,
-    );
     const postsData = [
       ...document.querySelectorAll("div[class^='Card__CardContainer']"),
     ]
@@ -49,7 +46,6 @@ class Draft5 implements ISource {
   async getHome_old(): Promise<IResponseHomeDTO> {
     const url = this.getOriginUrl();
 
-    console.log('draft-getHome');
     const { data } = await axios.get('https://api.draft5.gg/news/popular/day');
  
     const results = data.data.map((item: { postTitle: any; postSlug: any; postImage: any; }) => ({

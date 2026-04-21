@@ -1,9 +1,9 @@
-import { JSDOM } from 'jsdom';
-import IResponseHomeDTO from '.';
+import { JSDOM } from "jsdom";
+import IResponseHomeDTO from ".";
 
 class MundoBit {
   getOriginUrl(): string {
-    return 'https://blogs.ne10.uol.com.br/mundobit/';
+    return "https://blogs.ne10.uol.com.br/mundobit/";
   }
 
   async getHome(): Promise<IResponseHomeDTO> {
@@ -13,19 +13,19 @@ class MundoBit {
 
     const getContent = (elPost: Element) => {
       return {
-        link: elPost.querySelector('h1 a')?.getAttribute('href'),
-        title: elPost.querySelector('h1 a')?.getAttribute('title'),
-        thumb: elPost.querySelector('figure img')?.getAttribute('src'),
+        link: elPost.querySelector("a")?.getAttribute("href"),
+        title: elPost.querySelector("h1")?.textContent,
+        thumb: elPost.querySelector("figure img")?.getAttribute("src"),
         created_at: elPost
-          .querySelector('h1+a')
-          ?.textContent?.split(' ')
+          .querySelector("h1+a")
+          ?.textContent?.split(" ")
           ?.pop(),
       };
     };
 
-    const postsData = [
-      ...document.querySelectorAll('section .box-noticias'),
-    ].map((elPost) => getContent(elPost));
+    const postsData = [...document.querySelectorAll("article")].map((elPost) =>
+      getContent(elPost),
+    );
 
     return { posts: postsData };
   }

@@ -29,17 +29,16 @@ class LanceEsports implements ISource {
       return {
         link: elPost.querySelector("a")?.getAttribute("href"),
         title: replaceSpaces(
-          String(elPost.querySelector("p.title")?.textContent)
+          String(elPost.querySelector("p.title")?.textContent),
         ),
         //thumb: elPost.querySelector('img')?.getAttribute('srcSet')?.split(',').filter(item => item.includes('jpg'))[0],
         thumb: String(
-          elPost.querySelector("img")?.getAttribute("srcset")
+          elPost.querySelector("img")?.getAttribute("srcset"),
         ).split(" ")[0],
         created_at: "",
       };
     };
 
-    console.log([...document.querySelectorAll("section.flex-col.gap-2")]);
     const postsData = [...document.querySelectorAll("section.flex-col.gap-2")]
       .map((elPost) => getContent(elPost))
       .filter((elPost) => elPost.thumb && elPost.title != "undefined");

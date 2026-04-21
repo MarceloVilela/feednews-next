@@ -21,7 +21,6 @@ class MeuPS implements ISource {
       .replaceAll("\n", "")
       .replaceAll("\t", "")
       .match(/<item>(.*?)<\/item>/g);
-    //console.log("result", document.body.innerHTML);
 
     const replaceSpaces = (text: string) => {
       return text
@@ -32,13 +31,12 @@ class MeuPS implements ISource {
     };
 
     const getContent = (elPost: Document) => {
-      console.log("getContent", elPost);
       return {
         link: elPost
           .querySelector("comments")
           ?.textContent.replace("#respond", ""),
         title: replaceSpaces(
-          String(elPost.querySelector("title")?.textContent)
+          String(elPost.querySelector("title")?.textContent),
         ),
         thumb: document.body.querySelector("url")?.textContent,
         created_at: "",
@@ -46,7 +44,7 @@ class MeuPS implements ISource {
     };
 
     const postsData = (items ?? []).map((elPost) =>
-      getContent(new JSDOM(elPost).window.document)
+      getContent(new JSDOM(elPost).window.document),
     );
     //.filter((elPost) => elPost.thumb && elPost.title != "undefined");
 

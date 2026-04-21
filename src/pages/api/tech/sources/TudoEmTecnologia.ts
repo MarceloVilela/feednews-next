@@ -12,24 +12,29 @@ class TudoEmTecnologia {
     const response = await JSDOM.fromURL(`${url}`);
     const { document } = response.window;
 
-    fs.writeFileSync(
-      "./tudoemtecnologia.html",
-      String(document.querySelector("html")?.innerHTML)
-    );
-
     const getContent = (elPost: Element) => {
       return {
         link: elPost?.querySelector("a")?.getAttribute("href"),
-        title: elPost?.querySelector(".elementor-heading-title")?.textContent,
-        thumb: elPost.querySelector(".lazyloaded")?.getAttribute("data-src"),
+        title:
+          elPost?.querySelector("h3")?.innerText ??
+          elPost
+            ?.querySelector("a")
+            ?.textContent.replaceAll(/\n|\r|\t/g, "")
+            .trim()
+            ?.match(/[A-Z].*/)?.[0],
+        thumb: elPost
+          .querySelector("img")
+          ?.getAttribute("srcset")
+          ?.split(" ")[0]
+          .trim(),
         //?.getAttribute("data-orig-file"),
         created_at: "",
       };
     };
 
-    const postsData = [
-      ...document.querySelectorAll(".elementor-grid .post"),
-    ].map((elPost) => getContent(elPost));
+    const postsData = [...document.querySelectorAll(".post.type-post")]
+      .map((elPost) => getContent(elPost))
+      .filter((elPost) => elPost.thumb && elPost.title != "undefined");
 
     return { posts: postsData };
   }
