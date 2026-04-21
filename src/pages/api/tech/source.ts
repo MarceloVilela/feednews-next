@@ -1,36 +1,38 @@
-// import { NextRequest, NextResponse } from 'next/server'
-import jsonbin from "services/jsonbin";
-import IResponseHomeDTO, { ISource, Post, sources } from "./sources";
-// import Tcsv from "./sources/Tcsv";
+import { NextApiRequest, NextApiResponse } from "next";
+import { Post } from "../tech/sources";
+import { sources } from "./sources";
 
-export default async function handler(request: any, response: any) {
-  const { url: alias, search_query = "", encoded } = request.query;
+type GameHomeDataResponse = {
+  data: Post[];
+  total: number;
+};
 
-  const [engine] = sources.filter((item) =>
-    item.getOriginUrl().includes(alias)
-  );
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse<GameHomeDataResponse | { error: string }>,
+) {
+  const { url: alias } = req.query;
 
-  //sources.forEach((item) => console.log(item));
-  //return response.status(200).json({ name: 'John Doe' })
-
-  let posts = [] as Post[];
-
-  if (alias == "") {
-    const { data: jsonbinData } = await jsonbin.get("6092cee092cb9267d0ce0e00");
-    const { record } = jsonbinData;
-    posts = record.data;
-  } else if (!engine) {
-    const available = Object.values(sources)
-      .map((item) => item.getOriginUrl())
-      .join(", ");
-    throw new Error(`Alias not found: ${alias}. Available: ${available}`);
-  } else {
-    console.log("Tech:api | ", alias);
-    const home = await engine.getHome();
-    posts = home.posts;
+  if (!alias || typeof alias !== "string") {
+    return res.status(400).json({
+      error: "Missing url query parameter",
+    });
   }
 
-  const postsWithId = posts.map((item) => ({ ...item, id: item.link }));
+  const [engine] = sources.filter((item) =>
+    item.getOriginUrl().includes(alias.toLowerCase()),
+  );
 
-  return response.json({ data: postsWithId, total: postsWithId.length });
+  if (!engine) {
+    const available = sources.map((item) => item.getOriginUrl()).join(", ");
+    return res.status(400).json({
+      error: `Alias not found: ${alias}. Available: ${available}`,
+    });
+  }
+
+  const results = await engine.getHome();
+
+  const postsWithId = results.posts.map((item) => ({ ...item, id: item.link }));
+
+  return res.json({ data: postsWithId, total: postsWithId.length });
 }
