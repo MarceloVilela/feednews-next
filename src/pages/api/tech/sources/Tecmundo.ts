@@ -1,9 +1,9 @@
-import { JSDOM } from 'jsdom';
-import IResponseHomeDTO from '.';
+import { JSDOM } from "jsdom";
+import IResponseHomeDTO from ".";
 
 class Tecmundo {
   getOriginUrl(): string {
-    return 'https://www.tecmundo.com.br';
+    return "https://www.tecmundo.com.br";
   }
 
   async getHome(): Promise<IResponseHomeDTO> {
@@ -12,15 +12,17 @@ class Tecmundo {
     const { document } = response.window;
 
     const getContent = (elPost: Element) => ({
-      link: elPost.querySelector('h3 a')?.getAttribute('href'),
-      title: elPost.querySelector('h3')?.textContent,
-      thumb: elPost.querySelector('figure img')?.getAttribute('data-src'),
+      link:
+        this.getOriginUrl() +
+        elPost.querySelector("a[title]")?.getAttribute("href"),
+      title: elPost.querySelector("a[title]")?.getAttribute("title"),
+      thumb: elPost.querySelector("img")?.getAttribute("src"),
       // preview: '',
-      created_at: elPost.querySelector('.tec--timestamp__item')?.textContent,
+      created_at: elPost.querySelector(".tec--timestamp__item")?.textContent,
     });
 
-    const postsData = [...document.querySelectorAll('.tec--list__item')].map(
-      (elPost) => getContent(elPost),
+    const postsData = [...document.querySelectorAll("article")].map((elPost) =>
+      getContent(elPost),
     );
 
     return { posts: postsData };

@@ -16,7 +16,6 @@ class GizModo {
       .replaceAll("\n", "")
       .replaceAll("\t", "")
       .match(/<item>(.*?)<\/item>/g);
-    //console.log("result", document.body.innerHTML);
 
     const replaceSpaces = (text: string) => {
       return text
@@ -27,20 +26,21 @@ class GizModo {
     };
 
     const getContent = (elPost: Document) => {
-      console.log("\n\ngetContent", elPost.body.innerHTML);
       return {
-        link: elPost.body.innerHTML.match(/http.*<dc/)?.[0] ?? "",
+        link:
+          elPost.body.innerHTML.match(/http.*<dc/)?.[0].replace("<dc", "") ??
+          "",
         title: replaceSpaces(
-          String(elPost.querySelector("title")?.textContent)
+          String(elPost.querySelector("title")?.textContent),
         ),
         thumb:
-          elPost.body.innerHTML.match(/src="http.*"/)?.[0].split('"')[1] ?? "",
+          elPost.body.innerHTML.match(/url="http.*"/)?.[0].split('"')[1] ?? "",
         created_at: "",
       };
     };
 
     const postsData = (items ?? []).map((elPost) =>
-      getContent(new JSDOM(elPost).window.document)
+      getContent(new JSDOM(elPost).window.document),
     );
     //.filter((elPost) => elPost.thumb && elPost.title != "undefined");
 

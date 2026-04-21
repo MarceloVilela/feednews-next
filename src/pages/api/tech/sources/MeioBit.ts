@@ -1,35 +1,34 @@
-import { JSDOM } from 'jsdom';
-import IResponseHomeDTO from '.';
+import { JSDOM } from "jsdom";
+import IResponseHomeDTO from ".";
 
 class MeioBit {
   getOriginUrl() {
-    return 'https://meiobit.com';
+    return "https://meiobit.com";
   }
 
   async getHome(): Promise<IResponseHomeDTO> {
     const url = this.getOriginUrl();
-    console.log(`@MeioBit/getHome()/url:${url}`);
     const response = await JSDOM.fromURL(`${url}`);
     const { document } = response.window;
 
     const getContent = (elPost: Element) => ({
-      link: elPost.getAttribute('href'),
-      title: elPost.querySelector('h2')?.textContent,
+      link: elPost.getAttribute("href"),
+      title: elPost.querySelector("h2")?.textContent,
       thumb: elPost
-        .querySelector('.cover')
-        ?.getAttribute('style')
-        ?.split('(')[1]
-        ?.split(')')[0],
+        .querySelector(".cover")
+        ?.getAttribute("style")
+        ?.split("(")[1]
+        ?.split(")")[0],
       // preview: '',
       created_at: elPost
-        .querySelector('p.details')
-        ?.textContent?.split(' ')
+        .querySelector("p.details")
+        ?.textContent?.split(" ")
         ?.slice(3)
-        ?.join(' '),
+        ?.join(" "),
     });
 
     const postsData = [
-      ...document.querySelectorAll('.col-articles-list.f-left .list-post-link'),
+      ...document.querySelectorAll(".col-articles-list.f-left .list-post-link"),
     ].map((elPost) => getContent(elPost));
 
     return { posts: postsData };

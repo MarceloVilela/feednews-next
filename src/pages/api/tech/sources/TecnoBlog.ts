@@ -11,7 +11,6 @@ class TecnoBlog {
   async getHome(): Promise<IResponseHomeDTO> {
     const url = this.getOriginUrl();
     const response = await JSDOM.fromURL(url);
-    console.log(url, "RESPONSE");
     const { document } = response.window;
 
     const getContent = (elPost: Element) => {
@@ -35,7 +34,7 @@ class TecnoBlog {
     const postsData = [...document.querySelectorAll("article.bloco")]
       .map((elPost) => getContent(elPost))
       .filter(
-        (elPost) => elPost.thumb && elPost.title && elPost.title != "undefined"
+        (elPost) => elPost.thumb && elPost.title && elPost.title != "undefined",
       );
 
     return { posts: postsData };

@@ -55,11 +55,9 @@ class MaisEsports implements ISource {
   }
 
   async getHome_(): Promise<IResponseHomeDTO> {
-    console.log("draft-getHome");
     const { data } = await axios.get(
       "https://noticias.maisesports.com.br/graphql",
     );
-    console.log("data", data.posts);
     return { posts: data.posts };
   }
 }

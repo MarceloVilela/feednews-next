@@ -65,9 +65,6 @@ class ComboInfinito implements ISource {
     );
     //.filter((elPost) => elPost.thumb && elPost.title != "undefined");
 
-    console.log("slides" + Date.now());
-    console.log(postsSlideData);
-
     return { posts: [...postsSlideData, ...postsData] };
   }
 }

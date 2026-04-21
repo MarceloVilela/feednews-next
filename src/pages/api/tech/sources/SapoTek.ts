@@ -13,11 +13,9 @@ class SapoTek {
 
     const getContent = (elPost: Element) => {
       return {
-        link: `${this.getOriginUrl()}${elPost
-          ?.querySelector("a")
-          ?.getAttribute("href")}`,
+        link: `${elPost?.querySelector("a")?.getAttribute("href")}`,
         title: elPost?.querySelector("img")?.getAttribute("alt"),
-        thumb: `https:${elPost.querySelector("img")?.getAttribute("src")}`,
+        thumb: `${elPost.querySelector("img")?.getAttribute("srcset")?.split(" ")[0].trim()}`,
         created_at:
           elPost.querySelector("datetime")?.getAttribute("datetime") || "",
       };
@@ -26,7 +24,11 @@ class SapoTek {
     const postsData = [...document.querySelectorAll("article")]
       .map((elPost) => getContent(elPost))
       .filter(
-        (elPost) => elPost.thumb && elPost.title && elPost.title != "undefined",
+        (elPost) =>
+          elPost.thumb &&
+          elPost.title &&
+          elPost.thumb != "undefined" &&
+          elPost.title != "undefined",
       );
 
     return { posts: postsData };
