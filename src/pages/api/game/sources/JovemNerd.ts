@@ -18,11 +18,6 @@ class JovemNerd implements ISource {
     const response = await JSDOM.fromURL(`${url}`);
     const { document } = response.window;
 
-    fs.writeFileSync(
-      "./jovemnerd.html",
-      String(document.querySelector("html")?.innerHTML)
-    );
-
     const replaceSpaces = (text: string) => {
       return text
         .replace(/\n|\r|\t/g, "")
@@ -46,7 +41,7 @@ class JovemNerd implements ISource {
         (elPost) =>
           elPost.thumb &&
           elPost.title != "undefined" &&
-          !elPost.link.includes("autor")
+          !elPost.link.includes("autor"),
       );
 
     return { posts: [...postsData] };

@@ -16,10 +16,7 @@ class ShowMeTech {
       return {
         link: elPost.querySelector("h2 a")?.getAttribute("href"),
         title: elPost.querySelector("h2 a")?.textContent,
-        thumb: elPost
-          .querySelector("img")
-          ?.getAttribute("data-lazy-srcset")
-          ?.split(" ")[0],
+        thumb: elPost.querySelector("img")?.getAttribute("src")?.split(" ")[0],
         created_at: "",
       };
     };
