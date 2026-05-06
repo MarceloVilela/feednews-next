@@ -6,8 +6,11 @@ import { navigationMenuTriggerStyle } from "@/components/ui/navigation-menu";
 import { NavigationMenu } from "radix-ui";
 import { SettingsContext } from "hooks/settings";
 
-import { origins as originsTech } from "../../assets/json/tech/origins.json";
-import { origins as originsGame } from "../../assets/json/game/origins.json";
+import _originsTech from "../../assets/json/tech/origins";
+import _originsGame from "../../assets/json/game/origins";
+
+const originsTech = _originsTech.origins;
+const originsGame = _originsGame.origins;
 
 export function NavigationBar() {
   const { originGameChange, originTechChange } = useContext(SettingsContext);

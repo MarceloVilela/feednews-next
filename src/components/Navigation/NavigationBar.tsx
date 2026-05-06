@@ -14,8 +14,8 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 
-import originsTech from "../../assets/json/tech/origins.json";
-import originsGame from "../../assets/json/game/origins.json";
+import originsTech from "../../assets/json/tech/origins";
+import originsGame from "../../assets/json/game/origins";
 import { SettingsContext } from "../../hooks/settings";
 
 const components: { title: string; href: string; description: string }[] = [

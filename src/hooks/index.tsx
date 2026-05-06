@@ -3,8 +3,8 @@ import React, { Fragment, ReactNode } from "react";
 import { StyleSwitcherProvider, useStyleSwitcher } from "./styleSwitcher";
 import { SettingsProvider } from "./settings";
 
-import originsGame from "../assets/json/game/origins.json";
-import originsTech from "../assets/json/tech/origins.json";
+import originsGame from "../assets/json/game/origins";
+import originsTech from "../assets/json/tech/origins";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 
 interface AppProviderProps {
