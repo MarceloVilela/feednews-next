@@ -5,6 +5,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { PlaylistItem as Item } from "../Card";
 import { useEffect, useMemo, useState } from "react";
 import {
   //Ripple,
@@ -17,6 +18,7 @@ interface ArticlePreviewData {
   title: string;
   id: string;
   link: string;
+  thumb: string;
 }
 
 interface ArticleCardProps {
@@ -35,13 +37,31 @@ export default function ArticleCardShadcn({ articles }: ArticleCardProps) {
     }
     return articles.filter(
       (value, index, self) =>
-        self.findIndex((v) => v["id"] === value["id"]) === index
+        self.findIndex((v) => v["id"] === value["id"]) === index,
     );
   }, [articles]);
+
+  const handleOpenTab = (link: string) => {
+    window.open(link, "_blank", "noopener,noreferrer");
+  };
 
   if (!articles || articles.length === 0 || articles[0].title == "") {
     return <div></div>;
   }
+
+  return (
+    <>
+      <div className="grid sm:grid-cols-2- lg:grid-cols-3- gap-4">
+        {_articles.map(({ title, link, thumb, id }, key) => (
+          <Item
+            key={id}
+            onClick={() => handleOpenTab(link)}
+            item={{ title, image: thumb, artist: link }}
+          />
+        ))}
+      </div>
+    </>
+  );
 
   return (
     <>

@@ -26,6 +26,11 @@
       "BIN_ID": "6092cedf92cb9267d0ce0dfe"
     },
     {
+      "title": "TecMundo",
+      "url": "https://www.tecmundo.com.br",
+      "BIN_ID": "6092cedf92cb9267d0ce0dfe"
+    },
+    {
       "title": "Leak",
       "url": "https://www.leak.pt",
       "BIN_ID": "6092ced6d64cd16802ab5418"
@@ -82,7 +87,7 @@
       "url": "https://www.profissionaisti.com.br",
       "BIN_ID": "6092cecfd64cd16802ab5412",
       "at": "2026-04-10T00:00:00Z",
-      "reason": "site offline" 
+      "reason": "site offline"
     }
   ]
 }
