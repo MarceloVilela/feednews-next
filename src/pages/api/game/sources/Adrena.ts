@@ -1,11 +1,5 @@
 import { JSDOM } from "jsdom";
-import ITrendDTO, {
-  ISource,
-  ISearchParams,
-  IShowDetailMagnetDTO,
-  Answer,
-  IResponseHomeDTO,
-} from ".";
+import { ISource, IResponseHomeDTO } from ".";
 
 class Adrena implements ISource {
   getOriginUrl(): string {
@@ -30,7 +24,7 @@ class Adrena implements ISource {
         link: elPost.querySelector("a")?.getAttribute("href"),
         title: elPost.querySelector("a")?.getAttribute("title"),
         thumb: String(
-          elPost.querySelector("img")?.getAttribute("data-srcset")
+          elPost.querySelector("img")?.getAttribute("data-srcset"),
         ).split(" ")[0],
         created_at: "",
       };
@@ -44,7 +38,7 @@ class Adrena implements ISource {
         (elPost) =>
           elPost.thumb != "" &&
           elPost.thumb != "null" &&
-          elPost.title != "undefined"
+          elPost.title != "undefined",
       );
 
     return { posts: [...postsData] };

@@ -1,11 +1,5 @@
 import { JSDOM } from "jsdom";
-import ITrendDTO, {
-  ISource,
-  ISearchParams,
-  IShowDetailMagnetDTO,
-  Answer,
-  IResponseHomeDTO,
-} from ".";
+import { ISource, IResponseHomeDTO } from ".";
 
 class PsxBrasil implements ISource {
   getOriginUrl(): string {
@@ -29,7 +23,7 @@ class PsxBrasil implements ISource {
       return {
         link: elPost.querySelector(".post-title a")?.getAttribute("href"),
         title: replaceSpaces(
-          String(elPost.querySelector(".post-title a")?.textContent)
+          String(elPost.querySelector(".post-title a")?.textContent),
         ),
         thumb: elPost.querySelector("img")?.getAttribute("data-src"),
         created_at: "",

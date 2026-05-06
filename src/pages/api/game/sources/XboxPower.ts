@@ -1,11 +1,5 @@
 import { JSDOM } from "jsdom";
-import ITrendDTO, {
-  ISource,
-  ISearchParams,
-  IShowDetailMagnetDTO,
-  Answer,
-  IResponseHomeDTO,
-} from ".";
+import { ISource, IResponseHomeDTO } from ".";
 
 class XboxPower implements ISource {
   getOriginUrl(): string {
@@ -27,7 +21,7 @@ class XboxPower implements ISource {
 
     const getContent = (elPost: Element) => {
       return {
-        link: `${url}${elPost.querySelector("a")?.getAttribute("href")}`,
+        link: `${elPost.querySelector("h2 a")?.getAttribute("href")}`,
         title: replaceSpaces(String(elPost.querySelector("h2 a")?.textContent)),
         thumb: elPost.querySelector("img")?.getAttribute("src"),
         created_at: "",
@@ -35,7 +29,7 @@ class XboxPower implements ISource {
     };
 
     const postsData = [...document.querySelectorAll("article")].map((elPost) =>
-      getContent(elPost)
+      getContent(elPost),
     );
     //.filter((elPost) => (elPost.thumb && elPost.title != "undefined"));
 

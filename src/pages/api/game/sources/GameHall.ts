@@ -1,11 +1,5 @@
 import { JSDOM } from "jsdom";
-import ITrendDTO, {
-  ISource,
-  ISearchParams,
-  IShowDetailMagnetDTO,
-  Answer,
-  IResponseHomeDTO,
-} from ".";
+import { ISource, IResponseHomeDTO } from ".";
 
 class GameHall implements ISource {
   getOriginUrl(): string {
@@ -29,7 +23,7 @@ class GameHall implements ISource {
       return {
         link: url + "/" + elPost.querySelector("a")?.getAttribute("href"),
         title: replaceSpaces(
-          String(elPost.querySelector(".thumb-title")?.textContent)
+          String(elPost.querySelector(".thumb-title")?.textContent),
         ),
         thumb: elPost
           .querySelector("img[data-lazy]")

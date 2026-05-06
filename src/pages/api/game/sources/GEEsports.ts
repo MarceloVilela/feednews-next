@@ -1,9 +1,9 @@
-import { JSDOM } from 'jsdom';
-import ITrendDTO, { ISource, ISearchParams, IShowDetailMagnetDTO, Answer, IResponseHomeDTO } from '.';
+import { JSDOM } from "jsdom";
+import { ISource, IResponseHomeDTO } from ".";
 
 class GEEsports implements ISource {
   getOriginUrl(): string {
-    return 'https://ge.globo.com/esports';
+    return "https://ge.globo.com/esports";
   }
 
   async getHome(): Promise<IResponseHomeDTO> {
@@ -12,24 +12,28 @@ class GEEsports implements ISource {
     const { document } = response.window;
 
     const replaceSpaces = (text: string) => {
-      return text.replace(/\n|\r|\t/g, '')
-      .replace(/\n|\s{2,}/g, '')
-      .replace(/\\n|\\r|\\t/g, '')
-      .replace(/\s{2,}/g, '')
-    }
+      return text
+        .replace(/\n|\r|\t/g, "")
+        .replace(/\n|\s{2,}/g, "")
+        .replace(/\\n|\\r|\\t/g, "")
+        .replace(/\s{2,}/g, "");
+    };
 
     const getContent = (elPost: Element) => {
       return {
-        link: elPost.querySelector('a')?.getAttribute('href'),
-        title: replaceSpaces(String(elPost.querySelector('h2')?.textContent)),
-        thumb: elPost.querySelector('img')?.getAttribute('srcSet')?.split(' ')[0],
-        created_at: '',
+        link: elPost.querySelector("a")?.getAttribute("href"),
+        title: replaceSpaces(String(elPost.querySelector("h2")?.textContent)),
+        thumb: elPost
+          .querySelector("img")
+          ?.getAttribute("srcSet")
+          ?.split(" ")[0],
+        created_at: "",
       };
     };
 
-    const postsData = [...document.querySelectorAll('.bastian-feed-item'),]
+    const postsData = [...document.querySelectorAll(".bastian-feed-item")]
       .map((elPost) => getContent(elPost))
-      .filter((elPost) => (elPost.thumb && elPost.title != "undefined"));
+      .filter((elPost) => elPost.thumb && elPost.title != "undefined");
 
     return { posts: [...postsData] };
   }

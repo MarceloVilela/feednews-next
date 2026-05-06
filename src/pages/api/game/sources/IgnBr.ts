@@ -1,11 +1,5 @@
 import { JSDOM } from "jsdom";
-import ITrendDTO, {
-  ISource,
-  ISearchParams,
-  IShowDetailMagnetDTO,
-  Answer,
-  IResponseHomeDTO,
-} from ".";
+import { ISource, IResponseHomeDTO } from ".";
 
 class IgnBr implements ISource {
   getOriginUrl(): string {
@@ -41,7 +35,7 @@ class IgnBr implements ISource {
           elPost.thumb &&
           elPost.thumb != "null" &&
           elPost.title &&
-          elPost.title != "undefined"
+          elPost.title != "undefined",
       );
 
     const getDataContent = (elPost: Element) => {
@@ -60,7 +54,7 @@ class IgnBr implements ISource {
           elPost.thumb &&
           elPost.thumb != "null" &&
           elPost.title &&
-          elPost.title != "undefined"
+          elPost.title != "undefined",
       );
 
     return { posts: [...cardsData, ...postsData] };

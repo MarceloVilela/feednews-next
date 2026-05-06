@@ -1,11 +1,5 @@
 import { JSDOM } from "jsdom";
-import ITrendDTO, {
-  ISource,
-  ISearchParams,
-  IShowDetailMagnetDTO,
-  Answer,
-  IResponseHomeDTO,
-} from ".";
+import { ISource, IResponseHomeDTO } from ".";
 
 class JogaZera implements ISource {
   getOriginUrl(): string {
@@ -29,7 +23,7 @@ class JogaZera implements ISource {
       return {
         link: elPost.querySelector("a")?.getAttribute("href"),
         title: replaceSpaces(
-          String(elPost.querySelector(".title")?.textContent)
+          String(elPost.querySelector(".title")?.textContent),
         ),
         thumb: elPost.querySelector("img[src]")?.getAttribute("src"),
         created_at: "",

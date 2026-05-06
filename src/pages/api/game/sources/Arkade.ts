@@ -1,11 +1,5 @@
 import { JSDOM } from "jsdom";
-import ITrendDTO, {
-  ISource,
-  ISearchParams,
-  IShowDetailMagnetDTO,
-  Answer,
-  IResponseHomeDTO,
-} from ".";
+import { ISource, IResponseHomeDTO } from ".";
 
 class Arkade implements ISource {
   getOriginUrl(): string {
@@ -29,7 +23,7 @@ class Arkade implements ISource {
       return {
         link: elPost.querySelector("a")?.getAttribute("href"),
         title: replaceSpaces(
-          String(elPost.querySelector(".post-content")?.textContent)
+          String(elPost.querySelector(".post-content")?.textContent),
         ),
         thumb: elPost
           .querySelector(".background-image-container")
