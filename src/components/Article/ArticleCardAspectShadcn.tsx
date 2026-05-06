@@ -1,4 +1,10 @@
-import { Card, CardContent, CardDescription, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardTitle,
+} from "@/components/ui/card";
+import { HeroCard as Item } from "../Card";
 import { useEffect, useMemo, useState } from "react";
 import {
   //Ripple,
@@ -32,7 +38,7 @@ export default function ArticleCardAspectShadcn({
     }
     return articles.filter(
       (value, index, self) =>
-        self.findIndex((v) => v["id"] === value["id"]) === index
+        self.findIndex((v) => v["id"] === value["id"]) === index,
     );
   }, [articles]);
 
@@ -40,7 +46,25 @@ export default function ArticleCardAspectShadcn({
     return <div></div>;
   }
 
+  const handleOpenTab = (link: string) => {
+    window.open(link, "_blank", "noopener,noreferrer");
+  };
+
   //sm:grid-cols-2 lg:grid-cols-3
+  return (
+    <>
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {_articles.map(({ title, link, id, thumb }, key) => (
+          <Item
+            key={id}
+            onClick={() => handleOpenTab(link)}
+            item={{ title, image: thumb }}
+          />
+        ))}
+      </div>
+    </>
+  );
+
   return (
     <>
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -68,9 +92,7 @@ export default function ArticleCardAspectShadcn({
               />
             </a>
             <CardContent className="items-center m-0 p-0 h-4">
-              <CardDescription>
-                {title}
-              </CardDescription>
+              <CardDescription>{title}</CardDescription>
             </CardContent>
           </Card>
         ))}

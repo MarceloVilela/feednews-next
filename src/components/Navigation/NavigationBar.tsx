@@ -64,17 +64,6 @@ export function NavigationBar() {
     <NavigationMenu>
       <NavigationMenuList>
         <NavigationMenuItem>
-          <NavigationMenuTrigger>MAGNET</NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-              <ListItem title={'Magnet'} href={`/`}>Magnet</ListItem>
-              <ListItem title={'Movie'} href={`/magnet/movie`}>Magnet</ListItem>
-              <ListItem title={'Trend'} href={`/magnet/trend`}>Magnet</ListItem>
-            </ul>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
-
-        <NavigationMenuItem>
           <NavigationMenuTrigger>TECH</NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
@@ -109,6 +98,23 @@ export function NavigationBar() {
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
+
+        <NavigationMenuItem className="hidden">
+          <NavigationMenuTrigger>MAGNET</NavigationMenuTrigger>
+          <NavigationMenuContent>
+            <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
+              <ListItem title={"Magnet"} href={`/`}>
+                Magnet
+              </ListItem>
+              <ListItem title={"Movie"} href={`/magnet/movie`}>
+                Magnet
+              </ListItem>
+              <ListItem title={"Trend"} href={`/magnet/trend`}>
+                Magnet
+              </ListItem>
+            </ul>
+          </NavigationMenuContent>
+        </NavigationMenuItem>
         {/*<NavigationMenuItem>
           <Link href="/docs" legacyBehavior passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
@@ -131,7 +137,7 @@ const ListItem = React.forwardRef<
         <span
           className={cn(
             "cursor-pointer block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
-            className
+            className,
           )}
         >
           <Link href={`${href}`} passHref={true} {...props}>
