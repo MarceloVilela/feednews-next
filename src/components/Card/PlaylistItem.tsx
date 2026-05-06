@@ -41,10 +41,10 @@ export default function PlaylistItem({ item, onClick }: PlaylistItemProps) {
 
       {/* Title & artist */}
       <div className="flex min-w-0 flex-1 flex-col">
-        <span className="truncate text-sm font-medium text-gray-900 dark:text-gray-100">
+        <span className="_truncate _break-words line-clamp-1 text-sm font-medium text-gray-900 dark:text-gray-100">
           {item.title}
         </span>
-        <span className="truncate text-xs text-gray-500 dark:text-gray-400">
+        <span className="_truncate _break-words line-clamp-1 text-xs text-gray-500 dark:text-gray-400">
           {item.artist}
         </span>
       </div>
