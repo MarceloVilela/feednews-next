@@ -7,7 +7,7 @@ import { useQuery } from "react-query";
 import Loading from "components/Loading";
 import MenuButton from "components/ArticleMenu/MenuButton";
 import ArticleCardWithImage from "components/Article/ArticleCardShadcn";
-import originsJson from "../../assets/json/tech/origins.json";
+import originsJson from "../../assets/json/tech/origins";
 import { SettingsContext } from "hooks/settings";
 
 export interface RouteParams {
