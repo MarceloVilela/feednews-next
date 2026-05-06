@@ -8,7 +8,7 @@ import api from "services/api";
 import Loading from "components/Loading";
 import MenuButton from "components/ArticleMenu/MenuButton";
 import ArticleCardWithImage from "components/Article/ArticleCardAspectShadcn";
-import originsJson from "../../assets/json/game/origins.json";
+import originsJson from "../../assets/json/game/origins";
 import { RouteParams } from "pages/tech/[slug]";
 
 export interface NewsContentProps {
