@@ -1,11 +1,5 @@
 import { JSDOM } from "jsdom";
-import ITrendDTO, {
-  ISource,
-  ISearchParams,
-  IShowDetailMagnetDTO,
-  Answer,
-  IResponseHomeDTO,
-} from ".";
+import { ISource, IResponseHomeDTO } from ".";
 
 class ComboInfinito implements ISource {
   getOriginUrl(): string {
@@ -31,7 +25,7 @@ class ComboInfinito implements ISource {
         title: replaceSpaces(String(elPost.querySelector("h2 a")?.textContent)),
         thumb: elPost.querySelector("img")?.getAttribute("data-lazy-src"),
         created_at: replaceSpaces(
-          String(elPost.querySelector(".elementor-post-date")?.textContent)
+          String(elPost.querySelector(".elementor-post-date")?.textContent),
         ),
       };
     };

@@ -1,11 +1,5 @@
 import { JSDOM } from "jsdom";
-import ITrendDTO, {
-  ISource,
-  ISearchParams,
-  IShowDetailMagnetDTO,
-  Answer,
-  IResponseHomeDTO,
-} from ".";
+import { ISource, IResponseHomeDTO } from ".";
 
 class Voxel implements ISource {
   getOriginUrl(): string {

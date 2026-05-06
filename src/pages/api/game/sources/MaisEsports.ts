@@ -1,12 +1,6 @@
 import axios from "axios";
 import { JSDOM } from "jsdom";
-import ITrendDTO, {
-  ISource,
-  ISearchParams,
-  IShowDetailMagnetDTO,
-  Answer,
-  IResponseHomeDTO,
-} from ".";
+import { ISource, IResponseHomeDTO } from ".";
 
 class MaisEsports implements ISource {
   getOriginUrl(): string {
