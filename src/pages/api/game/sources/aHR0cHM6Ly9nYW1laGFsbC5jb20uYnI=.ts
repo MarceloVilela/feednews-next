@@ -1,0 +1,43 @@
+import { JSDOM } from "jsdom";
+import { ISource, IResponseHomeDTO } from ".";
+
+class G4m3H implements ISource {
+  getOriginUrl(): string {
+    return atob("aHR0cHM6Ly9nYW1laGFsbC5jb20uYnI=");
+  }
+
+  async getHome(): Promise<IResponseHomeDTO> {
+    const url = this.getOriginUrl();
+    const response = await JSDOM.fromURL(`${url}`);
+    const { document } = response.window;
+
+    const replaceSpaces = (text: string) => {
+      return text
+        .replace(/\n|\r|\t/g, "")
+        .replace(/\n|\s{2,}/g, "")
+        .replace(/\\n|\\r|\\t/g, "")
+        .replace(/\s{2,}/g, "");
+    };
+
+    const getContent = (elPost: Element) => {
+      return {
+        link: url + "/" + elPost.querySelector("a")?.getAttribute("href"),
+        title: replaceSpaces(
+          String(elPost.querySelector(".thumb-title")?.textContent),
+        ),
+        thumb: elPost
+          .querySelector("img[data-lazy]")
+          ?.getAttribute("data-lazy"),
+        created_at: "",
+      };
+    };
+
+    const postsData = [...document.querySelectorAll(".slide .grid-item")]
+      .map((elPost) => getContent(elPost))
+      .filter((elPost) => elPost.thumb && elPost.title != "undefined");
+
+    return { posts: [...postsData] };
+  }
+}
+
+export default new G4m3H();
