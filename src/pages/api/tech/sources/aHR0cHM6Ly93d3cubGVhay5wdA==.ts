@@ -1,6 +1,5 @@
 import { JSDOM } from "jsdom";
 import IResponseHomeDTO from ".";
-//import fs from "fs";
 
 class L34k {
   getOriginUrl(): string {
@@ -11,8 +10,6 @@ class L34k {
     const url = this.getOriginUrl();
     const response = await JSDOM.fromURL(`${url}`);
     const { document } = response.window;
-
-    //fs.writeFileSync("./leak.html", String(document.querySelector("html")?.innerHTML));
 
     const getContent = (elPost: Element) => {
       return {
