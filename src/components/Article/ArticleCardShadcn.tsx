@@ -51,7 +51,7 @@ export default function ArticleCardShadcn({ articles }: ArticleCardProps) {
 
   return (
     <>
-      <div className="grid sm:grid-cols-2- lg:grid-cols-3- gap-4">
+      <div className="grid sm:grid-cols-2- lg:grid-cols-3- gap-4 px-0 sm:px-4">
         {_articles.map(({ title, link, thumb, id }, key) => (
           <Item
             key={id}

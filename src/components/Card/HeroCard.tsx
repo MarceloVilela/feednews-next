@@ -25,6 +25,7 @@ export default function HeroCard({ item, onClick }: HeroCardProps) {
           alt={item.title}
           className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
           loading="lazy"
+          referrerPolicy="no-referrer"
         />
       </div>
 
