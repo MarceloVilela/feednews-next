@@ -5,7 +5,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "jest --runInBand",
+    "test:e2e:apitech": "jest src/pages/api/__tests__/tech-source.integration.test",
+    "test:e2e:apigame": "jest src/pages/api/__tests__/game-source.integration.test"
   },
   "engines": {
     "node": ">=24.0.0",
@@ -37,16 +40,20 @@
     "tw-elements": "^1.0.0-beta2"
   },
   "devDependencies": {
+    "@types/jest": "^30.0.0",
     "@types/jsdom": "^21.1.0",
     "@types/node": "^25.5.2",
     "@types/react": "^18.2.47",
     "@types/react-dom": "^18.2.18",
+    "@types/supertest": "^7.2.0",
     "eslint": "^9.0.0",
     "eslint-config-next": "^15.5.14",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.5",
     "prettier": "^3.8.1",
+    "supertest": "^7.2.2",
     "tailwindcss": "^3.2.7",
+    "ts-jest": "^29.4.9",
     "typescript": "^6.0.2"
   }
 }
