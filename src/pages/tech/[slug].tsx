@@ -1,14 +1,12 @@
-import React, { useContext, useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import { GetStaticProps } from "next";
 import Head from "next/head";
 import { useQuery } from "react-query";
 
-//import api from 'services/api';
+import api from "services/api";
 import Loading from "components/Loading";
-import MenuButton from "components/ArticleMenu/MenuButton";
 import ArticleCardWithImage from "components/Article/ArticleCardShadcn";
 import originsJson from "../../assets/json/tech/origins";
-import { SettingsContext } from "hooks/settings";
 
 export interface RouteParams {
   slug: string;
@@ -19,10 +17,8 @@ export interface NewsContentProps {
 }
 
 export interface NewsProps {
-  data: {
-    data: Content[];
-    total: number;
-  };
+  data: Content[];
+  total: number;
   slug: string;
 }
 
@@ -41,8 +37,6 @@ const fetcher = (url: string) =>
   fetch(`/api/tech/source?url=${url}`).then((res) => res.json());
 
 export default function News(props: NewsProps) {
-  const [urlState, setUrl] = useState(urlInitial);
-  const { originTech: url } = useContext(SettingsContext);
   const urlMemo = useMemo(() => {
     const found = origins.filter(({ title }) => title === props.slug)[0];
     return found?.url || "";
@@ -53,43 +47,23 @@ export default function News(props: NewsProps) {
     () => fetcher(urlMemo),
     {
       refetchOnWindowFocus: false,
-      staleTime: 86400000,
-      //placeholderData: [] as unknown as NewsContentProps,
-      //placeholderData: props.data as NewsContentProps,
+      staleTime: 60 * 60 * 2, //2 hours,
+      initialData: props.total ? (props as NewsContentProps) : undefined,
     },
   );
-
-  const list = useMemo(() => {
-    const items = origins.map(({ url, title, BIN_ID }) => ({
-      label: title,
-      id: BIN_ID,
-      onClick: () => setUrl(url),
-    })); //as unknown as ButtonListProps
-    return [
-      {
-        label: "Recentes",
-        id: "6092cee092cb9267d0ce0e00",
-        onClick: () => setUrl(""),
-      },
-      ...items,
-    ];
-  }, []);
 
   return (
     <>
       <Head>
-        <title>News {url ? `| ${url}` : `| Recentes`}</title>
+        <title>{`News | ${props.slug ? props.slug : ""}`}</title>
       </Head>
-
-      {/*<div className="my-4"><MenuButton options={list} /></div>
-      <h3 className="text-white">=={url} | {JSON.stringify(props.slug, null, 2)}</h3>*/}
 
       {isLoading ? (
         <Loading />
       ) : (
         <>
           {articles ? (
-            <div className="my-4">
+            <div className="my-4 border-blue-400 border-">
               <ArticleCardWithImage articles={articles.data} />
             </div>
           ) : null}
@@ -100,22 +74,21 @@ export default function News(props: NewsProps) {
 }
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  console.log("Tech:getStaticProps", params);
   const { slug } = params as unknown as RouteParams;
   try {
-    //const { data } = await api.get(`/api/tech/source?url=${urlInitial}`);
+    const { data } = await api.get(`/api/tech/source?url=${slug}`);
 
     return {
-      props: { data: { data: [], total: 0 }, slug },
-      revalidate: 60 * 60 * 2, //2 hours
+      props: { data: data.data, total: data.total, slug },
+      revalidate: 60 * 60 * 24, //24 hours
     };
   } catch (error) {
-    return { props: { data: [], slug } };
+    return { props: { data: [], total: 0, slug } };
   }
 };
 
 export async function getStaticPaths() {
-  const paths = origins.map((origin) => ({
+  const paths = origins.slice(0, 1).map((origin) => ({
     params: { slug: origin.title },
   }));
 
