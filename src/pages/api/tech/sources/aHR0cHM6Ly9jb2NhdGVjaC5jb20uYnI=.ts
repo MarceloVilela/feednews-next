@@ -1,7 +1,7 @@
 import { JSDOM } from "jsdom";
 import IResponseHomeDTO from ".";
 
-class C0c4t {
+class C0c4t_ {
   getOriginUrl(): string {
     return atob("aHR0cHM6Ly9jb2NhdGVjaC5jb20uYnI=");
   }
@@ -32,4 +32,4 @@ class C0c4t {
   }
 }
 
-export default new C0c4t();
+export default new C0c4t_();

@@ -14,8 +14,8 @@ class Sh0w {
 
     const getContent = (elPost: Element) => {
       return {
-        link: elPost.querySelector("h2 a")?.getAttribute("href"),
-        title: elPost.querySelector("h2 a")?.textContent,
+        link: elPost.querySelector("h3 a")?.getAttribute("href"),
+        title: elPost.querySelector("h3 a")?.textContent,
         thumb: elPost
           .querySelector("img")
           ?.getAttribute("data-lazy-srcset")

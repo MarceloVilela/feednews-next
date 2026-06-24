@@ -18,7 +18,7 @@ class L34k {
           .querySelector("h3")
           ?.textContent.replace(/\n/g, "")
           .trim(),
-        thumb: elPost.querySelector("[data-src]")?.getAttribute("data-src"),
+        thumb: elPost.querySelector("img[src]")?.getAttribute("src"),
         created_at: elPost.querySelector(".jeg_meta_date")?.textContent,
       };
     };
