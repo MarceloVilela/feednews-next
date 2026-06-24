@@ -1,4 +1,4 @@
-import { JSDOM } from "jsdom";
+import { JSDOM, ResourceLoader } from "jsdom";
 import { ISource, IResponseHomeDTO } from ".";
 
 class XbP0w implements ISource {
@@ -7,8 +7,14 @@ class XbP0w implements ISource {
   }
 
   async getHome(): Promise<IResponseHomeDTO> {
+    const resourceLoader = new ResourceLoader({
+      strictSSL: false,
+    });
+
     const url = this.getOriginUrl();
-    const response = await JSDOM.fromURL(`${url}`);
+    const response = await JSDOM.fromURL(`${url}`, {
+      resources: resourceLoader,
+    });
     const { document } = response.window;
 
     const replaceSpaces = (text: string) => {

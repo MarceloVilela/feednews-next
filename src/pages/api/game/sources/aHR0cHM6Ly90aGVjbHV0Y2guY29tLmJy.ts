@@ -21,14 +21,14 @@ class Th3Cl implements ISource {
 
     const getContent = (elPost: Element) => {
       return {
-        link: `${elPost.querySelector("a")?.getAttribute("href")}`,
-        title: replaceSpaces(String(elPost.querySelector("h2")?.textContent)),
-        thumb: elPost.querySelector("img[src]")?.getAttribute("data-src"),
+        link: url + `${elPost?.getAttribute("href")}`,
+        title: replaceSpaces(String(elPost.querySelector("h3")?.textContent)),
+        thumb: url + elPost.querySelector("img[src]")?.getAttribute("src"),
         created_at: "",
       };
     };
 
-    const postsData = [...document.querySelectorAll("article.type-post")]
+    const postsData = [...document.querySelectorAll(".news-card")]
       .map((elPost) => getContent(elPost))
       .filter((elPost) => elPost.thumb && elPost.title != "undefined");
 

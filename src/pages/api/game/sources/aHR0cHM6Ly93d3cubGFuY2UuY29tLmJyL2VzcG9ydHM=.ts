@@ -21,9 +21,9 @@ class L4nc3 implements ISource {
 
     const getContent = (elPost: Element) => {
       return {
-        link: elPost.querySelector("a")?.getAttribute("href"),
+        link: elPost?.getAttribute("href"),
         title: replaceSpaces(
-          String(elPost.querySelector("p.title")?.textContent),
+          String(elPost.querySelector("div>span")?.textContent),
         ),
         //thumb: elPost.querySelector('img')?.getAttribute('srcSet')?.split(',').filter(item => item.includes('jpg'))[0],
         thumb: String(
@@ -33,7 +33,7 @@ class L4nc3 implements ISource {
       };
     };
 
-    const postsData = [...document.querySelectorAll("section.flex-col.gap-2")]
+    const postsData = [...document.querySelectorAll("a.flex-col.gap-6")]
       .map((elPost) => getContent(elPost))
       .filter((elPost) => elPost.thumb && elPost.title != "undefined");
 
