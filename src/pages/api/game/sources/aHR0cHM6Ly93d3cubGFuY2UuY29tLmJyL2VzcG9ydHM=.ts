@@ -22,9 +22,7 @@ class L4nc3 implements ISource {
     const getContent = (elPost: Element) => {
       return {
         link: elPost?.getAttribute("href"),
-        title: replaceSpaces(
-          String(elPost.querySelector("div>span")?.textContent),
-        ),
+        title: replaceSpaces(String(elPost.querySelector("h2")?.textContent)),
         //thumb: elPost.querySelector('img')?.getAttribute('srcSet')?.split(',').filter(item => item.includes('jpg'))[0],
         thumb: String(
           elPost.querySelector("img")?.getAttribute("srcset"),
