@@ -23,7 +23,7 @@ class G4m3V implements ISource {
       return {
         link: elPost.querySelector("h2 a")?.getAttribute("href"),
         title: replaceSpaces(String(elPost.querySelector("h2 a")?.textContent)),
-        thumb: elPost.querySelector("img")?.getAttribute("data-lazy-src"),
+        thumb: elPost.querySelector("img")?.getAttribute("src"),
         created_at: replaceSpaces(
           String(elPost.querySelector(".elementor-post-date")?.textContent),
         ),
@@ -31,7 +31,7 @@ class G4m3V implements ISource {
     };
 
     const postsData = [
-      ...document.querySelectorAll(".elementor-loop-container .post.type-post"),
+      ...document.querySelectorAll(".elementor-grid .post.type-post"),
     ]
       .map((elPost) => getContent(elPost))
       .filter((elPost) => elPost.thumb && elPost.title != "undefined");
