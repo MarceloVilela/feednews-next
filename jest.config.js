@@ -2,10 +2,11 @@ module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'node',
   roots: ['<rootDir>/src'],
-  testMatch: ['**/__tests__/**/*.test.ts'],
+  testMatch: ['**/__tests__/**/*.test.{ts,tsx}'],
   transform: {
-    '^.+\\.ts$': 'ts-jest',
+    '^.+\\.tsx?$': ['ts-jest', { tsconfig: { jsx: 'react-jsx' } }],
   },
-  moduleFileExtensions: ['ts', 'js'],
-  collectCoverageFrom: ['src/**/*.{ts,js}'],
+  moduleFileExtensions: ['ts', 'tsx', 'js'],
+  collectCoverageFrom: ['src/**/*.{ts,tsx,js}'],
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
 };

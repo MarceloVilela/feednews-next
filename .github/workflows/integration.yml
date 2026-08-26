@@ -1,0 +1,21 @@
+# Disparo manual, de propósito (não bloqueia PR/push): estes testes fazem requests
+# HTTP reais contra ~60 sites de terceiros, então falha aqui pode ser um site fora
+# do ar ou HTML mudado, não necessariamente uma regressão neste repositório.
+name: Integration (scraping sources)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm test:e2e:apitech
+      - run: pnpm test:e2e:apigame

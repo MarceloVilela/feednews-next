@@ -82,6 +82,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 };
 
 export async function getStaticPaths() {
+  // Só a primeira origem é pré-renderizada no build para não ser exaustivo dado o número de fontes; as demais usam fallback: "blocking".
   const paths = origins.slice(0, 1).map((origin) => ({
     params: { slug: origin.title },
   }));
