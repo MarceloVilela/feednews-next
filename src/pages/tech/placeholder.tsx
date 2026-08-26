@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Head from "next/head";
 
-import { api } from "../../services/api";
+import { apiTech } from "../../services/api";
 import jsonbin from "../../services/jsonbin";
 import { NewsContentProps, NewsProps } from "./[slug]";
 
@@ -32,22 +32,23 @@ export default function TechNewsPlaceholder() {
       };
 
       try {
-        console.log("/technews/post/origin", { params });
-        const response = await api.get("/technews/post/origin", { params });
+        const response = await apiTech.get("/technews/post/origin", {
+          params,
+        });
         data = response.data;
 
         const last = `${title} | ${data.data[0].created_at}`;
         setLastDates((prevState) => [...prevState, last]);
         // Alert.alert(url, JSON.stringify(params, null, 2));return;
       } catch (error) {
-        console.log("LISTA", "/technews/post/origin", params);
+        console.error("LISTA", "/technews/post/origin", params);
         //setResponseDebug([params, error]);
       }
 
       try {
         await jsonbin.put(BIN_ID, data);
       } catch (error) {
-        console.log("PLACEHOLDER", url);
+        console.error("PLACEHOLDER", url);
         //setResponseDebug([error]);
       }
     };

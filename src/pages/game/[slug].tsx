@@ -1,9 +1,9 @@
 import React, { useMemo } from "react";
 import { GetStaticProps } from "next";
 import Head from "next/head";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 
-import api from "services/api";
+import { apiGeneric } from "services/api";
 import Loading from "components/Loading";
 import ArticleCardWithImage from "components/Article/ArticleCardAspectShadcn";
 import originsJson from "../../assets/json/game/origins";
@@ -38,15 +38,13 @@ export default function Game(props: NewsProps) {
     return origin?.url ?? urlInitial;
   }, [props.slug]);
 
-  const { data: articles, isLoading } = useQuery<NewsContentProps>(
-    [urlMemo],
-    () => fetcher(urlMemo),
-    {
-      refetchOnWindowFocus: false,
-      staleTime: 60 * 60 * 2, //2 hours,
-      initialData: props.total ? (props as NewsContentProps) : undefined,
-    },
-  );
+  const { data: articles, isPending: isLoading } = useQuery<NewsContentProps>({
+    queryKey: [urlMemo],
+    queryFn: () => fetcher(urlMemo),
+    refetchOnWindowFocus: false,
+    staleTime: 60 * 60 * 2, //2 hours,
+    initialData: props.total ? (props as NewsContentProps) : undefined,
+  });
 
   return (
     <>
@@ -72,7 +70,7 @@ export default function Game(props: NewsProps) {
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const { slug } = params as unknown as RouteParams;
   try {
-    const { data } = await api.get(`/api/game/source?url=${slug}`);
+    const { data } = await apiGeneric.get(`/api/game/source?url=${slug}`);
 
     return {
       props: { data: data.data, total: data.total, slug },

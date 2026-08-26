@@ -1,6 +1,5 @@
 export default function localStorageProvider() {
   if (typeof window !== "undefined") {
-    console.log('localStorage');
     // When initializing, we restore the data from `localStorage` into a map.
     const map = new Map(JSON.parse(localStorage.getItem('app-cache') || '[]'))
 
