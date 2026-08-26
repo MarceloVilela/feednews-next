@@ -1,6 +1,5 @@
 import type { AppProps } from "next/app";
-import { SWRConfig } from "swr";
-import { QueryClient, QueryClientProvider, useQuery } from "react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 //import "tw-elements/dist/css/tw-elements.min.css";
 //import "tailwindcss/tailwind.css";
@@ -31,17 +30,9 @@ function MyApp({ Component, pageProps }: AppProps) {
           </main>
 
           <main className="w-full max-w-[1124px] mx-auto border- border-1- flex-col flex-1 items-center mt-5">
-            <SWRConfig
-              value={{
-                //refreshInterval: 3000,
-                fetcher: (resource, init) =>
-                  fetch(resource, init).then((res) => res.json()),
-              }}
-            >
-              <QueryClientProvider client={queryClient}>
-                <Component {...pageProps} />
-              </QueryClientProvider>
-            </SWRConfig>
+            <QueryClientProvider client={queryClient}>
+              <Component {...pageProps} />
+            </QueryClientProvider>
           </main>
         </div>
       </div>

@@ -1,15 +1,14 @@
 import axios from 'axios'
 
-const apiNext = axios.create({
+const apiGeneric = axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_URL
 })
 
-const api = axios.create({
+const apiTech = axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_TECH_URL
 })
 
 export {
-    api
+    apiGeneric,
+    apiTech
 }
-
-export default apiNext

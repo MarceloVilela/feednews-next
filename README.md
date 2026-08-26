@@ -1,34 +1,109 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Feed News
 
-## Getting Started
+[https://feednews-next.vercel.app/](https://feednews-next.vercel.app/)
 
-First, run the development server:
+- Agregador de notícias de tecnologia e games. 
+- Dezenas de portais brasileiros reunidos todos em um feed único — sem depender de RSS, API oficial ou banco de dados.
 
-```bash
-npm run dev
-# or
-yarn dev
+> Projeto pessoal construído para explorar scraping server-side, arquitetura de fontes plugáveis e as trocas entre SSG/ISR e data-fetching no client com Next.js.
+
+<p align="center">
+  <img src=".github/readme/tech-desktop-mockup.png" alt="Feed de tecnologia em desktop" width="640" />
+</p>
+
+<p align="center">
+  <img src=".github/readme/game-mobile-mockup.png" alt="Feed de games em mobile" width="220" />
+</p>
+
+## Sobre
+
+- **Scraping sem RSS/API**: cada fonte é raspada sob demanda a partir do HTML público do site de origem, usando `JSDOM` no servidor — sem headless browser, sem serviço de terceiros.
+- **Arquitetura de plugins**: mais de 60 fontes (tech + games) implementam a mesma interface (`ISource`), cada uma isolada em seu próprio arquivo com os seletores CSS específicos daquele site. Adicionar uma fonte nova é criar uma classe e registrá-la em um índice — nenhuma outra parte do sistema precisa mudar.
+- **Resiliente a mudanças de terceiros**: como não há contrato de API entre este app e os sites raspados, os testes de integração rodam contra os sites reais (sem mocks) para detectar quando um site muda a marcação HTML ou sai do ar — e o pipeline documenta explicitamente as fontes descontinuadas em vez de apagar o histórico.
+- **Ofuscação intencional da lista de fontes**: URLs de origem existem apenas como Base64 (em nomes de arquivo, imports e strings), evitando expor em texto puro no repositório a lista de sites raspados.
+- **Renderização híbrida**: páginas estáticas por origem via `getStaticPaths`/ISR (revalidação a cada 2h) combinadas com `@tanstack/react-query` no client para os dados reais do feed, evitando scraping síncrono no build.
+
+## Stack
+
+| Camada | Tecnologias |
+|---|---|
+| Framework | Next.js 15 (Pages Router) + TypeScript |
+| Scraping | JSDOM, parsing de HTML server-side |
+| UI | Tailwind CSS, shadcn/ui (Radix UI), migração em andamento de Bootstrap/tw-elements |
+| Data fetching | @tanstack/react-query, ISR (Incremental Static Regeneration) |
+| Testes | Jest, Supertest — testes de integração reais contra os sites de origem |
+
+## Como funciona
+
+```
+Cliente ──▶ /api/{tech,game}/source?url=<alias>
+              │
+              ▼
+        sources[] filtra pela URL (alias)
+              │
+              ▼
+   engine.getHome() ──▶ JSDOM.fromURL(site real)
+              │
+              ▼
+   parsing com seletores CSS específicos do site
+              │
+              ▼
+   { data: Post[], total } ──▶ feed no front-end
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Cada fonte implementa:
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+```ts
+interface ISource {
+  getOriginUrl(): string;         // URL do site (decodificada de Base64 em runtime)
+  getHome(): Promise<IResponseHomeDTO>; // faz o scraping e retorna os posts
+}
+```
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+Não existe banco de dados nem cache persistente: cada chamada à rota de API dispara o scraping ao vivo da fonte solicitada.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+## Rodando localmente
 
-## Learn More
+Requer Node `>=24.0.0`.
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+pnpm install
+pnpm dev
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Abra [http://localhost:3000](http://localhost:3000).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Scripts
 
-## Deploy on Vercel
+```bash
+pnpm dev                    # servidor de desenvolvimento
+pnpm build                  # build de produção
+pnpm start                  # serve o build de produção
+pnpm lint                   # next lint
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+pnpm test                   # suíte Jest completa
+pnpm test:e2e:apitech       # testes de integração das fontes de tecnologia
+pnpm test:e2e:apigame       # testes de integração das fontes de games
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Os testes de integração fazem requests HTTP reais contra os sites de origem (sem mocks) — são lentos e podem falhar se um site terceiro mudar de marcação ou ficar fora do ar, o que é esperado e não indica necessariamente um bug no código deste repositório.
+
+## Estrutura do projeto
+
+```
+src/
+├── pages/
+│   ├── api/{tech,game}/
+│   │   ├── source.ts          # handler único por domínio
+│   │   └── sources/            # uma classe por site de origem
+│   ├── tech/[slug].tsx         # página dinâmica por origem (tech)
+│   └── game/[slug].tsx         # página dinâmica por origem (games)
+├── assets/json/{tech,game}/    # metadados das origens exibidas na UI
+├── components/                 # componentes legados + shadcn/ui
+├── hooks/                      # contexto global (settings, tema)
+└── services/                   # cliente HTTP
+```
+
+## Status
+
+Projeto de portfólio em evolução ativa: migração de UI para shadcn/ui, cobertura crescente de testes de integração e adição contínua de novas fontes de scraping.

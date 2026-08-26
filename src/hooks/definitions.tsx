@@ -1,7 +1,7 @@
 import React, { createContext, useCallback, useState, useContext, useEffect } from 'react';
 
 interface DefinitionsProviderParams {
-  children: JSX.Element;
+  children: React.JSX.Element;
 }
 
 interface Description {

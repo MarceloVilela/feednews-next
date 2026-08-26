@@ -60,7 +60,7 @@ Não existe um `source.ts` genérico compartilhado entre `tech` e `game` — a l
 
 ### Páginas dinâmicas
 
-`src/pages/tech/[slug].tsx` e `src/pages/game/[slug].tsx`: `getStaticPaths` gera uma página por origem (`fallback: "blocking"`/`true`), `getStaticProps` apenas faz revalidação ISR (2h) sem buscar dados no build. Os dados reais chegam no client via `react-query`, que chama `/api/{tech,game}/source?url=...` (fetch direto, não usa o axios client de `src/services/api.ts`, que está praticamente não utilizado pelas páginas atuais).
+`src/pages/tech/[slug].tsx` e `src/pages/game/[slug].tsx`: `getStaticPaths` gera uma página por origem (`fallback: "blocking"`/`true`), `getStaticProps` apenas faz revalidação ISR (2h) sem buscar dados no build. Os dados reais chegam no client via `@tanstack/react-query`, que chama `/api/{tech,game}/source?url=...` (fetch direto, não usa o axios client de `src/services/api.ts`, que está praticamente não utilizado pelas páginas atuais).
 
 ### Alias de import `@/`
 
@@ -76,3 +76,9 @@ Estado global simples via Context API em `src/hooks/` (`SettingsProvider` para o
 
 - Arquivos `*.txt`, `*.zip` e as pastas `/md` e `/notes` estão no `.gitignore` — são notas de trabalho/backups locais, não fazem parte do código do app e não devem ser tratados como fonte de verdade para arquitetura (apesar de às vezes conterem o raciocínio por trás de um refactor).
 - Ao adicionar uma nova fonte de scraping, siga o padrão existente: nome de classe curto, `getOriginUrl()` retornando `atob(<base64 da URL>)`, nome do arquivo igual ao base64 da URL (com padding `=` literal no nome do arquivo), export default de uma instância (`export default new NomeClasse()`), e registrar o import + entrada no array em `sources/index.ts` do domínio correspondente.
+
+## Sobre scraping e uso responsável
+
+Este projeto é uma demo de portfólio pessoal, não um produto comercial: o scraping das +60 fontes é feito sob demanda (disparado por navegação real de um usuário na página, não por um crawler agendado rodando 24/7) e em baixo volume. A ofuscação em base64 dos nomes/URLs das fontes (ver seção de Arquitetura) já reflete essa consciência sobre ToS de terceiros. Uso desse tipo — baixo volume, sob demanda, fins de demonstração — é comum e geralmente tolerado; quem for reaproveitar o projeto para uso próprio deve avaliar os termos de serviço dos sites de origem antes de operar em escala maior.
+
+Não há rate-limiting nem checagem de `robots.txt` implementados — decisão consciente dado o volume baixo e o padrão sob demanda (uma requisição por origem, só quando um usuário acessa aquela página), não um crawler varrendo os sites continuamente.

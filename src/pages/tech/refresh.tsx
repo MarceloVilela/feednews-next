@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Head from "next/head";
 // import { Alert } from 'react-native';
 
-import { api } from "../../services/api";
+import { apiTech } from "../../services/api";
 
 import originsJson from "../../assets/json/tech/origins";
 const origins = originsJson.origins;
@@ -62,13 +62,13 @@ export default function TechNewsRefresh() {
 
       let recents = [] as HomePageItem[];
       try {
-        const response = await api.get<ResponseHomePage>(url, { params });
+        const response = await apiTech.get<ResponseHomePage>(url, { params });
         recents = response.data.posts;
         setResponseDebug(response.data.posts as any);
       } catch (error) {
         const messageTitle = `${origins[indexOrigin].title} - Erro ao listar homepage \n`;
         const messageContent = `${url} ${JSON.stringify(params)}`;
-        console.log(messageTitle + messageContent);
+        console.error(messageTitle + messageContent);
         setErrorMessages((prevState) => [
           ...prevState,
           messageTitle + messageContent,
@@ -94,7 +94,7 @@ export default function TechNewsRefresh() {
 
       let pending = [];
       try {
-        const response = await api.post(urlToCheck, postsFormatted);
+        const response = await apiTech.post(urlToCheck, postsFormatted);
         pending = response.data;
         setResponseDebug(response.data);
       } catch (error: any) {
@@ -104,9 +104,7 @@ export default function TechNewsRefresh() {
           null,
           2,
         )}`;
-        console.log(messageTitle);
-        console.log(postsFormatted);
-        //console.log(messageTitle + messageContent);
+        console.error(messageTitle, postsFormatted);
         setErrorMessages((prevState) => [
           ...prevState,
           messageTitle + messageContent,
@@ -132,9 +130,9 @@ export default function TechNewsRefresh() {
       try {
         const response = (await Promise.all(
           pendingResolved.map((urlToList: string) =>
-            api
+            apiTech
               .get(urlSource, { params: { url: urlToList } })
-              .catch((error) => console.log(urlToList, error.message)),
+              .catch((error) => console.error(urlToList, error.message)),
           ),
         )) as ResponseDetail[];
 
@@ -147,12 +145,11 @@ export default function TechNewsRefresh() {
 
         const messageTitle = `${origins[indexOrigin].title} - Erro1 ao enviar artigo \n`;
         const urlCreate = "/technews/post";
-        console.log(responsesFiltered);
         await Promise.all(
           responsesFiltered.map(({ data }) =>
-            api
+            apiTech
               .post(urlCreate, data)
-              .catch(() => console.log(messageTitle + data.link)),
+              .catch(() => console.error(messageTitle + data.link)),
           ),
         );
 
@@ -164,7 +161,7 @@ export default function TechNewsRefresh() {
       } catch (error: any) {
         const messageTitle = `${origins[indexOrigin].title} - ErroAAA ao enviar artigo \n`;
         const messageContent = error.message;
-        console.log("Erro ao armazenar post", messageTitle + messageContent);
+        console.error("Erro ao armazenar post", messageTitle + messageContent);
         setErrorMessages((prevState) => [
           ...prevState,
           messageTitle + messageContent,
