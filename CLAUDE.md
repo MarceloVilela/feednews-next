@@ -8,6 +8,17 @@ App Next.js (Pages Router, TypeScript) que agrega notícias de tecnologia e game
 
 Existia também uma feature de "magnet" (torrent), mas foi completamente removida (ver `git log` por "delete obsolete route files"/"delete obsolete json files"). Não recriar `src/pages/magnet` ou `src/pages/api/magnet` a menos que explicitamente solicitado.
 
+## Processo (commits e PRs)
+
+Nunca fazer `git commit` nem abrir Pull Request por conta própria — só quando o humano pedir
+explicitamente naquela conversa. Preparar/mostrar o diff e sugerir a mensagem de commit é ok;
+executar o commit ou criar o PR sem pedido explícito, não.
+
+Nunca incluir trailer `Co-Authored-By: Claude ...` (ou qualquer variação) nas mensagens de
+commit deste repositório — isso faz o GitHub listar "claude" como contribuidor no repo, o que
+não é desejado aqui (achado real: aconteceu no commit `41cdcd6`/`2d517eb`, corrigido via amend +
+force-push).
+
 ## Comandos
 
 ```bash
