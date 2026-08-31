@@ -6,19 +6,21 @@ export type Item = {
   avatar?: string;
   image: string;
   artist: string;
+  link: string;
   duration?: number | string;
 };
 
 export type PlaylistItemProps = {
   item: Item;
-  onClick?: () => void;
 };
 
-export default function PlaylistItem({ item, onClick }: PlaylistItemProps) {
+export default function PlaylistItem({ item }: PlaylistItemProps) {
   return (
-    <button
-      onClick={onClick}
-      className="group flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left 
+    <a
+      href={item.link}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="group flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left
       transition-colors hover:bg-gray-100 dark:hover:bg-white/5 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary
       dark:bg-gray-950/90 bg-white/50"
     >
@@ -57,6 +59,6 @@ export default function PlaylistItem({ item, onClick }: PlaylistItemProps) {
           {item.duration}
         </span>
       )}
-    </button>
+    </a>
   );
 }
