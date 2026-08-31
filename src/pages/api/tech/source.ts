@@ -1,6 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { Post } from "../tech/sources";
-import { sources } from "./sources";
+import { Post, sources } from "scraping/tech";
 
 type GameHomeDataResponse = {
   data: Post[];
