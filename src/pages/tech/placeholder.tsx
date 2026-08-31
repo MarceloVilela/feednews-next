@@ -3,7 +3,7 @@ import Head from "next/head";
 
 import { apiTech } from "../../services/api";
 import jsonbin from "../../services/jsonbin";
-import { NewsContentProps, NewsProps } from "./[slug]";
+import { NewsContentProps, NewsProps } from "types/feed";
 
 import originsJson from "../../assets/json/tech/origins";
 const origins = originsJson.origins;

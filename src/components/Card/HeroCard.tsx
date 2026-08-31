@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export type Item = {
   title: string;
   image: string;
@@ -19,12 +21,13 @@ export default function HeroCard({ item, onClick }: HeroCardProps) {
       className="group relative w-full overflow-hidden rounded-2xl text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
     >
       {/* Image */}
-      <div className="aspect-[16/9] w-full overflow-hidden">
-        <img
+      <div className="relative aspect-[16/9] w-full overflow-hidden">
+        <Image
           src={item.image}
           alt={item.title}
-          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-          loading="lazy"
+          fill
+          sizes="(max-width: 768px) 100vw, 50vw"
+          className="object-cover transition-transform duration-500 group-hover:scale-105"
           referrerPolicy="no-referrer"
         />
       </div>
