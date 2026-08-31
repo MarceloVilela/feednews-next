@@ -25,10 +25,6 @@ export default function ArticleCardShadcn({ articles }: ArticleCardProps) {
     );
   }, [articles]);
 
-  const handleOpenTab = (link: string) => {
-    window.open(link, "_blank", "noopener,noreferrer");
-  };
-
   if (!articles || articles.length === 0 || articles[0].title == "") {
     return <div></div>;
   }
@@ -39,8 +35,7 @@ export default function ArticleCardShadcn({ articles }: ArticleCardProps) {
         {_articles.map(({ title, link, thumb, id }) => (
           <Item
             key={id}
-            onClick={() => handleOpenTab(link)}
-            item={{ title, image: thumb, artist: link }}
+            item={{ title, image: thumb, artist: link, link }}
           />
         ))}
       </div>

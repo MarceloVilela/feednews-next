@@ -5,7 +5,6 @@ import type { AppProps } from "next/app";
 import "../styles/shadcn.css";
 
 import AppProvider from "../hooks";
-import NavigationTabs from "components/Navigation/NavigationTabs";
 import { NavigationBar } from "components/Navigation/NavigationBar";
 
 //if (typeof window !== "undefined") document.documentElement.classList.remove('dark');

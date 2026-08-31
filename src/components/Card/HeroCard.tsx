@@ -3,6 +3,7 @@ import Image from "next/image";
 export type Item = {
   title: string;
   image: string;
+  link: string;
   summary?: string;
   category?: string;
   time?: string;
@@ -11,13 +12,14 @@ export type Item = {
 
 export type HeroCardProps = {
   item: Item;
-  onClick?: () => void;
 };
 
-export default function HeroCard({ item, onClick }: HeroCardProps) {
+export default function HeroCard({ item }: HeroCardProps) {
   return (
-    <button
-      onClick={onClick}
+    <a
+      href={item.link}
+      target="_blank"
+      rel="noopener noreferrer"
       className="group relative w-full overflow-hidden rounded-2xl text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
     >
       {/* Image */}
@@ -57,6 +59,6 @@ export default function HeroCard({ item, onClick }: HeroCardProps) {
           </p>
         )}
       </div>
-    </button>
+    </a>
   );
 }
