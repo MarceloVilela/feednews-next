@@ -38,8 +38,7 @@
     "sass": "^1.43.4",
     "swiper": "6.8.4",
     "tailwind-merge": "^1.14.0",
-    "tailwindcss-animate": "^1.0.7",
-    "tw-elements": "^1.0.0-beta2"
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^7.0.1",

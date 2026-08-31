@@ -1,12 +1,7 @@
 "use client";
 
-import React, { Fragment, ReactNode } from "react";
+import React, { ReactNode } from "react";
 
-import { StyleSwitcherProvider, useStyleSwitcher } from "./styleSwitcher";
-import { SettingsProvider } from "./settings";
-
-import originsGame from "../assets/json/game/origins";
-import originsTech from "../assets/json/tech/origins";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 
 interface AppProviderProps {
@@ -15,19 +10,14 @@ interface AppProviderProps {
 
 const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   return (
-    <SettingsProvider
-      originGame={originsGame.origins[0].url}
-      originTech={originsTech.origins[0].url}
+    <ThemeProvider
+      attribute="class"
+      defaultTheme="system"
+      enableSystem
+      disableTransitionOnChange
     >
-      <ThemeProvider
-        attribute="class"
-        defaultTheme="system"
-        enableSystem
-        disableTransitionOnChange
-      >
-        {children}
-      </ThemeProvider>
-    </SettingsProvider>
+      {children}
+    </ThemeProvider>
   );
 };
 
