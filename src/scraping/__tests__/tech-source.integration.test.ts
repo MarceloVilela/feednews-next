@@ -2,13 +2,11 @@ import request from "supertest";
 import { IncomingMessage, ServerResponse } from "http";
 import { NextApiHandler } from "next";
 
-import { Post } from "pages/api/tech/sources";
-
 // Importe o handler da sua API. Ajuste o caminho se necessário.
 // Exemplo: import gameSourceHandler from '../src/pages/api/game/source';
 // Para este exemplo, vamos assumir que o handler está em:
-import gameSourceHandler from "../game/source";
-import { sources } from "../game/sources";
+import gameSourceHandler from "pages/api/tech/source";
+import { Post, sources } from "../tech";
 
 jest.setTimeout(20000);
 
@@ -83,7 +81,7 @@ describe("Game Source API Integration Tests", () => {
     "should return 200 status and valid data, source($url)",
     async ({ url }) => {
       const response = await request(server).get(
-        "/api/game/source?url=" + encodeURIComponent(url),
+        "/api/tech/source?url=" + encodeURIComponent(url),
       );
 
       expect(response.status).toBe(200);
@@ -111,10 +109,6 @@ describe("Game Source API Integration Tests", () => {
       const item = response.body.data[0];
       expect(() => new URL(item.link)).not.toThrow();
       expect(() => new URL(item.thumb)).not.toThrow();
-
-      //expect(
-      //  response.body.data.every((item: Post) => item.id === item.link),
-      //).toBe(true);
     },
   );
 
