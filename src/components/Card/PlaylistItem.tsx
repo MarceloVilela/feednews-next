@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export type Item = {
   index?: number;
   title: string;
@@ -29,7 +31,7 @@ export default function PlaylistItem({ item, onClick }: PlaylistItemProps) {
 
       {/* Album art */}
       <div className="h-10 w-10 shrink-0 overflow-hidden rounded-md">
-        <img
+        <Image
           src={item.image}
           alt={item.title}
           width={40}

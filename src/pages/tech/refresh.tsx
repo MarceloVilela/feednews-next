@@ -42,7 +42,7 @@ export default function TechNewsRefresh() {
 
   // const [recents, setRecents] = useState([]);
 
-  const [responseDebug, setResponseDebug] = useState([]);
+  const [responseDebug, setResponseDebug] = useState<HomePageItem[]>([]);
   const [feedbackText, setFeedbackText] = useState("");
   const [errorMessages, setErrorMessages] = useState<String[]>([]);
   const [display, setDisplay] = useState("debug");
@@ -64,7 +64,7 @@ export default function TechNewsRefresh() {
       try {
         const response = await apiTech.get<ResponseHomePage>(url, { params });
         recents = response.data.posts;
-        setResponseDebug(response.data.posts as any);
+        setResponseDebug(response.data.posts);
       } catch (error) {
         const messageTitle = `${origins[indexOrigin].title} - Erro ao listar homepage \n`;
         const messageContent = `${url} ${JSON.stringify(params)}`;

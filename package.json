@@ -11,8 +11,8 @@
     "format:check": "prettier --check .",
     "test": "jest --runInBand",
     "test:unit": "jest src/hooks/__tests__",
-    "test:e2e:apitech": "jest src/pages/api/__tests__/tech-source.integration.test",
-    "test:e2e:apigame": "jest src/pages/api/__tests__/game-source.integration.test"
+    "test:e2e:apitech": "jest src/scraping/__tests__/tech-source.integration.test",
+    "test:e2e:apigame": "jest src/scraping/__tests__/game-source.integration.test"
   },
   "engines": {
     "node": ">=24.0.0",
@@ -20,7 +20,6 @@
   },
   "dependencies": {
     "@radix-ui/react-icons": "^1.3.2",
-    "@tanstack/react-query": "^5.102.5",
     "autoprefixer": "^10.4.14",
     "axios": "^1.7.0",
     "class-variance-authority": "^0.7.0",

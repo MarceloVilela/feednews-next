@@ -1,5 +1,4 @@
 import type { AppProps } from "next/app";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 //import "tw-elements/dist/css/tw-elements.min.css";
 //import "tailwindcss/tailwind.css";
@@ -10,7 +9,6 @@ import NavigationTabs from "components/Navigation/NavigationTabs";
 import { NavigationBar } from "components/Navigation/NavigationBar";
 
 //if (typeof window !== "undefined") document.documentElement.classList.remove('dark');
-const queryClient = new QueryClient();
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -30,9 +28,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           </main>
 
           <main className="w-full max-w-[1124px] mx-auto border- border-1- flex-col flex-1 items-center mt-5">
-            <QueryClientProvider client={queryClient}>
-              <Component {...pageProps} />
-            </QueryClientProvider>
+            <Component {...pageProps} />
           </main>
         </div>
       </div>
