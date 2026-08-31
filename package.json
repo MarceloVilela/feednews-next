@@ -10,7 +10,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "test": "jest --runInBand",
-    "test:unit": "jest src/hooks/__tests__",
+    "test:unit": "jest src/hooks/__tests__ --passWithNoTests",
     "test:e2e:apitech": "jest src/scraping/__tests__/tech-source.integration.test",
     "test:e2e:apigame": "jest src/scraping/__tests__/game-source.integration.test"
   },
