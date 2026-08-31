@@ -16,7 +16,7 @@ import {
 
 import originsTech from "../../assets/json/tech/origins";
 import originsGame from "../../assets/json/game/origins";
-import { SettingsContext } from "../../hooks/settings";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 const components: { title: string; href: string; description: string }[] = [
   {
@@ -57,73 +57,71 @@ const components: { title: string; href: string; description: string }[] = [
 ];
 
 export function NavigationBar() {
-  const { originGameChange, originTechChange } =
-    React.useContext(SettingsContext);
-
   return (
-    <NavigationMenu>
-      <NavigationMenuList>
-        <NavigationMenuItem>
-          <NavigationMenuTrigger>TECH</NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-              {originsTech.origins.map((component) => (
-                <ListItem
-                  key={component.title}
-                  title={component.title}
-                  href={`/tech/${component.title}`}
-                  //onClick={() => originTechChange(component.url)}
-                >
-                  {component.title}
-                </ListItem>
-              ))}
-            </ul>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
+    <div className="flex w-full items-center justify-between">
+      <NavigationMenu>
+        <NavigationMenuList>
+          <NavigationMenuItem>
+            <NavigationMenuTrigger>TECH</NavigationMenuTrigger>
+            <NavigationMenuContent>
+              <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
+                {originsTech.origins.map((component) => (
+                  <ListItem
+                    key={component.title}
+                    title={component.title}
+                    href={`/tech/${component.title}`}
+                  >
+                    {component.title}
+                  </ListItem>
+                ))}
+              </ul>
+            </NavigationMenuContent>
+          </NavigationMenuItem>
 
-        <NavigationMenuItem>
-          <NavigationMenuTrigger>GAME</NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-              {originsGame.origins.map((component) => (
-                <ListItem
-                  key={component.title}
-                  title={component.title}
-                  href={`/game/${component.title}`}
-                  //onClick={() => originGameChange(component.url)}
-                >
-                  {component.title}
-                </ListItem>
-              ))}
-            </ul>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
+          <NavigationMenuItem>
+            <NavigationMenuTrigger>GAME</NavigationMenuTrigger>
+            <NavigationMenuContent>
+              <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
+                {originsGame.origins.map((component) => (
+                  <ListItem
+                    key={component.title}
+                    title={component.title}
+                    href={`/game/${component.title}`}
+                  >
+                    {component.title}
+                  </ListItem>
+                ))}
+              </ul>
+            </NavigationMenuContent>
+          </NavigationMenuItem>
 
-        <NavigationMenuItem className="hidden">
-          <NavigationMenuTrigger>MAGNET</NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-              <ListItem title={"Magnet"} href={`/`}>
-                Magnet
-              </ListItem>
-              <ListItem title={"Movie"} href={`/magnet/movie`}>
-                Magnet
-              </ListItem>
-              <ListItem title={"Trend"} href={`/magnet/trend`}>
-                Magnet
-              </ListItem>
-            </ul>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
-        {/*<NavigationMenuItem>
-          <Link href="/docs" legacyBehavior passHref>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              Documentation
-            </NavigationMenuLink>
-          </Link>
-        </NavigationMenuItem>*/}
-      </NavigationMenuList>
-    </NavigationMenu>
+          <NavigationMenuItem className="hidden">
+            <NavigationMenuTrigger>MAGNET</NavigationMenuTrigger>
+            <NavigationMenuContent>
+              <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
+                <ListItem title={"Magnet"} href={`/`}>
+                  Magnet
+                </ListItem>
+                <ListItem title={"Movie"} href={`/magnet/movie`}>
+                  Magnet
+                </ListItem>
+                <ListItem title={"Trend"} href={`/magnet/trend`}>
+                  Magnet
+                </ListItem>
+              </ul>
+            </NavigationMenuContent>
+          </NavigationMenuItem>
+          {/*<NavigationMenuItem>
+            <Link href="/docs" legacyBehavior passHref>
+              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                Documentation
+              </NavigationMenuLink>
+            </Link>
+          </NavigationMenuItem>*/}
+        </NavigationMenuList>
+      </NavigationMenu>
+      <ThemeToggle />
+    </div>
   );
 }
 

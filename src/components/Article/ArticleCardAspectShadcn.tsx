@@ -31,19 +31,11 @@ export default function ArticleCardAspectShadcn({
     return <div></div>;
   }
 
-  const handleOpenTab = (link: string) => {
-    window.open(link, "_blank", "noopener,noreferrer");
-  };
-
   return (
     <>
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 px-0 sm:px-4">
         {_articles.map(({ title, link, id, thumb }) => (
-          <Item
-            key={id}
-            onClick={() => handleOpenTab(link)}
-            item={{ title, image: thumb }}
-          />
+          <Item key={id} item={{ title, image: thumb, link }} />
         ))}
       </div>
     </>
