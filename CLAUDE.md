@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Visão geral
 
-App Next.js (Pages Router, TypeScript) que agrega notícias de tecnologia e games de diversos sites brasileiros/portugueses via scraping de HTML (server-side, com JSDOM) e exibe os resultados em um feed único no front-end. Não há banco de dados: cada fonte é raspada sob demanda quando a rota de API é chamada.
+App Next.js (App Router para as páginas dinâmicas `tech/[slug]`/`game/[slug]`; Pages Router retido para ferramentas de debug — `tech/refresh.tsx`/`tech/placeholder.tsx` — e para as API routes; TypeScript) que agrega notícias de tecnologia e games de diversos sites brasileiros/portugueses via scraping de HTML (server-side, com JSDOM) e exibe os resultados em um feed único no front-end. Não há banco de dados: cada fonte é raspada sob demanda quando a rota de API é chamada.
 
 Existia também uma feature de "magnet" (torrent), mas foi completamente removida (ver `git log` por "delete obsolete route files"/"delete obsolete json files"). Não recriar `src/pages/magnet` ou `src/pages/api/magnet` a menos que explicitamente solicitado.
 
@@ -26,7 +26,7 @@ pnpm install        # gerenciador de pacotes do projeto (ver pnpm-lock.yaml)
 pnpm dev             # servidor de desenvolvimento (next dev)
 pnpm build           # build de produção
 pnpm start           # serve o build de produção
-pnpm lint            # next lint
+pnpm lint            # eslint . (flat config, eslint.config.mjs)
 
 pnpm test                  # roda toda a suíte Jest (jest --runInBand)
 pnpm test:e2e:apitech      # só os testes de integração das fontes de tech
@@ -67,11 +67,17 @@ Não existe um `source.ts` genérico compartilhado entre `tech` e `game` — a l
 
 ### Origens exibidas no front-end
 
-`src/assets/json/{tech,game}/origins.ts` contém a lista de origens mostradas na UI (título, URL, `BIN_ID`), também com `title`/`url` em base64 e decodificados via `atob` no `default export`. É uma lista separada (e não necessariamente idêntica) das classes em `sources/`, usada para gerar abas/menus e os `getStaticPaths` das páginas dinâmicas.
+`src/assets/json/{tech,game}/origins.ts` contém a lista de origens mostradas na UI (título, URL, `BIN_ID`), também com `title`/`url` em base64 e decodificados via `atob` no `default export`. É uma lista separada (e não necessariamente idêntica) das classes em `sources/`, usada para gerar abas/menus e os `generateStaticParams` das páginas dinâmicas.
 
 ### Páginas dinâmicas
 
-`src/pages/tech/[slug].tsx` e `src/pages/game/[slug].tsx`: `getStaticPaths` gera uma página por origem (`fallback: "blocking"`/`true`), `getStaticProps` apenas faz revalidação ISR (2h) sem buscar dados no build. Os dados reais chegam no client via `@tanstack/react-query`, que chama `/api/{tech,game}/source?url=...` (fetch direto, não usa o axios client de `src/services/api.ts`, que está praticamente não utilizado pelas páginas atuais).
+`src/app/tech/[slug]/page.tsx` e `src/app/game/[slug]/page.tsx` (App Router, Server Components): `generateStaticParams` pré-renderiza só a primeira origem no build (as demais renderizam sob demanda na primeira visita, dado o número de fontes); `export const revalidate = 86400` faz a revalidação ISR (24h, não mais 2h). Os dados reais são buscados direto no servidor — `await getTechContent(slug)`/`await getGameContent(slug)` (`TechFeed.tsx`/`GameFeed.tsx` em `src/components/Feed/`, que por sua vez chamam o helper compartilhado `getFeedContent` em `src/scraping/getFeedContent.ts`) — sem `@tanstack/react-query` e sem fetch client-side para essas duas rotas (a dependência não está mais em `package.json`).
+
+`src/pages/tech/refresh.tsx` e `src/pages/tech/placeholder.tsx` continuam no Pages Router — são ferramentas de debug (usam `useState`/`useEffect` reais, então o boundary client é honesto, não um escape hatch), mantidas deliberadamente fora da migração para App Router; `src/pages/_app.tsx` só existe hoje para servir essas duas páginas. As API routes (`src/pages/api/**`) também continuam Pages Router — Next não tem um equivalente dentro de `app/` que sirva o mesmo papel aqui sem reescrever os handlers.
+
+### Imagens (`next/image`)
+
+`next.config.js` usa `remotePatterns: [{ protocol: "https", hostname: "**" }]` — uma whitelist manual de host por host ficaria obsoleta a cada fonte nova (são 60+ fontes em `src/assets/json/{tech,game}/origins.ts`, cada uma com seu próprio domínio/CDN de thumbnail). A curadoria real de quais sites são confiáveis já acontece em `src/scraping/{tech,game}/index.ts` (só sites aprovados ali chegam a virar `<Image>`); o wildcard de hostname é um trade-off consciente, não um descuido.
 
 ### Alias de import `@/`
 
@@ -93,3 +99,5 @@ Estado global simples via Context API em `src/hooks/` (`SettingsProvider` para o
 Este projeto é uma demo de portfólio pessoal, não um produto comercial: o scraping das +60 fontes é feito sob demanda (disparado por navegação real de um usuário na página, não por um crawler agendado rodando 24/7) e em baixo volume. A ofuscação em base64 dos nomes/URLs das fontes (ver seção de Arquitetura) já reflete essa consciência sobre ToS de terceiros. Uso desse tipo — baixo volume, sob demanda, fins de demonstração — é comum e geralmente tolerado; quem for reaproveitar o projeto para uso próprio deve avaliar os termos de serviço dos sites de origem antes de operar em escala maior.
 
 Não há rate-limiting nem checagem de `robots.txt` implementados — decisão consciente dado o volume baixo e o padrão sob demanda (uma requisição por origem, só quando um usuário acessa aquela página), não um crawler varrendo os sites continuamente.
+
+`pnpm build` produz stderr ruidoso (erros de parsing de CSS/HTML de bibliotecas de terceiros via JSDOM) — isso é esperado: `generateStaticParams` dispara scraping real contra os sites de origem durante a geração estática, e não indica falha de build. Mesmo padrão de barulho já documentado acima para os testes de integração, que também batem em sites reais.
