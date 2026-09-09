@@ -1,43 +1,22 @@
-import { notFound } from "next/navigation";
-
 import { sources } from "scraping/tech";
+import { getFeedContent } from "scraping/getFeedContent";
 import ArticleCardShadcn from "components/Article/ArticleCardShadcn";
 import originsJson from "assets/json/tech/origins";
-import { Content, findOrigin } from "types/feed";
+import { Content } from "types/feed";
 
 const origins = originsJson.origins;
 
 export async function getTechContent(slug: string): Promise<Content[]> {
-  const url = findOrigin(origins, slug);
-
-  if (!url) {
-    notFound();
-  }
-
-  const engine = sources.find((item) =>
-    item.getOriginUrl().includes(url.toLowerCase()),
-  );
-
-  if (!engine) {
-    notFound();
-  }
-
-  const { posts } = await engine.getHome();
-
-  return posts.map((post) => ({
-    id: post.link ?? "",
-    link: post.link ?? "",
-    title: post.title ?? "",
-    thumb: post.thumb ?? "",
-    created_at: post.created_at ?? "",
-  }));
+  return getFeedContent(sources, origins, slug);
 }
 
 export async function TechFeed({ slug }: { slug: string }) {
   const data = await getTechContent(slug);
 
+  // borda de debug desativada de propósito — reativar trocando "my-4" por
+  // "my-4 border-blue-400 border"
   return (
-    <div className="my-4 border-blue-400 border-">
+    <div className="my-4">
       <ArticleCardShadcn articles={data} />
     </div>
   );
