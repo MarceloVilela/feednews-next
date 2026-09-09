@@ -1,76 +1,13 @@
-import request from "supertest";
-import { IncomingMessage, ServerResponse } from "http";
-import { NextApiHandler } from "next";
-
-// Importe o handler da sua API. Ajuste o caminho se necessário.
-// Exemplo: import gameSourceHandler from '../src/pages/api/game/source';
-// Para este exemplo, vamos assumir que o handler está em:
-import gameSourceHandler from "pages/api/tech/source";
+import { GET } from "app/api/tech/source/route";
 import { Post, sources } from "../tech";
 
 jest.setTimeout(20000);
 
-// Função para criar um servidor HTTP a partir do handler da API Next.js
-function createTestServer(apiHandler: NextApiHandler) {
-  return (req: IncomingMessage, res: ServerResponse) => {
-    const parsedUrl = new URL(
-      req.url || "",
-      `http://${req.headers.host || "localhost"}`,
-    );
-    (req as any).query = Object.fromEntries(parsedUrl.searchParams.entries());
-
-    let chunks: Buffer[] = [];
-    req.on("data", (chunk) => {
-      chunks.push(chunk as Buffer);
-    });
-
-    req.on("end", () => {
-      const body = Buffer.concat(chunks).toString();
-      try {
-        (req as any).body = body ? JSON.parse(body) : {};
-      } catch (e) {
-        res.statusCode = 400;
-        res.setHeader("Content-Type", "application/json");
-        return res.end(JSON.stringify({ error: "Invalid JSON body" }));
-      }
-
-      (res as any).status = (statusCode: number) => {
-        res.statusCode = statusCode;
-        return res as any;
-      };
-      (res as any).json = (payload: unknown) => {
-        if (!res.headersSent) {
-          res.setHeader("Content-Type", "application/json");
-        }
-        return res.end(JSON.stringify(payload));
-      };
-
-      Promise.resolve(apiHandler(req as any, res as any)).catch((error) => {
-        if (!res.writableEnded) {
-          res.statusCode = 500;
-          res.setHeader("Content-Type", "application/json");
-          res.end(JSON.stringify({ error: String(error) }));
-        }
-      });
-    });
-
-    req.on("error", (error) => {
-      if (!res.writableEnded) {
-        res.statusCode = 500;
-        res.setHeader("Content-Type", "application/json");
-        res.end(JSON.stringify({ error: String(error) }));
-      }
-    });
-  };
+function callRoute(url: string) {
+  return GET(new Request(url));
 }
 
 describe("Game Source API Integration Tests", () => {
-  let server: ReturnType<typeof createTestServer>;
-
-  beforeEach(() => {
-    server = createTestServer(gameSourceHandler);
-  });
-
   const sourcesData = sources.map((item) => ({ url: item.getOriginUrl() }));
 
   /**
@@ -80,22 +17,24 @@ describe("Game Source API Integration Tests", () => {
   it.each(sourcesData)(
     "should return 200 status and valid data, source($url)",
     async ({ url }) => {
-      const response = await request(server).get(
-        "/api/tech/source?url=" + encodeURIComponent(url),
+      const response = await callRoute(
+        "http://localhost/api/tech/source?url=" + encodeURIComponent(url),
       );
 
       expect(response.status).toBe(200);
-      expect(response.headers["content-type"]).toMatch(/json/);
+      expect(response.headers.get("content-type")).toMatch(/json/);
 
-      expect(response.body).toHaveProperty("data");
-      expect(response.body).toHaveProperty("total");
+      const body = await response.json();
 
-      expect(Array.isArray(response.body.data)).toBe(true);
-      expect(typeof response.body.total).toBe("number");
+      expect(body).toHaveProperty("data");
+      expect(body).toHaveProperty("total");
+
+      expect(Array.isArray(body.data)).toBe(true);
+      expect(typeof body.total).toBe("number");
 
       const urlRegex = /^https?:\/\/.+/;
 
-      expect(response.body.data).toEqual(
+      expect(body.data).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             link: expect.stringMatching(urlRegex),
@@ -106,29 +45,38 @@ describe("Game Source API Integration Tests", () => {
         ]),
       );
 
-      const item = response.body.data[0];
+      const item = body.data[0];
       expect(() => new URL(item.link)).not.toThrow();
       expect(() => new URL(item.thumb)).not.toThrow();
     },
   );
 
   it("should return a structured error when the URL parameter is missing", async () => {
-    const response = await request(server).get("/api/game/source");
+    const response = await callRoute("http://localhost/api/tech/source");
 
     expect(response.status).toBe(400);
-    expect(response.body).toHaveProperty(
-      "error",
-      "Missing url query parameter",
-    );
+    const body = await response.json();
+    expect(body).toHaveProperty("error", "Missing url query parameter");
   });
 
   it("should return a structured error when the alias is unknown", async () => {
-    const response = await request(server).get(
-      "/api/game/source?url=nonexistent-site.com",
+    const response = await callRoute(
+      "http://localhost/api/tech/source?url=nonexistent-site.com",
     );
 
     expect(response.status).toBeGreaterThanOrEqual(400);
-    expect(response.body).toHaveProperty("error");
-    expect(response.body.error).toContain("Alias not found");
+    const body = await response.json();
+    expect(body).toHaveProperty("error");
+    expect(body.error).toContain("Alias not found");
+  });
+
+  it("should return a structured error when the URL parameter is repeated", async () => {
+    const response = await callRoute(
+      "http://localhost/api/tech/source?url=a&url=b",
+    );
+
+    expect(response.status).toBe(400);
+    const body = await response.json();
+    expect(body).toHaveProperty("error", "Missing url query parameter");
   });
 });

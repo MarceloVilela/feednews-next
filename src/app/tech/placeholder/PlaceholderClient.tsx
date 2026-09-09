@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from "react";
-import Head from "next/head";
+"use client";
 
-import { apiTech } from "../../services/api";
-import jsonbin from "../../services/jsonbin";
+import React, { useEffect, useState } from "react";
+
+import { apiTech } from "services/api";
+import jsonbin from "services/jsonbin";
 import { NewsContentProps } from "types/feed";
 
-import originsJson from "../../assets/json/tech/origins";
+import originsJson from "assets/json/tech/origins";
 const origins = originsJson.origins;
 
 interface OriginCurrent {
@@ -15,7 +16,7 @@ interface OriginCurrent {
   index: number;
 }
 
-export default function TechNewsPlaceholder() {
+export default function PlaceholderClient() {
   const [responseDebug, setResponseDebug] = useState([]);
   const [feedbackText, setFeedbackText] = useState("");
   const [lastDates, setLastDates] = useState<String[]>([]);
@@ -78,46 +79,41 @@ export default function TechNewsPlaceholder() {
   }, []);
 
   return (
-    <>
-      <Head>
-        <title>News | Placeholder</title>
-      </Head>
-      <div className="flex flex-col mb-8 gap-4 border-2 min-w-[480px]">
-        <div className="break-words">
-          {display === "feedback" ? (
-            <pre className="text-sm">
-              {JSON.stringify(responseDebug, null, 2)}
-            </pre>
-          ) : (
-            <pre className="text-sm">{JSON.stringify(lastDates, null, 2)}</pre>
-          )}
-        </div>
+    <div className="flex flex-col mb-8 gap-4 border-2 min-w-[480px]">
+      <div className="break-words">
+        {display === "feedback" ? (
+          <pre className="text-sm">
+            {JSON.stringify(responseDebug, null, 2)}
+          </pre>
+        ) : (
+          <pre className="text-sm">{JSON.stringify(lastDates, null, 2)}</pre>
+        )}
+      </div>
 
-        <div className="flex flex-row gap-2">
-          {display === "feedback" ? (
-            <button
-              onClick={() => setDisplay("last")}
-              className="hover:bg-yellow-500 bg-yellow-400 text-black px-8 py-1 rounded-md cursor-pointer"
-            >
-              <>Exibir última data</>
-            </button>
-          ) : (
-            <button
-              onClick={() => setDisplay("feedback")}
-              className="hover:bg-yellow-500 bg-yellow-400 text-black px-8 py-1 rounded-md cursor-pointer"
-            >
-              <>Exibir feedback</>
-            </button>
-          )}
-
+      <div className="flex flex-row gap-2">
+        {display === "feedback" ? (
           <button
-            onClick={() => {}}
+            onClick={() => setDisplay("last")}
             className="hover:bg-yellow-500 bg-yellow-400 text-black px-8 py-1 rounded-md cursor-pointer"
           >
-            <>Etapa - {feedbackText}</>
+            <>Exibir última data</>
           </button>
-        </div>
+        ) : (
+          <button
+            onClick={() => setDisplay("feedback")}
+            className="hover:bg-yellow-500 bg-yellow-400 text-black px-8 py-1 rounded-md cursor-pointer"
+          >
+            <>Exibir feedback</>
+          </button>
+        )}
+
+        <button
+          onClick={() => {}}
+          className="hover:bg-yellow-500 bg-yellow-400 text-black px-8 py-1 rounded-md cursor-pointer"
+        >
+          <>Etapa - {feedbackText}</>
+        </button>
       </div>
-    </>
+    </div>
   );
 }

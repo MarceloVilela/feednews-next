@@ -1,11 +1,12 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
-import Head from "next/head";
 import axios from "axios";
 // import { Alert } from 'react-native';
 
-import { apiTech } from "../../services/api";
+import { apiTech } from "services/api";
 
-import originsJson from "../../assets/json/tech/origins";
+import originsJson from "assets/json/tech/origins";
 const origins = originsJson.origins;
 
 interface Content {
@@ -38,7 +39,7 @@ interface ResponseHomePage {
   posts: HomePageItem[];
 }
 
-export default function TechNewsRefresh() {
+export default function RefreshClient() {
   const [indexOrigin, setIndexOrigin] = useState(-1);
 
   // const [recents, setRecents] = useState([]);
@@ -190,48 +191,43 @@ export default function TechNewsRefresh() {
   }, []);
 
   return (
-    <>
-      <Head>
-        <title>News | Refresh</title>
-      </Head>
-      <div className="flex flex-col mb-8 gap-4 border-2 min-w-[480px]">
-        <div className="break-words">
-          {display === "debug" ? (
-            <pre className="text-sm">
-              {JSON.stringify(responseDebug, null, 2)}
-            </pre>
-          ) : (
-            <pre className="text-sm">
-              {JSON.stringify(errorMessages, null, 2)}
-            </pre>
-          )}
-        </div>
+    <div className="flex flex-col mb-8 gap-4 border-2 min-w-[480px]">
+      <div className="break-words">
+        {display === "debug" ? (
+          <pre className="text-sm">
+            {JSON.stringify(responseDebug, null, 2)}
+          </pre>
+        ) : (
+          <pre className="text-sm">
+            {JSON.stringify(errorMessages, null, 2)}
+          </pre>
+        )}
+      </div>
 
-        <div className="flex flex-row gap-2">
-          {display === "debug" ? (
-            <button
-              onClick={() => setDisplay("error")}
-              className="hover:bg-yellow-500 bg-yellow-400 text-black px-8 py-1 rounded-md cursor-pointer"
-            >
-              <>Exibir erros</>
-            </button>
-          ) : (
-            <button
-              onClick={() => setDisplay("debug")}
-              className="hover:bg-yellow-500 bg-yellow-400 text-black px-8 py-1 rounded-md cursor-pointer"
-            >
-              <>Exibir debug</>
-            </button>
-          )}
-
+      <div className="flex flex-row gap-2">
+        {display === "debug" ? (
           <button
-            onClick={() => {}}
+            onClick={() => setDisplay("error")}
             className="hover:bg-yellow-500 bg-yellow-400 text-black px-8 py-1 rounded-md cursor-pointer"
           >
-            <>Etapa - {feedbackText}</>
+            <>Exibir erros</>
           </button>
-        </div>
+        ) : (
+          <button
+            onClick={() => setDisplay("debug")}
+            className="hover:bg-yellow-500 bg-yellow-400 text-black px-8 py-1 rounded-md cursor-pointer"
+          >
+            <>Exibir debug</>
+          </button>
+        )}
+
+        <button
+          onClick={() => {}}
+          className="hover:bg-yellow-500 bg-yellow-400 text-black px-8 py-1 rounded-md cursor-pointer"
+        >
+          <>Etapa - {feedbackText}</>
+        </button>
       </div>
-    </>
+    </div>
   );
 }
