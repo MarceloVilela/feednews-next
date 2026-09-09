@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Head from "next/head";
+import axios from "axios";
 // import { Alert } from 'react-native';
 
 import { apiTech } from "../../services/api";
@@ -97,13 +98,15 @@ export default function TechNewsRefresh() {
         const response = await apiTech.post(urlToCheck, postsFormatted);
         pending = response.data;
         setResponseDebug(response.data);
-      } catch (error: any) {
+      } catch (error) {
         const messageTitle = `${origins[indexOrigin].title} - Erro ao checar pendentes \n`;
-        const messageContent = `${urlToCheck}\n${error.message}\n${JSON.stringify(
-          error.response,
-          null,
-          2,
-        )}`;
+        const messageContent = axios.isAxiosError(error)
+          ? `${urlToCheck}\n${error.message}\n${JSON.stringify(
+              error.response,
+              null,
+              2,
+            )}`
+          : `${urlToCheck}\n${error instanceof Error ? error.message : String(error)}`;
         console.error(messageTitle, postsFormatted);
         setErrorMessages((prevState) => [
           ...prevState,
@@ -158,9 +161,10 @@ export default function TechNewsRefresh() {
         } else {
           setIndexOrigin(indexOrigin + 1);
         }
-      } catch (error: any) {
+      } catch (error) {
         const messageTitle = `${origins[indexOrigin].title} - ErroAAA ao enviar artigo \n`;
-        const messageContent = error.message;
+        const messageContent =
+          error instanceof Error ? error.message : String(error);
         console.error("Erro ao armazenar post", messageTitle + messageContent);
         setErrorMessages((prevState) => [
           ...prevState,
