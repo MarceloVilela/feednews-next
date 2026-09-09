@@ -27,11 +27,11 @@
 
 | Camada        | Tecnologias                                                                        |
 | ------------- | ---------------------------------------------------------------------------------- |
-| Framework     | Next.js 15 (App Router + Pages Router residual) + TypeScript                       |
+| Framework     | Next.js 15 (App Router) + TypeScript                                               |
 | Scraping      | JSDOM, parsing de HTML server-side                                                 |
 | UI            | Tailwind CSS, shadcn/ui (Radix UI), migração em andamento de Bootstrap/tw-elements |
 | Data fetching | ISR (Incremental Static Regeneration), fetch server-side em Server Components      |
-| Testes        | Jest, Supertest — testes de integração reais contra os sites de origem             |
+| Testes        | Jest — testes de integração reais contra os sites de origem, chamando os Route Handlers direto (sem servidor HTTP fake) |
 
 ## Como funciona
 
@@ -92,12 +92,12 @@ Os testes de integração fazem requests HTTP reais contra os sites de origem (s
 
 ```
 src/
-├── pages/
-│   ├── api/{tech,game}/
-│   │   ├── source.ts          # handler único por domínio
-│   │   └── sources/            # uma classe por site de origem
-│   ├── tech/[slug].tsx         # página dinâmica por origem (tech)
-│   └── game/[slug].tsx         # página dinâmica por origem (games)
+├── app/
+│   ├── api/{tech,game}/source/
+│   │   └── route.ts            # Route Handler único por domínio
+│   ├── tech/[slug]/page.tsx    # página dinâmica por origem (tech)
+│   └── game/[slug]/page.tsx    # página dinâmica por origem (games)
+├── scraping/{tech,game}/       # uma classe por site de origem + array `sources`
 ├── assets/json/{tech,game}/    # metadados das origens exibidas na UI
 ├── components/                 # componentes legados + shadcn/ui
 ├── hooks/                      # contexto global (settings, tema)
