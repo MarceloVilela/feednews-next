@@ -20,6 +20,18 @@ export interface NewsProps extends NewsContentProps {
   slug: string;
 }
 
+export interface FeedPost {
+  link: string | null | undefined;
+  title: string | null | undefined;
+  thumb: string | null | undefined;
+  created_at: string | null | undefined;
+}
+
+export interface FeedSource {
+  getOriginUrl(): string;
+  getHome(): Promise<{ posts: FeedPost[] }>;
+}
+
 export function findOrigin(
   origins: Origin[],
   slug: string,
