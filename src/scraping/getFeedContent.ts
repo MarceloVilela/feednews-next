@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 
-import { Content, FeedSource, findOrigin, Origin } from "types/feed";
+import { Content, FeedSource, dedupeById, findOrigin, Origin } from "types/feed";
 
 export async function getFeedContent(
   sources: FeedSource[],
@@ -24,11 +24,13 @@ export async function getFeedContent(
 
   const { posts } = await engine.getHome();
 
-  return posts.map((post) => ({
-    id: post.link ?? "",
-    link: post.link ?? "",
-    title: post.title ?? "",
-    thumb: post.thumb ?? "",
-    created_at: post.created_at ?? "",
-  }));
+  return dedupeById(
+    posts.map((post) => ({
+      id: post.link ?? "",
+      link: post.link ?? "",
+      title: post.title ?? "",
+      thumb: post.thumb ?? "",
+      created_at: post.created_at ?? "",
+    })),
+  );
 }

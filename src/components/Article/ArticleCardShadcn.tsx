@@ -1,7 +1,4 @@
-"use client";
-
 import { PlaylistItem as Item } from "../Card";
-import { useMemo } from "react";
 
 interface ArticlePreviewData {
   title: string;
@@ -15,15 +12,7 @@ interface ArticleCardProps {
 }
 
 export default function ArticleCardShadcn({ articles }: ArticleCardProps) {
-  const _articles = useMemo(() => {
-    if (typeof articles != "object") {
-      return [];
-    }
-    return articles.filter(
-      (value, index, self) =>
-        self.findIndex((v) => v["id"] === value["id"]) === index,
-    );
-  }, [articles]);
+  const _articles = typeof articles != "object" ? [] : articles;
 
   if (!articles || articles.length === 0 || articles[0].title == "") {
     return <div></div>;
