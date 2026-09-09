@@ -31,7 +31,9 @@ export default function ArticleCardShadcn({ articles }: ArticleCardProps) {
 
   return (
     <>
-      <div className="grid sm:grid-cols-2- lg:grid-cols-3- gap-4 px-0 sm:px-4">
+      {/* grid multi-coluna desativado de propósito (layout ainda em 1 coluna por decisão) —
+          reativar trocando "grid gap-4" por "grid sm:grid-cols-2 lg:grid-cols-3 gap-4" */}
+      <div className="grid gap-4 px-0 sm:px-4">
         {_articles.map(({ title, link, thumb, id }) => (
           <Item
             key={id}
