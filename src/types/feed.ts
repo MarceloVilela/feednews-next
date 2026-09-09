@@ -40,3 +40,9 @@ export function findOrigin(
   const origin = origins.find(({ title }) => title === slug);
   return origin?.url ?? fallbackUrl;
 }
+
+export function dedupeById<T extends { id: string }>(items: T[]): T[] {
+  return items.filter(
+    (value, index, self) => self.findIndex((v) => v.id === value.id) === index,
+  );
+}
