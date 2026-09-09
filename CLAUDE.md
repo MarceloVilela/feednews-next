@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Visão geral
 
-App Next.js (App Router para as páginas dinâmicas `tech/[slug]`/`game/[slug]`; Pages Router retido para ferramentas de debug — `tech/refresh.tsx`/`tech/placeholder.tsx` — e para as API routes; TypeScript) que agrega notícias de tecnologia e games de diversos sites brasileiros/portugueses via scraping de HTML (server-side, com JSDOM) e exibe os resultados em um feed único no front-end. Não há banco de dados: cada fonte é raspada sob demanda quando a rota de API é chamada.
+App Next.js (100% App Router — a migração completa do Pages Router residual, ferramentas de debug e API routes, foi fechada na Etapa 4 da v3; TypeScript) que agrega notícias de tecnologia e games de diversos sites brasileiros/portugueses via scraping de HTML (server-side, com JSDOM) e exibe os resultados em um feed único no front-end. Não há banco de dados: cada fonte é raspada sob demanda quando a rota de API é chamada.
 
 Existia também uma feature de "magnet" (torrent), mas foi completamente removida (ver `git log` por "delete obsolete route files"/"delete obsolete json files"). Não recriar `src/pages/magnet` ou `src/pages/api/magnet` a menos que explicitamente solicitado.
 
@@ -33,7 +33,7 @@ pnpm test:e2e:apitech      # só os testes de integração das fontes de tech
 pnpm test:e2e:apigame      # só os testes de integração das fontes de game
 ```
 
-Para rodar um teste único: `npx jest -t "nome do teste"` ou `npx jest src/pages/api/__tests__/tech-source.integration.test.ts -t "site offline"`.
+Para rodar um teste único: `npx jest -t "nome do teste"` ou `npx jest src/scraping/__tests__/tech-source.integration.test.ts -t "site offline"`.
 
 Os testes em `src/scraping/__tests__/*.integration.test.ts` são testes de integração reais: eles disparam `it.each` sobre **todas** as fontes cadastradas e fazem requests HTTP de verdade para os sites de origem (não há mocks). São lentos, dependem de rede e podem falhar se um site mudar a marcação HTML ou ficar fora do ar — isso é esperado e não necessariamente indica regressão no código deste repo. `jest.setTimeout(20000)` reflete essa dependência de rede.
 
@@ -43,7 +43,7 @@ Node `>=24.0.0` é exigido (`engines` em `package.json`).
 
 ### Scraping de fontes (núcleo do backend)
 
-Cada site de origem é uma classe em `src/scraping/{tech,game}/<arquivo>.ts` que implementa a interface `ISource` (definida em `index.ts` de cada domínio). Essas classes ficam fora de `src/pages/api/` de propósito — não são rotas, e o Next 15 passou a validar em build-time que todo arquivo dentro de `pages/api/**` exporte um handler HTTP, o que essas classes nunca fizeram (export default de uma instância, não de uma função):
+Cada site de origem é uma classe em `src/scraping/{tech,game}/<arquivo>.ts` que implementa a interface `ISource` (definida em `index.ts` de cada domínio). Essas classes ficam fora de `src/app/api/` de propósito — não são rotas, e o Next valida em build-time que todo `route.ts` dentro de `app/**` exporte um handler HTTP (`GET`/`POST`/etc.), o que essas classes nunca fizeram (export default de uma instância, não de uma função):
 
 ```ts
 interface ISource {
@@ -55,15 +55,17 @@ interface ISource {
 - `getOriginUrl()` retorna a URL do site, mas **codificada em base64** (`atob("...")` dentro do método).
 - `getHome()` usa `JSDOM.fromURL(url)` para baixar e parsear o HTML do site real, depois usa `document.querySelectorAll`/seletores CSS específicos daquele site para extrair `link`, `title`, `thumb`, `created_at` de cada post.
 - O **nome do arquivo** da classe também é a URL em base64 (ex.: `aHR0cHM6Ly90ZWNub2Jsb2cubmV0.ts` decodifica para `https://tecnoblog.net`). Isso é intencional (ver `md/encode.md` no histórico — não versionado, mas presente localmente): ofusca a lista de sites raspados em vez de deixá-la legível em texto puro nos nomes de arquivo/import.
-- `src/scraping/{tech,game}/index.ts` (um por domínio) importa todas as classes e exporta o array `sources: ISource[]`. Ao adicionar/remover uma fonte, este é o único lugar a atualizar os imports/array. `src/pages/api/{tech,game}/source.ts` (a rota de verdade) importa `sources`/`Post` daqui.
+- `src/scraping/{tech,game}/index.ts` (um por domínio) importa todas as classes e exporta o array `sources: ISource[]`. Ao adicionar/remover uma fonte, este é o único lugar a atualizar os imports/array. `src/app/api/{tech,game}/source/route.ts` (a rota de verdade) importa `sources`/`Post` daqui.
 - `src/scraping/{tech,game}/alias.txt` em cada domínio é uma tabela de referência (não importada pelo código) mapeando URL legível → string base64, útil para localizar/depurar qual arquivo corresponde a qual site.
 - Fontes descontinuadas ficam comentadas no `index.ts` e/ou documentadas em um array `_sourcesRemoved`/`originsRemoved` com motivo e data, em vez de simplesmente apagadas — preserva o histórico de por que um site saiu do ar.
 
 ### Rotas de API
 
-`src/pages/api/{tech,game}/source.ts` é o único handler por domínio. Recebe `?url=<alias>` (substring da URL decodificada, case-insensitive), encontra a fonte correspondente em `sources` filtrando por `getOriginUrl().includes(alias)`, chama `engine.getHome()` e devolve `{ data, total }` com `id` injetado em cada post (`id = link`). Erros (parâmetro faltando, alias não encontrado) retornam JSON estruturado com status 400+.
+`src/app/api/{tech,game}/source/route.ts` (Route Handler do App Router, `GET(request: Request)`) é o único handler por domínio. Recebe `?url=<alias>` (substring da URL decodificada, case-insensitive), encontra a fonte correspondente em `sources` filtrando por `getOriginUrl().includes(alias)`, chama `engine.getHome()` e devolve `{ data, total }` com `id` injetado em cada post (`id = link`). Erros (parâmetro faltando, alias não encontrado) retornam JSON estruturado com status 400+.
 
-Não existe um `source.ts` genérico compartilhado entre `tech` e `game` — a lógica é duplicada propositalmente entre os dois domínios; ao alterar o comportamento de um, verifique se o outro precisa do mesmo ajuste.
+Não existe um `route.ts` genérico compartilhado entre `tech` e `game` — a lógica é duplicada propositalmente entre os dois domínios; ao alterar o comportamento de um, verifique se o outro precisa do mesmo ajuste.
+
+Os testes de integração (`src/scraping/__tests__/*.integration.test.ts`) importam a função `GET` exportada do `route.ts` e chamam ela direto com um `Request`, sem servidor HTTP fake — não usam `supertest` (removido do projeto na Etapa 4 da v3, já sem uso depois da migração para Route Handlers).
 
 ### Origens exibidas no front-end
 
@@ -73,7 +75,7 @@ Não existe um `source.ts` genérico compartilhado entre `tech` e `game` — a l
 
 `src/app/tech/[slug]/page.tsx` e `src/app/game/[slug]/page.tsx` (App Router, Server Components): `generateStaticParams` pré-renderiza só a primeira origem no build (as demais renderizam sob demanda na primeira visita, dado o número de fontes); `export const revalidate = 86400` faz a revalidação ISR (24h, não mais 2h). Os dados reais são buscados direto no servidor — `await getTechContent(slug)`/`await getGameContent(slug)` (`TechFeed.tsx`/`GameFeed.tsx` em `src/components/Feed/`, que por sua vez chamam o helper compartilhado `getFeedContent` em `src/scraping/getFeedContent.ts`) — sem `@tanstack/react-query` e sem fetch client-side para essas duas rotas (a dependência não está mais em `package.json`).
 
-`src/pages/tech/refresh.tsx` e `src/pages/tech/placeholder.tsx` continuam no Pages Router — são ferramentas de debug (usam `useState`/`useEffect` reais, então o boundary client é honesto, não um escape hatch), mantidas deliberadamente fora da migração para App Router; `src/pages/_app.tsx` só existe hoje para servir essas duas páginas. As API routes (`src/pages/api/**`) também continuam Pages Router — Next não tem um equivalente dentro de `app/` que sirva o mesmo papel aqui sem reescrever os handlers.
+`src/app/tech/refresh/` e `src/app/tech/placeholder/` são ferramentas de debug — cada uma é um `page.tsx` Server Component (só exporta `metadata`, título da aba) que renderiza um `*Client.tsx` (`"use client"`, usa `useState`/`useEffect` reais, então o boundary client é honesto, não um escape hatch). Migradas para App Router na Etapa 4 da v3 (antes viviam em `src/pages/tech/{refresh,placeholder}.tsx`, servidas por `src/pages/_app.tsx`, hoje removido). As API routes (`src/app/api/**/route.ts`) também são Route Handlers do App Router — ver seção "Rotas de API".
 
 ### Imagens (`next/image`)
 
@@ -92,7 +94,7 @@ Estado global simples via Context API em `src/hooks/` (`SettingsProvider` para o
 ## Coisas a saber antes de editar
 
 - Arquivos `*.txt`, `*.zip` e as pastas `/md` e `/notes` estão no `.gitignore` — são notas de trabalho/backups locais, não fazem parte do código do app e não devem ser tratados como fonte de verdade para arquitetura (apesar de às vezes conterem o raciocínio por trás de um refactor).
-- Ao adicionar uma nova fonte de scraping, siga o padrão existente: nome de classe curto, `getOriginUrl()` retornando `atob(<base64 da URL>)`, nome do arquivo igual ao base64 da URL (com padding `=` literal no nome do arquivo), export default de uma instância (`export default new NomeClasse()`), colocado em `src/scraping/{tech,game}/` (não em `src/pages/api/`), e registrar o import + entrada no array em `src/scraping/{tech,game}/index.ts` do domínio correspondente.
+- Ao adicionar uma nova fonte de scraping, siga o padrão existente: nome de classe curto, `getOriginUrl()` retornando `atob(<base64 da URL>)`, nome do arquivo igual ao base64 da URL (com padding `=` literal no nome do arquivo), export default de uma instância (`export default new NomeClasse()`), colocado em `src/scraping/{tech,game}/` (não em `src/app/api/`), e registrar o import + entrada no array em `src/scraping/{tech,game}/index.ts` do domínio correspondente.
 
 ## Sobre scraping e uso responsável
 
