@@ -19,6 +19,16 @@ commit deste repositório — isso faz o GitHub listar "claude" como contribuido
 não é desejado aqui (achado real: aconteceu no commit `41cdcd6`/`2d517eb`, corrigido via amend +
 force-push).
 
+### Decisões de arquitetura (`docs/decisions/`)
+
+Decisões não triviais (remover/arquivar código, resolver dependência legada) ficam registradas
+como ADR em `docs/decisions/NNNN-titulo.md`. Por convenção, um ADR pode citar o achado de origem
+do workspace pessoal de avaliação (`reactjs/improvements/vN/feed-news/`, fora deste
+repositório) por caminho de arquivo, para rastreabilidade — isso é intencional, não uma
+referência quebrada nem um descuido: esse workspace é uma ferramenta de acompanhamento pessoal,
+não faz parte do código nem é acessível a terceiros que clonarem este repo, mas o caminho ajuda
+o próprio autor a re-encontrar o contexto completo da decisão.
+
 ## Comandos
 
 ```bash
@@ -75,7 +85,9 @@ Os testes de integração (`src/scraping/__tests__/*.integration.test.ts`) impor
 
 `src/app/tech/[slug]/page.tsx` e `src/app/game/[slug]/page.tsx` (App Router, Server Components): `generateStaticParams` pré-renderiza só a primeira origem no build (as demais renderizam sob demanda na primeira visita, dado o número de fontes); `export const revalidate = 86400` faz a revalidação ISR (24h, não mais 2h). Os dados reais são buscados direto no servidor — `await getTechContent(slug)`/`await getGameContent(slug)` (`TechFeed.tsx`/`GameFeed.tsx` em `src/components/Feed/`, que por sua vez chamam o helper compartilhado `getFeedContent` em `src/scraping/getFeedContent.ts`) — sem `@tanstack/react-query` e sem fetch client-side para essas duas rotas (a dependência não está mais em `package.json`).
 
-`src/app/tech/refresh/` e `src/app/tech/placeholder/` são ferramentas de debug — cada uma é um `page.tsx` Server Component (só exporta `metadata`, título da aba) que renderiza um `*Client.tsx` (`"use client"`, usa `useState`/`useEffect` reais, então o boundary client é honesto, não um escape hatch). Migradas para App Router na Etapa 4 da v3 (antes viviam em `src/pages/tech/{refresh,placeholder}.tsx`, servidas por `src/pages/_app.tsx`, hoje removido). As API routes (`src/app/api/**/route.ts`) também são Route Handlers do App Router — ver seção "Rotas de API".
+`src/app/tech/placeholder/` é ferramenta de debug — um `page.tsx` Server Component (só exporta `metadata`, título da aba) que renderiza um `*Client.tsx` (`"use client"`, usa `useState`/`useEffect` reais, então o boundary client é honesto, não um escape hatch). Migrada para App Router na Etapa 4 da v3 (antes vivia em `src/pages/tech/placeholder.tsx`, servida por `src/pages/_app.tsx`, hoje removido). As API routes (`src/app/api/**/route.ts`) também são Route Handlers do App Router — ver seção "Rotas de API".
+
+`src/app/tech/refresh/` e `src/app/api/tech/stored/route.ts` existiram como ferramenta de debug/rota apontando para um backend externo legado (`NEXT_PUBLIC_API_TECH_URL`, nunca documentado em `.env.example`) e foram removidos — publicamente acessíveis e funcionalmente quebrados (chamavam rotas que não existem mais nesse backend).
 
 ### Imagens (`next/image`)
 
@@ -91,7 +103,7 @@ Os testes de integração (`src/scraping/__tests__/*.integration.test.ts`) impor
 
 Mistura de componentes "legados" (`src/components/...`) e componentes shadcn/ui (`src/@/components/ui/...`, estilo "new-york", Tailwind com CSS variables, base color zinc). Vários componentes têm sufixo `Shadcn` (ex.: `ArticleCardShadcn.tsx`) indicando uma migração em andamento de Bootstrap/tw-elements para shadcn — ao tocar em um componente, verifique se há uma contraparte `*Shadcn` que deveria ser usada/atualizada no lugar.
 
-Estado global simples via Context API em `src/hooks/` (`SettingsProvider` para origem tech/game selecionada, `StyleSwitcherProvider`, `ThemeProvider` da shadcn para dark/light). Sem Redux/Zustand.
+Estado global simples via Context API em `src/hooks/` — hoje `src/hooks/index.tsx` só monta o `ThemeProvider` da shadcn (dark/light). `SettingsProvider`/`StyleSwitcherProvider` (versões anteriores, hand-rolled) não existem mais. Sem Redux/Zustand.
 
 ## Coisas a saber antes de editar
 

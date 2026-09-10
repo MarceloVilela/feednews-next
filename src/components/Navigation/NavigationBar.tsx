@@ -77,9 +77,6 @@ const ListItem = React.forwardRef<
         >
           <Link href={`${href}`} passHref={true} {...props}>
             <div className="text-sm font-medium leading-none">{title}</div>
-            {/*<p className="line-clamp-2 text-sm leading-snug text-muted-foreground hidden">
-            {children}
-          </p>*/}
           </Link>
         </span>
       </NavigationMenuLink>

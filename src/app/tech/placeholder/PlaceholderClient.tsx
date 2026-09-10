@@ -62,9 +62,7 @@ export default function PlaceholderClient() {
       };
       const originsIncremented = [originRecent, ...origins];
 
-      // eslint-disable-next-line no-plusplus
       for (let i = 0; i < originsIncremented.length; i++) {
-        // eslint-disable-next-line no-await-in-loop
         await refresh({ ...originsIncremented[i], index: i });
       }
     };
