@@ -22,9 +22,9 @@ export default function RootLayout({
             <div className="flex flex-col w-full items-center px-0 min-h-screen">
               {/* borda de debug desativada de propósito — reativar trocando "mx-auto" por
                   "mx-auto border border-1" */}
-              <main className="w-full max-w-[1124px] mx-auto">
+              <header className="w-full max-w-[1124px] mx-auto">
                 <NavigationBar />
-              </main>
+              </header>
 
               {/* borda de debug desativada de propósito — reativar trocando "mx-auto" por
                   "mx-auto border border-1" */}

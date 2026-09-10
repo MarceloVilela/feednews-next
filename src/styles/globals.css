@@ -22,12 +22,6 @@ input {
   border: 1px solid theme('colors.gray.500');
 }
 
-header + main {
-  padding-top: 50px !important;
-
-  padding-left: 50px !important;
-}
-
 /*#menu-, #menu-footer- {
   position: fixed;
   top: 0;

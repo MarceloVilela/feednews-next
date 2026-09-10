@@ -2,6 +2,6 @@
 
 import { RouteError } from "components/Feed/RouteError";
 
-export default function TechError({ error, reset }: { error: Error; reset: () => void }) {
+export default function HomeError({ error, reset }: { error: Error; reset: () => void }) {
   return <RouteError error={error} reset={reset} />;
 }
