@@ -31,7 +31,7 @@
 | Scraping      | JSDOM, parsing de HTML server-side                                                 |
 | UI            | Tailwind CSS, shadcn/ui (Radix UI), migração em andamento de Bootstrap/tw-elements |
 | Data fetching | ISR (Incremental Static Regeneration), fetch server-side em Server Components      |
-| Testes        | Jest — testes de integração reais contra os sites de origem, chamando os Route Handlers direto (sem servidor HTTP fake) |
+| Testes        | Jest — testes de integração reais contra os sites de origem (Route Handlers direto, sem servidor HTTP fake) e testes unitários/de componente (`@testing-library/react`) para lógica pura e componentes com guard condicional |
 
 ## Como funciona
 

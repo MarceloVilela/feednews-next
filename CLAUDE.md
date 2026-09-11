@@ -39,6 +39,7 @@ pnpm start           # serve o build de produção
 pnpm lint            # eslint . (flat config, eslint.config.mjs)
 
 pnpm test                  # roda toda a suíte Jest (jest --runInBand)
+pnpm test:unit             # só os testes rápidos (unit/componente), exclui os *.integration.test
 pnpm test:e2e:apitech      # só os testes de integração das fontes de tech
 pnpm test:e2e:apigame      # só os testes de integração das fontes de game
 ```
@@ -46,6 +47,18 @@ pnpm test:e2e:apigame      # só os testes de integração das fontes de game
 Para rodar um teste único: `npx jest -t "nome do teste"` ou `npx jest src/scraping/__tests__/tech-source.integration.test.ts -t "site offline"`.
 
 Os testes em `src/scraping/__tests__/*.integration.test.ts` são testes de integração reais: eles disparam `it.each` sobre **todas** as fontes cadastradas e fazem requests HTTP de verdade para os sites de origem (não há mocks). São lentos, dependem de rede e podem falhar se um site mudar a marcação HTML ou ficar fora do ar — isso é esperado e não necessariamente indica regressão no código deste repo. `jest.setTimeout(20000)` reflete essa dependência de rede.
+
+`pnpm test:unit` cobre função pura (`src/types/__tests__/feed.test.ts`) e componente
+(`src/components/Article/__tests__/ArticleCardShadcn.test.tsx`, `src/scraping/__tests__/getFeedContent.test.ts`)
+— o teste de componente usa `@testing-library/react` com `/** @jest-environment jsdom */` por
+arquivo (não muda o `testEnvironment` global, que continua `node`). Escopo de quando escrever um
+desses: código com lógica real (guard condicional, dedupe, resolução de URL/slug, estado de
+provider) ganha teste; componente puramente apresentacional sem branch de lógica não precisa —
+decisão consciente, não lacuna. Regra que evita cobertura zerar de novo: se um componente/provider
+testado é removido ou substituído, o teste dele é removido/adaptado no mesmo commit/PR (foi a
+ausência dessa regra que zerou a cobertura de componente quando `SettingsProvider`/
+`StyleSwitcherProvider` foram substituídos pelo `ThemeProvider` do shadcn, sem levar o teste
+junto).
 
 Node `>=24.0.0` é exigido (`engines` em `package.json`).
 
