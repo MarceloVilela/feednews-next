@@ -20,9 +20,8 @@ export default function PlaylistItem({ item }: PlaylistItemProps) {
       href={item.link}
       target="_blank"
       rel="noopener noreferrer"
-      className="group flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left
-      transition-colors hover:bg-gray-100 dark:hover:bg-white/5 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary
-      dark:bg-gray-950/90 bg-white/50"
+      className="group flex w-full items-center gap-3 rounded-xl border border-border bg-muted/50 px-3 py-2 text-left
+      transition-colors hover:bg-muted focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
     >
       {/* Index */}
       {item.index && (
