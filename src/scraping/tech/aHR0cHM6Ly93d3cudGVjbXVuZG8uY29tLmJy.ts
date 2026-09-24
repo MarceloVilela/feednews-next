@@ -11,19 +11,22 @@ class T3cmu {
     const response = await JSDOM.fromURL(url);
     const { document } = response.window;
 
-    const getContent = (elPost: Element) => ({
-      link:
-        this.getOriginUrl() +
-        elPost.querySelector("a[title]")?.getAttribute("href"),
-      title: elPost.querySelector("a[title]")?.getAttribute("title"),
-      thumb: elPost.querySelector("img")?.getAttribute("src"),
-      // preview: '',
-      created_at: elPost.querySelector(".tec--timestamp__item")?.textContent,
-    });
+    const getContent = (elPost: Element) => {
+      const elLink = elPost.querySelector("h2.headline")?.closest("a");
+      const elImg = elPost.querySelector("img");
 
-    const postsData = [...document.querySelectorAll("article")].map((elPost) =>
-      getContent(elPost),
-    );
+      return {
+        link: elLink?.getAttribute("href"),
+        title: elLink?.getAttribute("title"),
+        thumb: elImg?.getAttribute("data-src") ?? elImg?.getAttribute("src"),
+        // preview: '',
+        created_at: undefined,
+      };
+    };
+
+    const postsData = [...document.querySelectorAll(".news-block")]
+      .map((elPost) => getContent(elPost))
+      .filter(({ link, thumb }) => link && thumb);
 
     return { posts: postsData };
   }

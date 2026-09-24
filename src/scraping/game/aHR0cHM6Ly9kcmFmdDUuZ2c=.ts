@@ -12,26 +12,33 @@ class Dr4ft implements ISource {
     const response = await JSDOM.fromURL(`${url}`);
     const { document } = response.window;
 
+    const getThumb = (elPost: Element) => {
+      const src = elPost
+        .querySelector("img[src*='/_next/image']")
+        ?.getAttribute("src");
+      return src
+        ? (new URL(src, this.getOriginUrl()).searchParams.get("url") ??
+            undefined)
+        : undefined;
+    };
+
     const getContent = (elPost: Element) => {
       return {
-        link:
-          this.getOriginUrl() + elPost.querySelector("a")?.getAttribute("href"),
-        title: String(elPost.querySelector("h2")?.textContent),
-        thumb:
-          this.getOriginUrl() +
-          elPost
-            .querySelector("[srcSet]")
-            ?.getAttribute("srcSet")
-            ?.split(" ")[0],
+        link: this.getOriginUrl() + elPost.getAttribute("href"),
+        title: elPost.querySelector("[class*='__title']")?.textContent?.trim(),
+        thumb: getThumb(elPost),
         created_at: "",
       };
     };
 
     const postsData = [
-      ...document.querySelectorAll("div[class^='Card__CardContainer']"),
-    ]
-      .map((elPost) => getContent(elPost))
-      .filter((elPost) => elPost.thumb && elPost.title != "undefined");
+      ...new Map(
+        [...document.querySelectorAll("a[href^='/noticia/']")]
+          .map((elPost) => getContent(elPost))
+          .filter((elPost) => elPost.thumb && elPost.title)
+          .map((post) => [post.link, post] as const),
+      ).values(),
+    ];
 
     return { posts: [...postsData] };
   }

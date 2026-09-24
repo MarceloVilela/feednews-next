@@ -11,26 +11,25 @@ class G4m3T implements ISource {
     const response = await JSDOM.fromURL(`${url}`);
     const { document } = response.window;
 
-    const replaceSpaces = (text: string) => {
-      return text
-        .replace(/\n|\r|\t/g, "")
-        .replace(/\n|\s{2,}/g, "")
-        .replace(/\\n|\\r|\\t/g, "")
-        .replace(/\s{2,}/g, "");
+    const getThumb = (elPost: Element) => {
+      const src = elPost.querySelector("img")?.getAttribute("src");
+      return src
+        ? (new URL(src, url).searchParams.get("url") ?? undefined)
+        : undefined;
     };
 
     const getContent = (elPost: Element) => {
       return {
         link: `${url}${elPost.querySelector("a")?.getAttribute("href")}`,
-        title: replaceSpaces(String(elPost.querySelector("h3 a")?.textContent)),
-        thumb: elPost.querySelector("img[data-src]")?.getAttribute("data-src"),
+        title: elPost.querySelector("h2, h3")?.textContent?.trim(),
+        thumb: getThumb(elPost),
         created_at: "",
       };
     };
 
     const postsData = [...document.querySelectorAll("article")]
       .map((elPost) => getContent(elPost))
-      .filter((elPost) => elPost.thumb && elPost.title != "undefined");
+      .filter((elPost) => elPost.thumb && elPost.title);
 
     return { posts: [...postsData] };
   }

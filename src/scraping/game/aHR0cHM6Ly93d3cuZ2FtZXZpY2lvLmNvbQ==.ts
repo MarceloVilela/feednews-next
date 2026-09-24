@@ -20,10 +20,13 @@ class G4m3V implements ISource {
     };
 
     const getContent = (elPost: Element) => {
+      const elImg = elPost.querySelector("img");
+
       return {
         link: elPost.querySelector("h2 a")?.getAttribute("href"),
         title: replaceSpaces(String(elPost.querySelector("h2 a")?.textContent)),
-        thumb: elPost.querySelector("img")?.getAttribute("src"),
+        thumb:
+          elImg?.getAttribute("data-lazy-src") ?? elImg?.getAttribute("src"),
         created_at: replaceSpaces(
           String(elPost.querySelector(".elementor-post-date")?.textContent),
         ),

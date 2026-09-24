@@ -11,31 +11,20 @@ class Ark4d implements ISource {
     const response = await JSDOM.fromURL(`${url}`);
     const { document } = response.window;
 
-    const replaceSpaces = (text: string) => {
-      return text
-        .replace(/\n|\r|\t/g, "")
-        .replace(/\n|\s{2,}/g, "")
-        .replace(/\\n|\\r|\\t/g, "")
-        .replace(/\s{2,}/g, "");
-    };
-
     const getContent = (elPost: Element) => {
+      const elTitle = elPost.querySelector("a.a-rt");
+
       return {
-        link: elPost.querySelector("a")?.getAttribute("href"),
-        title: replaceSpaces(
-          String(elPost.querySelector(".post-content")?.textContent),
-        ),
-        thumb: elPost
-          .querySelector(".background-image-container")
-          ?.getAttribute("style")
-          ?.split("'")[1],
-        created_at: "",
+        link: elTitle?.getAttribute("href"),
+        title: elTitle?.textContent?.trim(),
+        thumb: elPost.querySelector("img")?.getAttribute("src"),
+        created_at: elPost.querySelector("time")?.textContent,
       };
     };
 
-    const postsData = [...document.querySelectorAll(".post")]
+    const postsData = [...document.querySelectorAll("article")]
       .map((elPost) => getContent(elPost))
-      .filter((elPost) => elPost.thumb && elPost.title != "undefined");
+      .filter((elPost) => elPost.link && elPost.thumb && elPost.title);
 
     /*const getDataContent = (elPost: Element) => {
       return {
