@@ -1,0 +1,26 @@
+# Cliente manual das rotas /api/{tech,game}/source (contrato usado pelos testes de integração).
+# ---------------------------------------------
+# Formato típico de arquivo .http: permite disparar a request direto da IDE (extensão REST Client
+# no VS Code, ou o HTTP Client nativo das IDEs JetBrains), sem curl nem Postman.
+# ---------------------------------------------
+# Copie este arquivo para client.http (ignorado pelo git) e substitua <alias> por parte da URL
+# de uma origem; não versionar valores reais.
+@baseUrl = http://localhost:3000/api
+@techAlias = <alias>
+@gameAlias = <alias>
+
+# =============================================
+# TECH
+# =============================================
+
+# @name get_tech_source
+GET {{baseUrl}}/tech/source?url={{techAlias}}
+
+###
+
+# =============================================
+# GAME
+# =============================================
+
+# @name get_game_source
+GET {{baseUrl}}/game/source?url={{gameAlias}}

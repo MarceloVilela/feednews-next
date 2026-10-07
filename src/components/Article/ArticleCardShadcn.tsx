@@ -12,8 +12,6 @@ interface ArticleCardProps {
 }
 
 export default function ArticleCardShadcn({ articles }: ArticleCardProps) {
-  const _articles = typeof articles != "object" ? [] : articles;
-
   if (!articles || articles.length === 0 || articles[0].title == "") {
     return <div></div>;
   }
@@ -23,7 +21,7 @@ export default function ArticleCardShadcn({ articles }: ArticleCardProps) {
       {/* grid multi-coluna desativado de propósito (layout ainda em 1 coluna por decisão) —
           reativar trocando "grid gap-4" por "grid sm:grid-cols-2 lg:grid-cols-3 gap-4" */}
       <div className="grid gap-4 px-0 sm:px-4">
-        {_articles.map(({ title, link, thumb, id }) => (
+        {articles.map(({ title, link, thumb, id }) => (
           <Item
             key={id}
             item={{ title, image: thumb, artist: link, link }}

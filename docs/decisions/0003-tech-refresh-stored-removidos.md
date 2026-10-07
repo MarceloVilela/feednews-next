@@ -38,6 +38,10 @@ totalmente retirada do projeto — só a parte coberta por H4/M2. `/tech/placeho
 tem o mesmo problema de fundo (aponta pra uma API que pode não existir mais), mas isso não estava
 no escopo desta decisão e fica como achado em aberto para uma rodada futura.
 
+> **Atualização:** a descoberta lateral acima foi decidida no
+> [ADR 0004](./0004-jsonbin-apenas-documentado.md) (remover `/tech/placeholder`, `apiTech` e
+> jsonbin); a remoção ainda está pendente (v5, etapa 3).
+
 ## Consequências
 
 - `src/app/tech/refresh/` e `src/app/api/tech/stored/route.ts` removidos do repositório.

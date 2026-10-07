@@ -14,8 +14,6 @@ interface ArticleCardWithImageProps {
 export default function ArticleCardAspectShadcn({
   articles,
 }: ArticleCardWithImageProps) {
-  const _articles = typeof articles != "object" ? [] : articles;
-
   if (!articles || articles.length === 0 || articles[0].title == "") {
     return <div></div>;
   }
@@ -23,7 +21,7 @@ export default function ArticleCardAspectShadcn({
   return (
     <>
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 px-0 sm:px-4">
-        {_articles.map(({ title, link, id, thumb }) => (
+        {articles.map(({ title, link, id, thumb }) => (
           <Item key={id} item={{ title, image: thumb, link }} />
         ))}
       </div>

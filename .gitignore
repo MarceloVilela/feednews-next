@@ -47,3 +47,5 @@ CLAUDE.local.md
 build-output.log
 /md
 /notes
+*.http
+!client.example.http

@@ -36,10 +36,10 @@
 ## Como funciona
 
 ```
-Cliente ──▶ /api/{tech,game}/source?url=<alias>
+Página (tech/[slug] ou game/[slug], Server Component)
               │
               ▼
-        sources[] filtra pela URL (alias)
+   getFeedContent(slug)  ──▶ sources[] filtra pela URL (alias)
               │
               ▼
    engine.getHome() ──▶ JSDOM.fromURL(site real)
@@ -48,8 +48,15 @@ Cliente ──▶ /api/{tech,game}/source?url=<alias>
    parsing com seletores CSS específicos do site
               │
               ▼
-   { data: Post[], total } ──▶ feed no front-end
+   { data: Post[], total } ──▶ feed renderizado no servidor (ISR, 24h)
 ```
+
+Não há chamada HTTP entre a UI e o scraping: o Server Component chama `getFeedContent` direto.
+
+As rotas `GET /api/{tech,game}/source?url=<alias>` continuam disponíveis e são o contrato usado
+pelos testes de integração (que chamam a função `GET` direto, sem servidor HTTP). Para disparar
+essas rotas à mão pela IDE, copie `client.example.http` para `client.http` (ignorado pelo git) e
+preencha o `<alias>`.
 
 Cada fonte implementa:
 
@@ -60,7 +67,7 @@ interface ISource {
 }
 ```
 
-Não existe banco de dados nem cache persistente: cada chamada à rota de API dispara o scraping ao vivo da fonte solicitada.
+Não existe banco de dados nem cache persistente: cada renderização (ou chamada à rota de API) dispara o scraping ao vivo da fonte solicitada.
 
 ## Rodando localmente
 
