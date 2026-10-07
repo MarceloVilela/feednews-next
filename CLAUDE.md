@@ -92,15 +92,15 @@ Os testes de integração (`src/scraping/__tests__/*.integration.test.ts`) impor
 
 ### Origens exibidas no front-end
 
-`src/assets/json/{tech,game}/origins.ts` contém a lista de origens mostradas na UI (título, URL, `BIN_ID`), também com `title`/`url` em base64 e decodificados via `atob` no `default export`. É uma lista separada (e não necessariamente idêntica) das classes em `sources/`, usada para gerar abas/menus e os `generateStaticParams` das páginas dinâmicas.
+`src/assets/json/{tech,game}/origins.ts` contém a lista de origens mostradas na UI (título, URL), também com `title`/`url` em base64 e decodificados via `atob` no `default export`. É uma lista separada (e não necessariamente idêntica) das classes em `sources/`, usada para gerar abas/menus e os `generateStaticParams` das páginas dinâmicas.
 
 ### Páginas dinâmicas
 
 `src/app/tech/[slug]/page.tsx` e `src/app/game/[slug]/page.tsx` (App Router, Server Components): `generateStaticParams` pré-renderiza só a primeira origem no build (as demais renderizam sob demanda na primeira visita, dado o número de fontes); `export const revalidate = 86400` faz a revalidação ISR (24h, não mais 2h). Os dados reais são buscados direto no servidor — `await getTechContent(slug)`/`await getGameContent(slug)` (`TechFeed.tsx`/`GameFeed.tsx` em `src/components/Feed/`, que por sua vez chamam o helper compartilhado `getFeedContent` em `src/scraping/getFeedContent.ts`) — sem `@tanstack/react-query` e sem fetch client-side para essas duas rotas (a dependência não está mais em `package.json`).
 
-`src/app/tech/placeholder/` é ferramenta de debug — um `page.tsx` Server Component (só exporta `metadata`, título da aba) que renderiza um `*Client.tsx` (`"use client"`, usa `useState`/`useEffect` reais, então o boundary client é honesto, não um escape hatch). Migrada para App Router na Etapa 4 da v3 (antes vivia em `src/pages/tech/placeholder.tsx`, servida por `src/pages/_app.tsx`, hoje removido). As API routes (`src/app/api/**/route.ts`) também são Route Handlers do App Router — ver seção "Rotas de API".
+`src/app/tech/placeholder/`, `src/services/{api,jsonbin}.ts` e o campo `BIN_ID` das origens foram removidos na v5 (ver `docs/decisions/0004-jsonbin-apenas-documentado.md`). Não recriar a menos que explicitamente solicitado. As API routes (`src/app/api/**/route.ts`) são Route Handlers do App Router — ver seção "Rotas de API".
 
-`src/app/tech/refresh/` e `src/app/api/tech/stored/route.ts` existiram como ferramenta de debug/rota apontando para um backend externo legado (`NEXT_PUBLIC_API_TECH_URL`, nunca documentado em `.env.example`) e foram removidos — publicamente acessíveis e funcionalmente quebrados (chamavam rotas que não existem mais nesse backend).
+`src/app/tech/refresh/` e `src/app/api/tech/stored/route.ts` existiram como ferramenta de debug/rota apontando para um backend externo legado (`NEXT_PUBLIC_API_TECH_URL`, nunca documentado em `.env.example`; variável já removida) e foram removidos — publicamente acessíveis e funcionalmente quebrados (chamavam rotas que não existem mais nesse backend).
 
 ### Imagens (`next/image`)
 
@@ -110,7 +110,7 @@ Os testes de integração (`src/scraping/__tests__/*.integration.test.ts`) impor
 
 ### Alias de import `@/`
 
-`components.json` (config do shadcn/ui) declara o alias `@/components` e `@/utils`, mas **não há `paths` no `tsconfig.json`**. O alias funciona porque `baseUrl` é `"src"` e existe um diretório literal `src/@/components/...` e `src/@/lib/utils.ts` — ou seja, `@` não é um alias TS, é uma pasta real chamada `@` dentro de `src`. Resolução de imports não-`@` (ex.: `components/Loading`, `services/api`, `hooks/settings`) também depende desse mesmo `baseUrl: "src"`.
+`components.json` (config do shadcn/ui) declara o alias `@/components` e `@/utils`, mas **não há `paths` no `tsconfig.json`**. O alias funciona porque `baseUrl` é `"src"` e existe um diretório literal `src/@/components/...` e `src/@/lib/utils.ts` — ou seja, `@` não é um alias TS, é uma pasta real chamada `@` dentro de `src`. Resolução de imports não-`@` (ex.: `components/Loading`, `components/Feed/RouteError`) também depende desse mesmo `baseUrl: "src"`.
 
 ### UI
 

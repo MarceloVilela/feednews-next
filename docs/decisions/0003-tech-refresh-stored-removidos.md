@@ -31,7 +31,7 @@ registrando a remoção e o motivo.
 
 ## Descoberta lateral (fora do escopo desta decisão)
 
-`src/services/api.ts` **não foi removido** — o cliente `apiTech` (mesmo `NEXT_PUBLIC_API_TECH_URL`)
+No momento desta decisão, `src/services/api.ts` **não foi removido** — o cliente `apiTech` (mesmo `NEXT_PUBLIC_API_TECH_URL`)
 continua em uso por `src/app/tech/placeholder/PlaceholderClient.tsx`, que chama o mesmo endpoint
 legado (`/technews/post/origin`). Ou seja, a dependência do backend externo legado não foi
 totalmente retirada do projeto — só a parte coberta por H4/M2. `/tech/placeholder` provavelmente
@@ -40,11 +40,12 @@ no escopo desta decisão e fica como achado em aberto para uma rodada futura.
 
 > **Atualização:** a descoberta lateral acima foi decidida no
 > [ADR 0004](./0004-jsonbin-apenas-documentado.md) (remover `/tech/placeholder`, `apiTech` e
-> jsonbin); a remoção ainda está pendente (v5, etapa 3).
+> jsonbin), executada na v5 (etapa 3).
 
 ## Consequências
 
 - `src/app/tech/refresh/` e `src/app/api/tech/stored/route.ts` removidos do repositório.
 - `CLAUDE.md` atualizado, sem referência a rota órfã.
-- `apiTech`/`NEXT_PUBLIC_API_TECH_URL` continuam existindo em `src/services/api.ts` — não são
-  código morto, ainda têm um consumidor real (`/tech/placeholder`).
+- No momento desta decisão, `apiTech`/`NEXT_PUBLIC_API_TECH_URL` continuavam em
+  `src/services/api.ts` (consumidor: `/tech/placeholder`); ambos foram removidos depois, ver
+  [ADR 0004](./0004-jsonbin-apenas-documentado.md).

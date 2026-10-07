@@ -1,14 +1,13 @@
 # 0004 — jsonbin fica só como referência documentada, sem uso no projeto
 
-- **Status:** aceita; execução (remoção do código) pendente — será marcada como executada no
-  commit da etapa que fecha o H1 da v5
+- **Status:** aceita e executada (v5, etapa 3)
   (`reactjs/improvements/v5/feed-news/0feednews-next.md`)
 - **Contexto:** `/tech/placeholder` depende do backend externo legado já descrito no ADR 0003 e
   grava, sem autenticação, num bin do jsonbin.io de terceiro a cada carregamento da página
 
 ## Contexto
 
-`src/app/tech/placeholder/PlaceholderClient.tsx` dispara em `useEffect` de montagem
+No momento da decisão, `src/app/tech/placeholder/PlaceholderClient.tsx` dispara em `useEffect` de montagem
 `apiTech.get("/technews/post/origin")` (backend legado) e `jsonbin.put(BIN_ID, data)`. Resultado:
 qualquer visita grava num recurso de terceiro sem clique e sem autenticação, e a leitura depende
 de uma API que pode não existir mais. `src/services/jsonbin.ts` e `apiGeneric` não têm nenhum
@@ -21,7 +20,7 @@ identificado pelo `BIN_ID`, guardando os posts daquela origem. O cliente de refe
 `MarceloVilela/Tech-News` (React Native), cuja tela de Refresh percorre as origens e atualiza os
 posts pela API. Esse desenho não existe mais neste
 projeto — que usa Next com scraping server-side e ISR (`revalidate = 86400`), sem API
-intermediária — e o campo `BIN_ID` em `src/assets/json/{tech,game}/origins.ts` é o resquício dele.
+intermediária — e o campo `BIN_ID` em `src/assets/json/tech/origins.ts` era o resquício dele.
 
 ## Decisão
 
@@ -72,12 +71,15 @@ async function loadFeed(slug: string) {
 
 ## Consequências
 
-- Ao executar o H1: apagar `src/app/tech/placeholder/`, `src/services/jsonbin.ts`, `apiGeneric` e
-  (sem consumidor restante, confirmado por `grep -rln`) `apiTech`; remover `BIN_ID` de
-  `src/assets/json/{tech,game}/origins.ts` (único consumidor era `PlaceholderClient.tsx`);
-  `NEXT_PUBLIC_API_TECH_URL` some do `.env` local; atualizar `CLAUDE.md` (seção
-  "Páginas dinâmicas", que ainda descreve `/tech/placeholder`); rodar `pnpm lint`, `pnpm build` e
-  `pnpm test:unit`.
-- Ao executar o H1, a "descoberta lateral" do ADR 0003 passa a resolvida; até lá, ela está
-  decidida, com execução pendente.
+- Removidos: `src/app/tech/placeholder/`, `src/services/jsonbin.ts` e `src/services/api.ts`
+  (`apiGeneric` e `apiTech`, sem consumidor restante, confirmado por `grep`), o campo `BIN_ID` de
+  `src/assets/json/tech/origins.ts` (o `game` não o tinha; único consumidor era
+  `PlaceholderClient.tsx`) e `NEXT_PUBLIC_API_TECH_URL` do `.env` local. `CLAUDE.md` atualizado
+  (seções "Origens exibidas no front-end" e "Páginas dinâmicas").
+- A "descoberta lateral" do ADR 0003 está resolvida.
 - Quem precisar do padrão num cliente sem Next tem a descrição acima; nada no código depende dele.
+- **Segurança:** uma chave de API do jsonbin esteve versionada (em comentário de
+  `src/services/jsonbin.ts`, no histórico git) e em variável `NEXT_PUBLIC_*`, embutida no
+  JavaScript do navegador de builds antigos. Remover o arquivo não a retira do histórico; a chave
+  foi revogada/rotacionada no jsonbin pelo autor (v5, etapa 3), então o valor antigo no histórico
+  não dá mais acesso.
