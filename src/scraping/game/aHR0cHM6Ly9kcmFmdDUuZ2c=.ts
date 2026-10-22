@@ -25,7 +25,7 @@ class Dr4ft implements ISource {
     const getContent = (elPost: Element) => {
       return {
         link: this.getOriginUrl() + elPost.getAttribute("href"),
-        title: elPost.querySelector("[class*='__title']")?.textContent?.trim(),
+        title: elPost.querySelector("[class*='_title']")?.textContent?.trim(),
         thumb: getThumb(elPost),
         created_at: "",
       };

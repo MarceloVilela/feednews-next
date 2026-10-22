@@ -37,9 +37,23 @@ class Fl0gg implements ISource {
       };
     };
 
-    const postsData = [...document.querySelectorAll(".list-post li")]
-      .map((elPost) => getContent(elPost))
-      .filter((elPost) => elPost.thumb && elPost.title != "undefined");
+    const getPosts = (doc: Document) =>
+      [...doc.querySelectorAll(".list-post li")]
+        .map((elPost) => getContent(elPost))
+        .filter((elPost) => elPost.thumb && elPost.title != "undefined");
+
+    const documentPage2 = await JSDOM.fromURL(`${url}/noticias/page/2/`)
+      .then((res) => res.window.document)
+      .catch(() => undefined);
+
+    const postsData = [
+      ...new Map(
+        [
+          ...getPosts(document),
+          ...(documentPage2 ? getPosts(documentPage2) : []),
+        ].map((post) => [post.link, post] as const),
+      ).values(),
+    ];
 
     const getContentSlide = (elPost: Element) => {
       return {

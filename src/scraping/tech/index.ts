@@ -1,7 +1,6 @@
 import aHR0cHM6Ly9naXptb2RvLmNvbS5ici9mZWVk from "./aHR0cHM6Ly9naXptb2RvLmNvbS5ici9mZWVk";
 import aHR0cHM6Ly90ZWNub2Jsb2cubmV0 from "./aHR0cHM6Ly90ZWNub2Jsb2cubmV0";
 import aHR0cHM6Ly93d3cudGVjbXVuZG8uY29tLmJy from "./aHR0cHM6Ly93d3cudGVjbXVuZG8uY29tLmJy";
-import aHR0cHM6Ly9ibG9ncy5uZTEwLnVvbC5jb20uYnIvbXVuZG9iaXQv from "./aHR0cHM6Ly9ibG9ncy5uZTEwLnVvbC5jb20uYnIvbXVuZG9iaXQv";
 import aHR0cHM6Ly9jYW5hbHRlY2guY29tLmJy from "./aHR0cHM6Ly9jYW5hbHRlY2guY29tLmJy";
 import aHR0cHM6Ly93d3cudW9sLmNvbS5ici90aWx0 from "./aHR0cHM6Ly93d3cudW9sLmNvbS5ici90aWx0";
 import aHR0cHM6Ly9vbGhhcmRpZ2l0YWwuY29tLmJy from "./aHR0cHM6Ly9vbGhhcmRpZ2l0YWwuY29tLmJy";
@@ -43,7 +42,6 @@ sources = [
   aHR0cHM6Ly9naXptb2RvLmNvbS5ici9mZWVk,
   aHR0cHM6Ly90ZWNub2Jsb2cubmV0,
   aHR0cHM6Ly93d3cudGVjbXVuZG8uY29tLmJy,
-  aHR0cHM6Ly9ibG9ncy5uZTEwLnVvbC5jb20uYnIvbXVuZG9iaXQv,
   aHR0cHM6Ly9jYW5hbHRlY2guY29tLmJy,
   aHR0cHM6Ly93d3cudW9sLmNvbS5ici90aWx0,
   aHR0cHM6Ly9vbGhhcmRpZ2l0YWwuY29tLmJy,
@@ -73,6 +71,11 @@ const _sourcesRemoved = [
     title: "aHR0cHM6Ly9jb2NhdGVjaC5jb20uYnI",
     at: "2026-06-22T00:00:00Z",
     reason: "site offline",
+  },
+  {
+    title: "aHR0cHM6Ly9ibG9ncy5uZTEwLnVvbC5jb20uYnIvbXVuZG9iaXQv",
+    at: "2026-10-13T00:00:00Z",
+    reason: "anti-bot (AWS WAF)",
   },
 ];
 

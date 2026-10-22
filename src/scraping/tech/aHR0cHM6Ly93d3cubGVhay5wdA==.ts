@@ -13,17 +13,17 @@ class L34k {
 
     const getContent = (elPost: Element) => {
       return {
-        link: elPost.querySelector("h3 a")?.getAttribute("href"),
+        link: elPost.getAttribute("href"),
         title: elPost
-          .querySelector("h3")
+          .querySelector("h3.lk-t")
           ?.textContent.replace(/\n/g, "")
           .trim(),
         thumb: elPost.querySelector("img[src]")?.getAttribute("src"),
-        created_at: elPost.querySelector(".jeg_meta_date")?.textContent,
+        created_at: elPost.querySelector(".lk-meta")?.lastChild?.textContent,
       };
     };
 
-    const postsData = [...document.querySelectorAll("article")]
+    const postsData = [...document.querySelectorAll("a.lk-card")]
       .map((elPost) => getContent(elPost))
       .filter(
         (elPost) => elPost.thumb && elPost.title && elPost.title != "undefined",
