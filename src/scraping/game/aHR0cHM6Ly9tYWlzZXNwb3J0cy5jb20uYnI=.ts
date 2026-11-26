@@ -32,16 +32,19 @@ class M4is3 implements ISource {
       const encodedUrl = urlParams.searchParams.get("url") || "";
       const finalUrl = decodeURIComponent(encodedUrl);
       return {
-        link: `${url}/${elPost.getAttribute("href")}`,
+        link: new URL(
+          String(elPost.querySelector("h3 a")?.getAttribute("href")),
+          url,
+        ).href,
         title: replaceSpaces(
-          String(elPost.querySelector("img")?.getAttribute("alt")),
+          String(elPost.querySelector("h3 a")?.textContent),
         ),
         thumb: finalUrl,
         created_at: "",
       };
     };
 
-    const postsData = [...document.querySelectorAll("section + .grid a")]
+    const postsData = [...document.querySelectorAll("ol li article")]
       .map((elPost) => getContent(elPost))
       .filter((elPost) => elPost.thumb && elPost.title != "undefined");
 
